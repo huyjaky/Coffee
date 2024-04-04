@@ -37,8 +37,8 @@ function CoffeeCard({
       <ImageBackground
         resizeMode="cover"
         style={styles.CardImageBG}
-        // source={imagelink_square}
-        source={{ uri: imagelink_square }}
+        source={imagelink_square}
+        // source={{ uri: imagelink_square }}
       >
         <View style={styles.CardRatingContainer}>
           <AntDesign name="star" size={16} color={"#230C02"} />

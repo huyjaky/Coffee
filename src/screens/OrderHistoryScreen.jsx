@@ -16,7 +16,7 @@ import { useState } from "react";
 import OrderHistoryCard from "../components/OrderHistoryCard";
 
 function OrderHistoryScreen({ navigation }) {
-  const C = useStore((state) => state.OrderHistoryList);
+  const OrderHistoryList = useStore((state) => state.OrderHistoryList);
   const tabBarHeight = useBottomTabBarHeight();
   const [showAnimation, setShowAnimation] = useState(false);
   // console.log("History length = ", OrderHistoryList.length);

@@ -325,43 +325,6 @@ function HomeScreen({ navigation }) {
 
         <Text style={styles.CoffeBeansTitle}>Text</Text>
         {/* Beans FlatList */}
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={data}
-          contentContainerStyle={[
-            styles.FlatListContainer,
-            { marginBottom: tabBarHeight },
-          ]}
-          keyExtractor={(item) => item?.id}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.push("Details", {
-                    index: item?.index,
-                    id: item?.id,
-                    type: item?.type,
-                    name: item?.name,
-                  });
-                }}
-              >
-                <CoffeeCard
-                  id={item?.id}
-                  index={item?.index}
-                  type={item?.type}
-                  roasted={item?.roasted}
-                  imagelink_square={item?.imagelink_square}
-                  name={item?.name}
-                  special_ingredient={item?.special_ingredient}
-                  average_rating={item?.average_rating}
-                  price={item?.prices[2]}
-                  buttonPressHandler={CoffeCardAddToCard}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
       </ScrollView>
     </View>
   );
