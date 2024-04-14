@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
   DownloadButton: {
     margin: 20,
-    backgroundColor: COLORS.primaryOrangeHex,
+    backgroundColor: COLORS.primaryButtonBlue,
     alignItems: "center",
     justifyContent: "center",
     height: 72,

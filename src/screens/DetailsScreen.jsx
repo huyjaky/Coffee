@@ -119,7 +119,7 @@ function DetailsScreen({ navigation, route }) {
                   {
                     borderColor:
                       data.size === price.size
-                        ? COLORS.primaryOrangeHex
+                        ? COLORS.primaryButtonBlue
                         : // : COLORS.primaryDarkGreyHex,
                           "#fbd09c99",
                   },
@@ -132,7 +132,7 @@ function DetailsScreen({ navigation, route }) {
                       fontSize: ItemofIndex.type === "Bean" ? 14 : 16,
                       color:
                         data.size === price.size
-                          ? COLORS.primaryOrangeHex
+                          ? COLORS.primaryButtonBlue
                           : COLORS.primaryLightGreyHex,
                     },
                   ]}
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   SizeBox: {
     flex: 1,
     // backgroundColor: COLORS.primaryDarkGreyHex,
-    backgroundColor: "#f8dcb9",
+    backgroundColor: COLORS.primaryBackgroundCard,
     alignItems: "center",
     justifyContent: "center",
     height: 48,

@@ -65,7 +65,7 @@ function GetStartedScreen2() {
               onPress={() => navigation.push("SignUp")}
               style={{
                 paddingVertical: 12,
-                backgroundColor: "#e17d56",
+                backgroundColor: COLORS.primaryButtonBlue,
                 marginHorizontal: 28,
                 borderRadius: 12,
                 marginBottom: 12,
@@ -76,7 +76,7 @@ function GetStartedScreen2() {
                   fontSize: 20,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: "#693a27",
+                  color: COLORS.primaryBackground,
                 }}
               >
                 Sign Up
@@ -94,7 +94,7 @@ function GetStartedScreen2() {
               }}
             >
               <Text
-                style={{ fontWeight: "bold", color: COLORS.primaryOrangeHex }}
+                style={{ fontWeight: "bold", color: COLORS.primaryTitle }}
               >
                 Log In
               </Text>

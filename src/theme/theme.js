@@ -28,12 +28,13 @@ export const COLORS = {
   primaryWhiteHex: "#FFFFFF",
   primaryBlackRGBA: "rgba(12,15,20,0.5)",
   secondaryBlackRGBA: "rgba(0,0,0,0.7)",
-
+  primaryCardBackground: "#B8D8E0",
+  primaryTextBlue: "#194ccc",
   primaryBackground: "#FFFFFF",
-  primaryBackgroundCard: ["#B8D8E0","#FFFFFF"],
-  primaryTitle: "111C63",
-  primaryButtonBlue: "2320D4",
-  primaryButtonBlueNavi: "2320D4",
+  primaryBackgroundCard: ["#B8D8E0", "#FFFFFF"],
+  primaryTitle: "#111C63",
+  primaryButtonBlue: "#2320D4",
+  primaryButtonBlueNavi: "#2320D4",
   primaryNovel: "#4a4a4a",
 };
 

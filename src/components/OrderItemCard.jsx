@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   SizeBoxLeft: {
     // backgroundColor: COLORS.primaryBlackHex,
-    backgroundColor: "#98634e",
+    backgroundColor: COLORS.primaryButtonBlueNavi,
     height: 45,
     flex: 1,
     borderTopLeftRadius: 10,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
   SizeText: {
     fontWeight: "600",
-    color: "#230C02",
+    color: "#EEE",
   },
   PriceBoxRight: {
     // backgroundColor: COLORS.primaryBlackHex,

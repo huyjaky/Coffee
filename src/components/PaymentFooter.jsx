@@ -35,21 +35,21 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 14,
     // color: COLORS.secondaryLightGreyHex,
-    color: "#230C02",
+    color: COLORS.primaryTextBlue,
   },
   PriceText: {
     fontWeight: "bold",
     fontSize: 24,
     // color: COLORS.primaryOrangeHex,
-    color: "#693a27",
+    color: COLORS.primaryTextBlue,
   },
   Price: {
     // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTitle,
   },
   PayButton: {
     // backgroundColor: COLORS.primaryOrangeHex,
-    backgroundColor: "#e17d56",
+    backgroundColor: COLORS.primaryButtonBlue,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -60,6 +60,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryBackground,
   },
 });

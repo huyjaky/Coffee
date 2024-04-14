@@ -65,7 +65,7 @@ function SignupScreen2() {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#FFF5E9",
+          backgroundColor: COLORS.primaryCardBackground,
           paddingHorizontal: 32,
           paddingTop: 250,
           borderTopLeftRadius: 50,
@@ -78,7 +78,7 @@ function SignupScreen2() {
           >
             <Text
               style={{
-                color: "#693a27",
+                color: COLORS.primaryTextBlue,
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
@@ -95,7 +95,7 @@ function SignupScreen2() {
               placeholder="Enter Name"
               style={{
                 padding: 16,
-                backgroundColor: "#f8c0aa",
+                backgroundColor: COLORS.primaryBackground,
                 borderRadius: 16,
                 marginBottom: 16,
                 fontSize: 12,
@@ -107,7 +107,7 @@ function SignupScreen2() {
           >
             <Text
               style={{
-                color: "#693a27",
+                color: COLORS.primaryTextBlue,
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
@@ -124,7 +124,7 @@ function SignupScreen2() {
               placeholder="Enter Email"
               style={{
                 padding: 16,
-                backgroundColor: "#f8c0aa",
+                backgroundColor: COLORS.primaryBackground,
                 borderRadius: 16,
                 marginBottom: 16,
                 fontSize: 12,
@@ -136,7 +136,7 @@ function SignupScreen2() {
           >
             <Text
               style={{
-                color: "#693a27",
+                color: COLORS.primaryTextBlue,
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
@@ -154,7 +154,7 @@ function SignupScreen2() {
               secureTextEntry
               style={{
                 padding: 16,
-                backgroundColor: "#f8c0aa",
+                backgroundColor: COLORS.primaryBackground,
                 borderRadius: 16,
                 marginBottom: 50,
                 fontSize: 12,
@@ -172,7 +172,7 @@ function SignupScreen2() {
                 backgroundColor: COLORS.primaryBackground,
                 borderRadius: 100,
                 marginBottom: 40,
-                borderColor: "#230C02",
+                borderColor: COLORS.primaryButtonBlue,
                 borderWidth: 2,
               }}
             >
@@ -181,7 +181,7 @@ function SignupScreen2() {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: "#230C02",
+                  color: COLORS.primaryNovel,
                 }}
               >
                 Sign Up

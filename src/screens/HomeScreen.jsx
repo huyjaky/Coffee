@@ -169,7 +169,7 @@ function HomeScreen({ navigation }) {
             size={18}
             color={
               searchText.length > 0
-                ? COLORS.primaryOrangeHex
+                ? COLORS.primaryTextBlue
                 : COLORS.primaryWhiteHex
             }
           />
@@ -227,8 +227,8 @@ function HomeScreen({ navigation }) {
                   style={[
                     styles.CategoryText,
                     categoryIndex?.index == index
-                      ? { color: COLORS.primaryOrangeHex }
-                      : { color: "#230c02" },
+                      ? { color: COLORS.primaryTextBlue }
+                      : { color: COLORS.primaryTitle },
                     // : { color: COLORS.secondaryLightGreyHex },
                   ]}
                 >
@@ -352,8 +352,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 30,
     borderRadius: 20,
-    backgroundColor: COLORS.primaryDarkGreyHex,
-    backgroundColor: "#4d3429",
+    backgroundColor: COLORS.primaryTitle,
     alignItems: "center",
   },
   InputIcon: {
@@ -383,7 +382,7 @@ const styles = StyleSheet.create({
     height: 10,
     width: 10,
     borderRadius: 10,
-    backgroundColor: COLORS.primaryOrangeHex,
+    backgroundColor: COLORS.primaryTextBlue,
   },
   CategoryText: {
     fontWeight: "bold",
