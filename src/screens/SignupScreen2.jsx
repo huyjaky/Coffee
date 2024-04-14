@@ -22,12 +22,13 @@ import Animated, {
 } from "react-native-reanimated";
 import { useContext } from "react";
 import { AuthContext } from "../store/auth-context";
+import { COLORS } from "../theme/theme";
 
 function SignupScreen2() {
   const navigation = useNavigation();
   const authCtx = useContext(AuthContext);
   return (
-    <View style={{ flex: 1, backgroundColor: "#EEDCC6" }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
       <StatusBar hidden={true} />
       <View style={{ marginTop: 10, flex: 1 }}>
         <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
@@ -168,7 +169,7 @@ function SignupScreen2() {
               onPress={authCtx.login}
               style={{
                 paddingVertical: 12,
-                backgroundColor: "#EEDCC6",
+                backgroundColor: COLORS.primaryBackground,
                 borderRadius: 100,
                 marginBottom: 40,
                 borderColor: "#230C02",

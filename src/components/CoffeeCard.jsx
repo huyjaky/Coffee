@@ -32,13 +32,14 @@ function CoffeeCard({
       style={styles.CardLinearGradientContainer}
       // colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
       // colors={["#f5dab5", "#d1c0ad"]}
-      colors={["#f5dab5", "#b39c7f"]}
+      colors={COLORS.primaryBackgroundCard}
+
     >
       <ImageBackground
         resizeMode="cover"
         style={styles.CardImageBG}
         source={imagelink_square}
-        // source={{ uri: imagelink_square }}
+      // source={{ uri: imagelink_square }}
       >
         <View style={styles.CardRatingContainer}>
           <AntDesign name="star" size={16} color={"#230C02"} />
@@ -83,7 +84,19 @@ export default CoffeeCard;
 const styles = StyleSheet.create({
   CardLinearGradientContainer: {
     padding: 15,
-    borderRadius: 25,
+    borderTopLeftRadius: 40,
+    borderBottomRightRadius: 40,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+
+    elevation: 12,
+
   },
   CardImageBG: {
     width: CARD_WIDTH,

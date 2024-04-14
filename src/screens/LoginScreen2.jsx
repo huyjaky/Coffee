@@ -27,7 +27,7 @@ function LoginScreen2() {
   const navigation = useNavigation();
   const authCtx = useContext(AuthContext);
   return (
-    <View style={{ flex: 1, backgroundColor: "#EEDCC6" }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
       <StatusBar hidden={true} />
       <View style={{ marginTop: 10, flex: 1 }}>
         <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
@@ -151,7 +151,7 @@ function LoginScreen2() {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: "#EEDCC6",
+                  color: COLORS.primaryBackground,
                 }}
               >
                 Login
@@ -168,7 +168,7 @@ function LoginScreen2() {
               }}
               style={{
                 paddingVertical: 12,
-                backgroundColor: "#EEDCC6",
+                backgroundColor: COLORS.primaryBackground,
                 borderRadius: 100,
                 marginBottom: 50,
                 borderColor: "#230C02",

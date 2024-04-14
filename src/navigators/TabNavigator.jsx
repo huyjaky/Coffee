@@ -18,13 +18,9 @@ function TabNavigator() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyle,
-        tabBarBackground: () => {
-          <BlurView
-            overlayColor=""
-            blurAmount={15}
-            style={styles.BlurViewStyles}
-          />;
-        },
+        
+        tabBarActiveBackgroundColor: COLORS.primaryBackground,
+        tabBarInactiveBackgroundColor: COLORS.primaryBackground
       }}
     >
       <Tab.Screen

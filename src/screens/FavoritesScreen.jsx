@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
     // backgroundColor: COLORS.primaryBlackHex,
-    backgroundColor: "#EEDCC6",
+    backgroundColor: COLORS.primaryBackground,
   },
   ScrollViewFlex: {
     flexGrow: 1,

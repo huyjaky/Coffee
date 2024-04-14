@@ -16,7 +16,7 @@ import Animated, {
 function GetStartedScreen2() {
   const navigation = useNavigation();
   return (
-    <View style={{ flex: 1, backgroundColor: "#EEDCC6" }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
       <StatusBar hidden={true} />
       <View
         style={{

@@ -4,12 +4,12 @@ import CustomIcon from "./CustomIcon";
 // import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect } from "react";
-
 // function test1() {
 //   useEffect(function () {
 //     getCoffee().then((data) => console.log(data));
 //   }, []);
 // }
+
 
 function GradientBGIcon({ name, color, size }) {
   return (
@@ -18,7 +18,7 @@ function GradientBGIcon({ name, color, size }) {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         // colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-        colors={["#f5dab5", "#d1c0ad"]}
+        colors={COLORS.primaryBackgroundCard}
         style={styles.LinearGradient}
       >
         <CustomIcon name={name} color={color} size={size} />

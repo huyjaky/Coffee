@@ -30,6 +30,7 @@ export const COLORS = {
   secondaryBlackRGBA: "rgba(0,0,0,0.7)",
 
   primaryBackground: "#FFFFFF",
+  primaryBackgroundCard: ["#B8D8E0","#FFFFFF"],
   primaryTitle: "111C63",
   primaryButtonBlue: "2320D4",
   primaryButtonBlueNavi: "2320D4",

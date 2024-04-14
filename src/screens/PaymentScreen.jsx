@@ -147,7 +147,7 @@ function PaymentScreen({ navigation, route }) {
                       <Text style={styles.CreditCardNameSubitle}>
                         Card Holder Name
                       </Text>
-                      <Text style={styles.CreditCardNameTitle}>Minh Hieu</Text>
+                      <Text style={styles.CreditCardNameTitle}>DUC HUY</Text>
                     </View>
                     <View style={styles.CreditCardDateContainer}>
                       <Text style={styles.CreditCardNameSubitle}>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   ScreentContainer: {
     flex: 1,
     // backgroundColor: COLORS.primaryBlackHex,
-    backgroundColor: "#EEDCC6",
+    backgroundColor: COLORS.primaryBackground,
   },
   ScrollViewFlex: {
     flexGrow: 1,
@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
     color: "#230C02",
   },
   CreditCardBG: {
+    width: '100%',
     backgroundColor: COLORS.primaryGreyHex,
     borderRadius: 25,
   },
@@ -244,18 +245,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+
   },
   CreditCardNumberContainer: {
+    width: '100%',
     flexDirection: "row",
     gap: 10,
-    alignItems: "center",
   },
   CreditCardNumber: {
+    width: '25%',
     fontWeight: "bold",
     fontSize: 18,
     // color: COLORS.primaryWhiteHex,
     color: "#693a27",
-    letterSpacing: 6,
+    justifyContent: 'center'
   },
   CreditCardNameSubitle: {
     fontWeight: "800",
