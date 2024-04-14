@@ -9,7 +9,6 @@ import { useEffect } from "react";
 //     getCoffee().then((data) => console.log(data));
 //   }, []);
 // }
-import { BackHandler } from 'react-native';
 
 function GradientBGIcon({ name, color, size }) {
 
