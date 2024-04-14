@@ -2,6 +2,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../theme/theme";
 
+import { AntDesign } from "@expo/vector-icons";
+
 function OrderItemCard({
   type,
   name,
@@ -48,7 +50,7 @@ function OrderItemCard({
             </View>
             <View style={styles.CardIconMultiple}>
               <Text>
-                X
+                <AntDesign name="close" size={20} color={"#230C02"} />
               </Text>
             </View>
 
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
   },
   CardQuantityPriceText: {
     flex: 1,
-    textAlign: "center",
+    textAlign: "right",
     fontWeight: "bold",
     fontSize: 18,
     color: "#693a27",
