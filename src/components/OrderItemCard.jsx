@@ -15,7 +15,7 @@ function OrderItemCard({
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       // colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-      colors={["#f5dab5", "#b39c7f"]}
+      colors={COLORS.primaryBackgroundCard}
       style={styles.CardLinearGradient}
     >
       <View style={styles.CardInfoContainer}>
@@ -25,11 +25,6 @@ function OrderItemCard({
             <Text style={styles.CardTitle}>{name}</Text>
             <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
           </View>
-        </View>
-        <View>
-          <Text style={styles.CardCurrency}>
-            $<Text style={styles.CardPrice}>{ItemPrice}</Text>
-          </Text>
         </View>
       </View>
       {prices.map((data, index) => (
@@ -48,9 +43,15 @@ function OrderItemCard({
                   { fontSize: type === "Bean" ? 12 : 14 },
                 ]}
               >
-                {data.size}
+                {data.quantity}
               </Text>
             </View>
+            <View style={styles.CardIconMultiple}>
+              <Text>
+                X
+              </Text>
+            </View>
+
             <View style={styles.PriceBoxRight}>
               <Text style={styles.PriceCurrence}>
                 {data.currency}
@@ -61,7 +62,7 @@ function OrderItemCard({
 
           <View style={styles.CardTableRow}>
             <Text style={styles.CardQuantityPriceText}>
-              X <Text style={styles.Price}>{data.quantity}</Text>
+              Total:
             </Text>
             <Text style={styles.CardQuantityPriceText}>
               $ {(data.quantity * data.price).toFixed(2).toString()}
@@ -80,6 +81,16 @@ const styles = StyleSheet.create({
     gap: 20,
     padding: 20,
     borderRadius: 25,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+    elevation: 12,
+
   },
   CardInfoContainer: {
     flexDirection: "row",
@@ -165,4 +176,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#693a27",
   },
+
+  CardIconMultiple: {}
 });

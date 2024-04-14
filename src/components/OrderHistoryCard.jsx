@@ -80,5 +80,6 @@ const styles = StyleSheet.create({
   },
   ListContainer: {
     gap: 20,
+
   },
 });

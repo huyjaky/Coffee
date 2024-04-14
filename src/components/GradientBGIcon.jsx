@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Touchable, View } from "react-native";
 import { COLORS, SPACING } from "../theme/theme";
 import CustomIcon from "./CustomIcon";
 // import LinearGradient from "react-native-linear-gradient";
@@ -9,9 +9,11 @@ import { useEffect } from "react";
 //     getCoffee().then((data) => console.log(data));
 //   }, []);
 // }
-
+import { BackHandler } from 'react-native';
 
 function GradientBGIcon({ name, color, size }) {
+
+
   return (
     <Pressable style={styles.Container}>
       <LinearGradient
@@ -26,7 +28,6 @@ function GradientBGIcon({ name, color, size }) {
     </Pressable>
   );
 }
-
 export default GradientBGIcon;
 
 const styles = StyleSheet.create({
