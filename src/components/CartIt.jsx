@@ -58,7 +58,7 @@ function CartIt({
                   >
                     <Entypo
                       name="minus"
-                      size={10}
+                      size={12}
                       color={COLORS.primaryWhiteHex}
                     />
                   </TouchableOpacity>
@@ -75,7 +75,7 @@ function CartIt({
                   >
                     <Entypo
                       name="plus"
-                      size={10}
+                      size={12}
                       color={COLORS.primaryWhiteHex}
                     />
                   </TouchableOpacity>
@@ -128,14 +128,12 @@ const styles = StyleSheet.create({
   CartItemTitle: {
     fontWeight: "600",
     fontSize: 18,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTitle,
   },
   CartItemSubtitle: {
     fontWeight: "800",
     fontSize: 12,
-    // color: COLORS.secondaryLightGreyHex,
-    color: "#230C02",
+    color: COLORS.primaryTextBlue
   },
   CartItemRoastedContainer: {
     height: 50,
@@ -180,33 +178,32 @@ const styles = StyleSheet.create({
   SizeCurrency: {
     fontWeight: "bold",
     fontSize: 16,
-    color: COLORS.primaryOrangeHex,
-    color: "#693a27",
+    color: COLORS.primaryTextBlue,
   },
   SizePrice: {
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryGreyHex,
+    fontSize: 18
   },
   CartItemIcon: {
     // backgroundColor: COLORS.primaryOrangeHex,
-    backgroundColor: "#693a27",
+    backgroundColor: COLORS.primaryButtonGreen,
     padding: 12,
     borderRadius: 10,
   },
   CartItemQuantityContainer: {
     // backgroundColor: COLORS.primaryBlackHex,
-    backgroundColor: "#693a27",
+    backgroundColor: COLORS.primaryBackground,
     width: 60,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: COLORS.primaryOrangeHex,
+    borderColor: COLORS.primaryButtonBlue,
     alignItems: "center",
     paddingVertical: 4,
   },
   CartItemQuantityText: {
     fontWeight: "bold",
     fontSize: 16,
-    color: COLORS.primaryWhiteHex,
+    color: COLORS.primaryTextBlue,
     // color: "#230C02",
   }
 });

@@ -213,11 +213,9 @@ function SignupScreen2() {
               onPress={()=> signUpWithEmail()}
               style={{
                 paddingVertical: 12,
-                backgroundColor: COLORS.primaryBackground,
+                backgroundColor: COLORS.primaryButtonGreen,
                 borderRadius: 100,
                 marginBottom: 40,
-                borderColor: COLORS.primaryButtonBlue,
-                borderWidth: 2,
               }}
             >
               <Text
@@ -225,7 +223,7 @@ function SignupScreen2() {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: COLORS.primaryNovel,
+                  color: COLORS.primaryTextBlue,
                 }}
               >
                 Sign Up
@@ -248,7 +246,7 @@ function SignupScreen2() {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: "#693a27",
+                  color: COLORS.primaryBackground,
                 }}
               >
                 Already have an account?

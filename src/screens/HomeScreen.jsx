@@ -283,7 +283,7 @@ function HomeScreen({ navigation }) {
           }}
         />
 
-        <Text style={styles.CoffeBeansTitle}>Coffee Beans</Text>
+        <Text style={styles.DrugTitle}>Coffee Beans</Text>
         {/* Beans FlatList */}
         <FlatList
           horizontal
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
   ScreenTitle: {
     fontSize: 28,
     // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTitle,
     fontWeight: "bold",
     paddingLeft: 30,
   },
@@ -395,13 +395,12 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 30,
   },
-  CoffeBeansTitle: {
+  DrugTitle: {
     fontSize: 18,
     marginLeft: 30,
     marginTop: 20,
     fontWeight: "600",
-    color: COLORS.secondaryLightGreyHex,
-    color: "#230C02",
+    color: COLORS.primaryTextBlue
   },
   InputIcon: {
     marginHorizontal: 20,

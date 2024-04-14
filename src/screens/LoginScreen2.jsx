@@ -100,7 +100,7 @@ function LoginScreen2({ session }) {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#FFF5E9",
+          backgroundColor: COLORS.primaryCardBackground,
           paddingHorizontal: 32,
           paddingTop: 250,
           borderTopLeftRadius: 50,
@@ -113,7 +113,7 @@ function LoginScreen2({ session }) {
           >
             <Text
               style={{
-                color: "#693a27",
+                color: COLORS.primaryTitle,
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
@@ -131,7 +131,7 @@ function LoginScreen2({ session }) {
               onChangeText={(text) => setEmail(text)}
               style={{
                 padding: 16,
-                backgroundColor: "#f8c0aa",
+                backgroundColor: COLORS.primaryBackground,
                 borderRadius: 16,
                 marginBottom: 16,
                 fontSize: 12,
@@ -143,7 +143,7 @@ function LoginScreen2({ session }) {
           >
             <Text
               style={{
-                color: "#693a27",
+                color: COLORS.primaryTitle,
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
@@ -162,7 +162,7 @@ function LoginScreen2({ session }) {
               onChangeText={(text) => setPassword(text)}
               style={{
                 padding: 16,
-                backgroundColor: "#f8c0aa",
+                backgroundColor: COLORS.primaryBackground,
                 borderRadius: 16,
                 marginBottom: 50,
                 fontSize: 12,
@@ -179,11 +179,9 @@ function LoginScreen2({ session }) {
               disabled={loading}
               style={{
                 paddingVertical: 12,
-                backgroundColor: "#230C02",
+                backgroundColor: COLORS.primaryButtonBlue,
                 borderRadius: 100,
                 marginBottom: 20,
-                borderColor: "#230C02",
-                borderWidth: 2,
               }}
             >
               <Text
@@ -210,11 +208,9 @@ function LoginScreen2({ session }) {
               }}
               style={{
                 paddingVertical: 12,
-                backgroundColor: COLORS.primaryBackground,
+                backgroundColor: COLORS.primaryButtonGreen,
                 borderRadius: 100,
                 marginBottom: 50,
-                borderColor: "#230C02",
-                borderWidth: 2,
               }}
             >
               <Text
@@ -222,7 +218,7 @@ function LoginScreen2({ session }) {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: "#230C02",
+                  color: COLORS.primaryTextBlue,
                 }}
               >
                 Create an account

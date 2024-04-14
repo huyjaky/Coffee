@@ -42,7 +42,7 @@ function CoffeeCard({
       // source={{ uri: imagelink_square }}
       >
         <View style={styles.CardRatingContainer}>
-          <AntDesign name="star" size={16} color={"#230C02"} />
+          <AntDesign name="star" size={16} color={COLORS.primaryIconYellow} />
           <Text style={styles.CardRatingText}>{average_rating}</Text>
         </View>
       </ImageBackground>
@@ -70,7 +70,7 @@ function CoffeeCard({
             color={COLORS.primaryWhiteHex}
             name="add"
             // BGColor={COLORS.primaryOrangeHex}
-            BGColor="#693a27"
+            BGColor= {COLORS.primaryButtonGreen}
             size={10}
           />
         </TouchableOpacity>
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
   CardRatingText: {
     fontWeight: "600",
     color: COLORS.primaryWhiteHex,
-    // color: "#230C02",
     lineHeight: 22,
     fontSize: 14,
   },
@@ -133,24 +132,20 @@ const styles = StyleSheet.create({
   },
   CardTitle: {
     fontWeight: "600",
-    color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTitle,
     fontSize: 16,
   },
   CardSubtitle: {
     fontWeight: "500",
-    color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTextBlue,
     fontSize: 10,
   },
   CardPriceCurrency: {
     fontWeight: "bold",
-    color: COLORS.primaryOrangeHex,
-    color: "#693a27",
-    fontSize: 18,
+    color: COLORS.primaryTitle,
+    fontSize: 20,
   },
   CartPrice: {
-    color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTitle
   },
 });

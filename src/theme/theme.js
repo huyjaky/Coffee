@@ -33,7 +33,9 @@ export const COLORS = {
   primaryBackground: "#FFFFFF",
   primaryBackgroundCard: ["#B8D8E0", "#FFFFFF"],
   primaryTitle: "#111C63",
+  primaryIconYellow: "#e6c619",
   primaryButtonBlue: "#2320D4",
+  primaryButtonGreen: "#1DCBB6",
   primaryButtonBlueNavi: "#2320D4",
   primaryNovel: "#4a4a4a",
 };
