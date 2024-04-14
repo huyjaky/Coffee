@@ -15,6 +15,8 @@ import GetStartedScreen from "./src/screens/GetStartedScreen";
 import GetStartedScreen2 from "./src/screens/GetStartedScreen2";
 import LoginScreen2 from "./src/screens/LoginScreen2";
 import SignupScreen2 from "./src/screens/SignupScreen2";
+import CartScreen from "./src/screens/CartScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +51,7 @@ function AuthStack() {
       <Stack.Screen name="GetStarted" component={GetStartedScreen2} />
       <Stack.Screen name="Login" component={LoginScreen2} />
       <Stack.Screen name="SignUp" component={SignupScreen2} />
+      <Stack.Screen name="Home" component={HomeScreen} />
     </Stack.Navigator>
   );
 }

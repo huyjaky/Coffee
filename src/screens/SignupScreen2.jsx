@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AppState,
   Image,
   StatusBar,
   Text,
@@ -20,13 +22,47 @@ import Animated, {
   BounceInDown,
   BounceInUp,
 } from "react-native-reanimated";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../store/auth-context";
 import { COLORS } from "../theme/theme";
+import { supabase } from "../store/supabase";
+
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') {
+    supabase.auth.startAutoRefresh()
+  } else {
+    supabase.auth.stopAutoRefresh()
+  }
+})
 
 function SignupScreen2() {
   const navigation = useNavigation();
   const authCtx = useContext(AuthContext);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [currentPass, setCurrentPass] = useState('')
+
+  async function signUpWithEmail() {
+    if (password === '') {
+      Alert.alert('Please check your password!')
+    }
+    setLoading(true)
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    })
+    if (error) Alert.alert(error.message)
+    // a rest
+    if (!error) {
+      authCtx.login()
+    }
+    setLoading(false)
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
       <StatusBar hidden={true} />
@@ -84,15 +120,16 @@ function SignupScreen2() {
                 fontSize: 14,
               }}
             >
-              Full Name
+              Email Address
             </Text>
           </Animated.View>
           <Animated.View
             entering={FadeInUp.delay(150).duration(1000).springify()}
           >
             <TextInput
-              value="Minh Hieu"
-              placeholder="Enter Name"
+              onChangeText={(text)=> setEmail(text)}
+              aria-disabled={loading}
+              placeholder="Enter Email"
               style={{
                 padding: 16,
                 backgroundColor: COLORS.primaryBackground,
@@ -113,15 +150,17 @@ function SignupScreen2() {
                 fontSize: 14,
               }}
             >
-              Email Address
+              Password
             </Text>
           </Animated.View>
           <Animated.View
             entering={FadeInUp.delay(300).duration(1000).springify()}
           >
             <TextInput
-              value="hieupm.22ds@vku.udn.vn"
-              placeholder="Enter Email"
+              onChangeText={(text)=> setCurrentPass(text)}
+              disabled={loading}
+              placeholder="Enter Password"
+              secureTextEntry
               style={{
                 padding: 16,
                 backgroundColor: COLORS.primaryBackground,
@@ -142,14 +181,19 @@ function SignupScreen2() {
                 fontSize: 14,
               }}
             >
-              Password
+              Re-Enter Password
             </Text>
           </Animated.View>
           <Animated.View
             entering={FadeInUp.delay(500).duration(1000).springify()}
           >
             <TextInput
-              value="12345678"
+              onChangeText={(text)=> {
+                if (currentPass === text){
+                  setPassword(text)
+                }
+              }}
+              disabled={loading}
               placeholder="Enter Password"
               secureTextEntry
               style={{
@@ -166,7 +210,7 @@ function SignupScreen2() {
             entering={FadeInDown.delay(600).duration(1000).springify()}
           >
             <TouchableOpacity
-              onPress={authCtx.login}
+              onPress={()=> signUpWithEmail()}
               style={{
                 paddingVertical: 12,
                 backgroundColor: COLORS.primaryBackground,

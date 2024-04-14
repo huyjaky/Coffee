@@ -1,4 +1,6 @@
 import {
+  AppState,
+  Button,
   Image,
   StatusBar,
   Text,
@@ -21,11 +23,45 @@ import Animated, {
   BounceInUp,
 } from "react-native-reanimated";
 import { AuthContext } from "../store/auth-context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { COLORS } from "../theme/theme";
+import { Session } from '@supabase/supabase-js'
+import { supabase } from "../store/supabase";
 
-function LoginScreen2() {
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') {
+    supabase.auth.startAutoRefresh()
+  } else {
+    supabase.auth.stopAutoRefresh()
+  }
+})
+
+function LoginScreen2({ session }) {
   const navigation = useNavigation();
+
   const authCtx = useContext(AuthContext);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function signInWithEmail() {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+
+    if (error) {
+      Alert.alert(error.message)
+    } else {
+
+      // Login success
+      authCtx.login()
+    }
+  }
+
+
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
       <StatusBar hidden={true} />
@@ -90,8 +126,9 @@ function LoginScreen2() {
             entering={FadeInUp.delay(300).duration(1000).springify()}
           >
             <TextInput
-              value="hieupm.22ds@vku.udn.vn"
               placeholder="Enter Email"
+              aria-disabled={loading}
+              onChangeText={(text) => setEmail(text)}
               style={{
                 padding: 16,
                 backgroundColor: "#f8c0aa",
@@ -119,9 +156,10 @@ function LoginScreen2() {
             entering={FadeInUp.delay(500).duration(1000).springify()}
           >
             <TextInput
-              value="12345678"
               placeholder="Enter Password"
+              aria-disabled={loading}
               secureTextEntry
+              onChangeText={(text) => setPassword(text)}
               style={{
                 padding: 16,
                 backgroundColor: "#f8c0aa",
@@ -135,8 +173,10 @@ function LoginScreen2() {
           <Animated.View
             entering={FadeInDown.delay(600).duration(1000).springify()}
           >
+
             <TouchableOpacity
-              onPress={authCtx.login}
+              onPress={()=>signInWithEmail()}
+              disabled={loading}
               style={{
                 paddingVertical: 12,
                 backgroundColor: "#230C02",
@@ -157,6 +197,8 @@ function LoginScreen2() {
                 Login
               </Text>
             </TouchableOpacity>
+
+
           </Animated.View>
 
           <Animated.View
@@ -201,7 +243,7 @@ function LoginScreen2() {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: "#693a27",
+                  color: COLORS.primaryBackground,
                 }}
               >
                 Forgot your password?
