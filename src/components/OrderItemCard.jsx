@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   PriceBoxRight: {
     // backgroundColor: COLORS.primaryBlackHex,
-    backgroundColor: "#f6ddd3",
+    backgroundColor: COLORS.primaryButtonGreen,
     height: 45,
     flex: 1,
     borderTopRightRadius: 10,
@@ -165,11 +165,11 @@ const styles = StyleSheet.create({
   },
   PriceCurrence: {
     fontWeight: "bold",
-    fontSize: 16,
-    color: "#693a27",
+    fontSize: 20,
+    color: COLORS.primaryNovel,
   },
   Price: {
-    color: "#88310c",
+    color: COLORS.primaryBackground,
   },
   CardQuantityPriceText: {
     flex: 1,

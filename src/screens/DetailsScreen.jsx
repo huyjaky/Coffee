@@ -120,8 +120,7 @@ function DetailsScreen({ navigation, route }) {
                     borderColor:
                       data.size === price.size
                         ? COLORS.primaryButtonBlue
-                        : // : COLORS.primaryDarkGreyHex,
-                          "#fbd09c99",
+                        : COLORS.primaryNovel,
                   },
                 ]}
               >

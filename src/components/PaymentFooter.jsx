@@ -48,8 +48,7 @@ const styles = StyleSheet.create({
     color: COLORS.primaryTitle,
   },
   PayButton: {
-    // backgroundColor: COLORS.primaryOrangeHex,
-    backgroundColor: COLORS.primaryButtonBlue,
+    backgroundColor: COLORS.primaryTextBlue,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

@@ -82,7 +82,6 @@ function ImageBackgroundInfo({
                 <Text
                   style={[
                     styles.ItemTitleText,
-                    { color: type === "Bean" ? "#d25018" : "#230C02" },
                   ]}
                 >
                   {name}
@@ -90,7 +89,6 @@ function ImageBackgroundInfo({
                 <Text
                   style={[
                     styles.ItemSubtitleText,
-                    { color: type === "Bean" ? "#d25018" : "#230C02" },
                   ]}
                 >
                   {special_ingredient}
@@ -101,8 +99,7 @@ function ImageBackgroundInfo({
                   <MaterialCommunityIcons
                     name={type === "Bean" ? "seed" : "coffee"}
                     size={type === "Bean" ? 18 : 24}
-                    // color={COLORS.primaryOrangeHex}
-                    color="#230C02"
+                    color= {COLORS.primaryBackground}
                   />
                   <Text
                     style={[
@@ -117,8 +114,7 @@ function ImageBackgroundInfo({
                   <Entypo
                     name={type === "Bean" ? "location-pin" : "drop"}
                     size={16}
-                    // color={COLORS.primaryOrangeHex}
-                    color="#230C02"
+                    color= {COLORS.primaryBackground}
                   />
                   <Text style={styles.PropertyTextLast}>{ingredients}</Text>
                 </View>
@@ -183,7 +179,7 @@ const styles = StyleSheet.create({
   ImageInfoOuterContainer: {
     paddingVertical: 24,
     paddingHorizontal: 30,
-    backgroundColor: COLORS.primaryBlackRGBA,
+    backgroundColor: COLORS.primaryWhiteRGBA,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
   },
@@ -199,14 +195,12 @@ const styles = StyleSheet.create({
   ItemTitleText: {
     fontWeight: "bold",
     fontSize: 24,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTitle,
   },
   ItemSubtitleText: {
     fontWeight: "600",
     fontSize: 12,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTextBlue,
   },
   ItemPropertiesContainer: {
     flexDirection: "row",
@@ -219,20 +213,17 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: COLORS.primaryBlackHex,
-    backgroundColor: "#FFF5E9",
+    backgroundColor: COLORS.primaryButtonGreen,
   },
   PropertyTextFirst: {
     fontWeight: "600",
     fontSize: 10,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryBackground,
   },
   PropertyTextLast: {
     fontWeight: "600",
     fontSize: 10,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryBackground,
     marginTop: 8,
   },
   RatingContainer: {
@@ -258,8 +249,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: COLORS.primaryBlackHex,
-    backgroundColor: "#FFF5E9",
+    backgroundColor: COLORS.primaryBackground,
   },
   RoastedText: {
     fontWeight: "800",
