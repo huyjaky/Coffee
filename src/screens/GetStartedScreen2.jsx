@@ -12,9 +12,12 @@ import Animated, {
   BounceInDown,
   BounceInUp,
 } from "react-native-reanimated";
+import { useEffect } from "react";
+import { supabase } from "../store/supabase";
 
 function GetStartedScreen2() {
   const navigation = useNavigation();
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
       <StatusBar hidden={true} />

@@ -1,3 +1,4 @@
+
 const BeansData = [
   {
     id: "B1",

@@ -28,13 +28,7 @@ import { COLORS } from "../theme/theme";
 import { Session } from '@supabase/supabase-js'
 import { supabase } from "../store/supabase";
 
-AppState.addEventListener('change', (state) => {
-  if (state === 'active') {
-    supabase.auth.startAutoRefresh()
-  } else {
-    supabase.auth.stopAutoRefresh()
-  }
-})
+
 
 function LoginScreen2({ session }) {
   const navigation = useNavigation();

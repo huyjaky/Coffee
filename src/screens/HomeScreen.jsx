@@ -19,7 +19,6 @@ import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CoffeeCard from "../components/CoffeeCard";
-import { getCoffee } from "../store/apiCoffee";
 import supabase from "../store/supabase";
 
 function getCategoriesFromData(data) {
@@ -45,11 +44,6 @@ function getCoffeeList(category, data) {
   }
 }
 
-function test1() {
-  useEffect(function () {
-    getCoffee().then((data) => console.log(data));
-  }, []);
-}
 
 function HomeScreen({ navigation }) {
   const [data, setData] = useState([]);

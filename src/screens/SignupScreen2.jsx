@@ -27,13 +27,7 @@ import { AuthContext } from "../store/auth-context";
 import { COLORS } from "../theme/theme";
 import { supabase } from "../store/supabase";
 
-AppState.addEventListener('change', (state) => {
-  if (state === 'active') {
-    supabase.auth.startAutoRefresh()
-  } else {
-    supabase.auth.stopAutoRefresh()
-  }
-})
+
 
 function SignupScreen2() {
   const navigation = useNavigation();
@@ -49,7 +43,7 @@ function SignupScreen2() {
     }
     setLoading(true)
     const {
-      data: { session },
+      data,
       error,
     } = await supabase.auth.signUp({
       email: email,
