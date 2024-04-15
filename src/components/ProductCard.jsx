@@ -1,3 +1,4 @@
+import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   Dimensions,
@@ -7,8 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { COLORS, FONTFAMILY } from "../theme/theme";
-import { AntDesign } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { productsSlice } from "../store/states/products";
+import { COLORS } from "../theme/theme";
 import BGIcon from "./BGIcon";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
@@ -17,14 +19,13 @@ function CoffeeCard({
   id,
   index,
   type,
-  roasted,
   imagelink_square,
   name,
   special_ingredient,
   average_rating,
   price,
-  buttonPressHandler,
 }) {
+  const dispatch = useDispatch()
   return (
     <LinearGradient
       start={{ x: 0, y: 0 }}
@@ -33,13 +34,12 @@ function CoffeeCard({
       // colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
       // colors={["#f5dab5", "#d1c0ad"]}
       colors={COLORS.primaryBackgroundCard}
-
     >
       <ImageBackground
         resizeMode="cover"
         style={styles.CardImageBG}
-        source={imagelink_square}
-      // source={{ uri: imagelink_square }}
+        source={require('../assets/coffee_assets/excelsa_coffee_beans/excelsa_coffee_beans_square.png')}
+      // source={{ uri: '../assets/coffee_assets/excelsa_coffee_beans/excelsa_coffee_beans_square.png' }}
       >
         <View style={styles.CardRatingContainer}>
           <AntDesign name="star" size={16} color={COLORS.primaryIconYellow} />
@@ -50,27 +50,30 @@ function CoffeeCard({
       <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
       <View style={styles.CardFooterRow}>
         <Text style={styles.CardPriceCurrency}>
-          $<Text style={styles.CartPrice}>{price.price}</Text>
+          $<Text style={styles.CartPrice}>{price.prices.price}</Text>
+          {/* $<Text style={styles.CartPrice}>15</Text> */}
         </Text>
         <TouchableOpacity
+
           onPress={() => {
-            buttonPressHandler({
+            console.log(price);
+            dispatch(productsSlice.actions.ADD_TO_CART({
               id,
               index,
               type,
-              roasted,
               imagelink_square,
               name,
               special_ingredient,
-              prices: [{ ...price, quantity: 1 }],
-            });
+              average_rating,
+              manage_prices: [{...price, quantity: 1}]
+            }))
           }}
         >
           <BGIcon
             color={COLORS.primaryWhiteHex}
             name="add"
             // BGColor={COLORS.primaryOrangeHex}
-            BGColor= {COLORS.primaryButtonGreen}
+            BGColor={COLORS.primaryButtonGreen}
             size={10}
           />
         </TouchableOpacity>

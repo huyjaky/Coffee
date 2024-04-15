@@ -16,8 +16,12 @@ function GetStartedScreen2() {
   const dispatch = useDispatch()
 
   async function fetchManagePrices() {
-    const { data, error } = await supabase.from('products').select("*")
+    const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))")
+    console.log('home',data[0].manage_prices);
+
     dispatch(productsSlice.actions.UPDATE_PRODUCTS(data))
+
+
     if (error) Alert.alert(error)
   }
 
@@ -25,7 +29,8 @@ function GetStartedScreen2() {
     fetchManagePrices()
   }, [])
 
-  useEffect(()=>{},[productsList])
+  useEffect(() => {
+  }, [productsList])
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>

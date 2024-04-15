@@ -18,9 +18,10 @@ import HeaderBar from "../components/HeaderBar";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import CoffeeCard from "../components/CoffeeCard";
+import ProductCard from "../components/ProductCard";
 import supabase from "../store/supabase";
 import { useDispatch, useSelector } from "react-redux";
+import { productsSlice } from "../store/states/products";
 
 function getCategoriesFromData(data) {
   let temp = {};
@@ -48,7 +49,8 @@ function getProductList(category, data) {
 
 function HomeScreen({ navigation }) {
   const [data, setData] = useState([]);
-  const productsList = useSelector((state)=> state.products.productsList)
+  const productsList = useSelector((state) => state.products.productsList)
+  console.log(productsList);
   const dispatch = useDispatch()
 
 
@@ -89,10 +91,10 @@ function HomeScreen({ navigation }) {
     index: 0,
     category: categories[0],
   });
-  const [sortedCoffee, setSortedCoffee] = useState(
-    getProductList(categoryIndex.category, CoffeeList)
+  const [sortedProducts, setsortedProducts] = useState(
+    getProductList(categoryIndex.category, productsList)
   );
-  // console.log("sortedCoffee = ", sortedCoffee.length);
+  // console.log("sortedProducts = ", sortedProducts.length);
 
   function searchCoffee(search) {
     if (search !== "") {
@@ -101,7 +103,7 @@ function HomeScreen({ navigation }) {
         offset: 0,
       });
       setCategoryIndex({ index: 0, category: categories[0] });
-      setSortedCoffee([
+      setsortedProducts([
         ...CoffeeList?.filter((item) =>
           item?.name?.toLowerCase()?.includes(search?.toLowerCase())
         ),
@@ -115,30 +117,38 @@ function HomeScreen({ navigation }) {
       offset: 0,
     });
     setCategoryIndex({ index: 0, category: categories[0] });
-    setSortedCoffee([...CoffeeList]);
+    setsortedProducts([...CoffeeList]);
     setSearchText("");
   }
 
-  function CoffeCardAddToCard({
+  function ProductCardAddToCard(
     id,
     index,
     name,
-    roasted,
     imagelink_square,
     special_ingredient,
     type,
-    prices,
-  }) {
-    addToCart({
+    manage_prices,
+  ) {
+
+    // addToCart({
+    //   id,
+    //   index,
+    //   name,
+    //   imagelink_square,
+    //   special_ingredient,
+    //   type,
+    //   prices,
+    // });
+    dispatch(productsSlice.actions.ADD_TO_CART({
       id,
       index,
       name,
-      roasted,
       imagelink_square,
       special_ingredient,
       type,
-      prices,
-    });
+      manage_prices,
+    }))
     calcullateCartPrice();
     ToastAndroid.showWithGravity(
       `${name} is Added to Cart`,
@@ -217,7 +227,7 @@ function HomeScreen({ navigation }) {
                     index: index,
                     category: categories[index],
                   });
-                  setSortedCoffee([
+                  setsortedProducts([
                     ...getProductList(categories[index], productsList),
                   ]);
                 }}
@@ -248,35 +258,35 @@ function HomeScreen({ navigation }) {
           horizontal
           ListEmptyComponent={
             <View style={styles.EmptyListContainer}>
-              <Text style={styles.CategoryText}>No Coffee Available</Text>
+              <Text style={styles.CategoryText}>No Products Available</Text>
             </View>
           }
           showsHorizontalScrollIndicator={false}
-          data={sortedCoffee}
+          data={sortedProducts}
           contentContainerStyle={styles.FlatListContainer}
-          keyExtractor={(item) => item?.id}
+          keyExtractor={(item) => item?.id_pr}
           renderItem={({ item }) => {
+            console.log('flatt', item);
             return (
               <TouchableOpacity
                 onPress={() => {
                   navigation.push("Details", {
                     index: item?.index,
-                    id: item?.id,
-                    type: item?.type,
+                    id: item?.id_pr,
+                    type: item?.type_pr,
                   });
                 }}
               >
-                <CoffeeCard
-                  id={item?.id}
-                  index={item?.index}
-                  type={item?.type}
-                  roasted={item?.roasted}
+                <ProductCard
+                  id={item?.id_pr}
+                  index={item?.index_pr}
+                  type={item?.type_pr}
                   imagelink_square={item?.imagelink_square}
-                  name={item?.name}
+                  name={item?.name_pr}
                   special_ingredient={item?.special_ingredient}
                   average_rating={item?.average_rating}
-                  price={item?.prices[2]}
-                  buttonPressHandler={CoffeCardAddToCard}
+                  price={item?.manage_prices[0]}
+                  buttonPressHandler={ProductCardAddToCard}
                 />
               </TouchableOpacity>
             );
@@ -285,7 +295,7 @@ function HomeScreen({ navigation }) {
 
         <Text style={styles.DrugTitle}>Coffee Beans</Text>
         {/* Beans FlatList */}
-        <FlatList
+        {/* <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
           data={BeanList}
@@ -306,7 +316,7 @@ function HomeScreen({ navigation }) {
                   });
                 }}
               >
-                <CoffeeCard
+                <ProductCard
                   id={item?.id}
                   index={item?.index}
                   type={item?.type}
@@ -316,12 +326,12 @@ function HomeScreen({ navigation }) {
                   special_ingredient={item?.special_ingredient}
                   average_rating={item?.average_rating}
                   price={item?.prices[2]}
-                  buttonPressHandler={CoffeCardAddToCard}
+                  buttonPressHandler={ProductCardAddToCard}
                 />
               </TouchableOpacity>
             );
           }}
-        />
+        /> */}
 
         <Text style={styles.CoffeBeansTitle}>Text</Text>
         {/* Beans FlatList */}
