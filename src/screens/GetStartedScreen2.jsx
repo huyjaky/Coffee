@@ -1,21 +1,14 @@
-import { Image, StatusBar, Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../theme/theme";
 import { useNavigation } from "@react-navigation/native";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeInUp,
-  FadeOut,
-  FlipInEasyX,
-  FlipOutEasyX,
-  FlipInXUp,
-  BounceInDown,
-  BounceInUp,
-} from "react-native-reanimated";
 import { useEffect } from "react";
-import { supabase } from "../store/supabase";
+import { Alert, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import Animated, {
+  FadeInDown,
+  FadeInUp
+} from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProducts } from "../store/states/products";
+import { productsSlice } from "../store/states/products";
+import { supabase } from "../store/supabase";
+import { COLORS } from "../theme/theme";
 
 function GetStartedScreen2() {
   const navigation = useNavigation();
@@ -23,19 +16,16 @@ function GetStartedScreen2() {
   const dispatch = useDispatch()
 
   async function fetchManagePrices() {
-    const { data, error } = await supabase.from('manage_prices').select("*")
-    if (error) console.log(error);
-    dispatch(updateProducts(data))
-
+    const { data, error } = await supabase.from('products').select("*")
+    dispatch(productsSlice.actions.UPDATE_PRODUCTS(data))
+    if (error) Alert.alert(error)
   }
 
   useEffect(() => {
     fetchManagePrices()
   }, [])
 
-  useEffect(()=>{
-    console.log(productsList);
-  },[productsList])
+  useEffect(()=>{},[productsList])
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>

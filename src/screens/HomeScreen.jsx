@@ -20,14 +20,15 @@ import { useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CoffeeCard from "../components/CoffeeCard";
 import supabase from "../store/supabase";
+import { useDispatch, useSelector } from "react-redux";
 
 function getCategoriesFromData(data) {
   let temp = {};
   for (let i = 0; i < data.length; i++) {
-    if (temp[data[i].name] == undefined) {
-      temp[data[i].name] = 1;
+    if (temp[data[i].type_pr] == undefined) {
+      temp[data[i].type_pr] = 1;
     } else {
-      temp[data[i].name]++;
+      temp[data[i].type_pr]++;
     }
   }
   let categories = Object.keys(temp);
@@ -35,18 +36,22 @@ function getCategoriesFromData(data) {
   return categories;
 }
 
-function getCoffeeList(category, data) {
+function getProductList(category, data) {
   if (category == "All") {
     return data;
   } else {
-    let coffeelist = data.filter((item) => item.name == category);
-    return coffeelist;
+    let productsList = data.filter((item) => item.type_pr == category);
+    return productsList;
   }
 }
 
 
 function HomeScreen({ navigation }) {
   const [data, setData] = useState([]);
+  const productsList = useSelector((state)=> state.products.productsList)
+  const dispatch = useDispatch()
+
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -77,14 +82,15 @@ function HomeScreen({ navigation }) {
   // console.log(BeanList);
   const [searchText, setSearchText] = useState("");
   const [categories, setCatehories] = useState(
-    getCategoriesFromData(CoffeeList)
+    getCategoriesFromData(productsList)
   );
+
   const [categoryIndex, setCategoryIndex] = useState({
     index: 0,
     category: categories[0],
   });
   const [sortedCoffee, setSortedCoffee] = useState(
-    getCoffeeList(categoryIndex.category, CoffeeList)
+    getProductList(categoryIndex.category, CoffeeList)
   );
   // console.log("sortedCoffee = ", sortedCoffee.length);
 
@@ -212,7 +218,7 @@ function HomeScreen({ navigation }) {
                     category: categories[index],
                   });
                   setSortedCoffee([
-                    ...getCoffeeList(categories[index], CoffeeList),
+                    ...getProductList(categories[index], productsList),
                   ]);
                 }}
                 style={styles.CategoryScrollViewItem}

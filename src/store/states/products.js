@@ -10,9 +10,8 @@ export const productsSlice = createSlice({
   initialState,
   reducers: {
     UPDATE_PRODUCTS: (state, action) => {
-      return state.productsList.concat(action.payload)
+      state.productsList = state.productsList.concat(action.payload)
+      return state
     }
   }
 })
-
-export const { updateProducts } = productsSlice.actions
