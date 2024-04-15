@@ -14,9 +14,28 @@ import Animated, {
 } from "react-native-reanimated";
 import { useEffect } from "react";
 import { supabase } from "../store/supabase";
+import { useDispatch, useSelector } from "react-redux";
+import { updateProducts } from "../store/states/products";
 
 function GetStartedScreen2() {
   const navigation = useNavigation();
+  const productsList = useSelector((state) => state.products.productsList)
+  const dispatch = useDispatch()
+
+  async function fetchManagePrices() {
+    const { data, error } = await supabase.from('manage_prices').select("*")
+    if (error) console.log(error);
+    dispatch(updateProducts(data))
+
+  }
+
+  useEffect(() => {
+    fetchManagePrices()
+  }, [])
+
+  useEffect(()=>{
+    console.log(productsList);
+  },[productsList])
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>

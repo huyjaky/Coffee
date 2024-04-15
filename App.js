@@ -1,24 +1,21 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
-import DetailsScreen from "./src/screens/DetailsScreen";
-import PaymentScreen from "./src/screens/PaymentScreen";
-import TabNavigator from "./src/navigators/TabNavigator";
-import TabAuth from "./authenticate/TabAuth";
-import LoginScreen from "./src/screens/LoginScreen";
-import SignupScreen from "./src/screens/SignupScreen";
 import { useContext, useState } from "react";
-import AuthContextProvider, { AuthContext } from "./src/store/auth-context";
-import GetStartedScreen from "./src/screens/GetStartedScreen";
+import { Provider } from "react-redux";
+import TabNavigator from "./src/navigators/TabNavigator";
+import DetailsScreen from "./src/screens/DetailsScreen";
 import GetStartedScreen2 from "./src/screens/GetStartedScreen2";
-import LoginScreen2 from "./src/screens/LoginScreen2";
-import SignupScreen2 from "./src/screens/SignupScreen2";
-import CartScreen from "./src/screens/CartScreen";
 import HomeScreen from "./src/screens/HomeScreen";
+import LoginScreen2 from "./src/screens/LoginScreen2";
+import PaymentScreen from "./src/screens/PaymentScreen";
+import SignupScreen2 from "./src/screens/SignupScreen2";
+import AuthContextProvider, { AuthContext } from "./src/store/auth-context";
+import { store } from "./src/store/states/store";
 
 const Stack = createNativeStackNavigator();
+
 
 function AuthenticatedStack() {
   return (
@@ -75,9 +72,13 @@ function Navigation() {
 export default function App() {
   return (
     <>
+
       <AuthContextProvider>
-        <Navigation />
+        <Provider store={store}>
+          <Navigation />
+        </Provider>
       </AuthContextProvider>
+
     </>
   );
 }
