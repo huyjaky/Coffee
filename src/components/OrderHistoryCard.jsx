@@ -23,22 +23,13 @@ function OrderHistoryCard({
       <View style={styles.ListContainer}>
         {CartList.map((data, index) => (
           <TouchableOpacity
-            key={index.toString() + data.id}
+            key={index.toString() + data.id_pr}
             onPress={() => {
-              navigationHandler({
-                index: data.index,
-                id: data.id,
-                type: data.type,
-              });
+              navigationHandler();
             }}
           >
             <OrderItemCard
-              type={data.type}
-              name={data.name}
-              imagelink_square={data.imagelink_square}
-              special_ingredient={data.special_ingredient}
-              prices={data.prices}
-              ItemPrice={data.ItemPrice}
+              item={data}
             />
           </TouchableOpacity>
         ))}

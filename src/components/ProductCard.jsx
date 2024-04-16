@@ -1,5 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
+import { useEffect } from "react";
 import {
   Dimensions,
   ImageBackground,
@@ -8,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
 import BGIcon from "./BGIcon";
@@ -18,6 +20,13 @@ const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 function CoffeeCard({
   item
 }) {
+  const CartList = useSelector(state => state.products.CartList)
+  async function localStored() {
+    await AsyncStorage.setItem('SaveCart', JSON.stringify(CartList))
+  }
+
+  useEffect(()=>{localStored()},[CartList])
+
   const dispatch = useDispatch()
   return (
     <LinearGradient

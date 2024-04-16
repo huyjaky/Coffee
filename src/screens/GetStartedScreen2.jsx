@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
+import { Component, useEffect, useState } from "react";
 import { Alert, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
   FadeInDown,
@@ -9,12 +9,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { productsSlice } from "../store/states/products";
 import { supabase } from "../store/supabase";
 import { COLORS } from "../theme/theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function GetStartedScreen2() {
   const navigation = useNavigation();
   const productsList = useSelector((state) => state.products.productsList)
   const productsList2 = useSelector((state) => state.products.productsList2)
+  const CartList = useSelector(state => state.products.CartList)
   const dispatch = useDispatch()
+
+
+  async function getLocalStorage() {
+      await AsyncStorage.getItem('SaveCart').then(value => dispatch(productsSlice.actions.UPDATE_CARTLIST(JSON.parse(value))))
+  }
+
+  useEffect(()=>{
+    console.log(CartList)
+    dispatch(productsSlice.actions.CACULATE_CART_PRICE())
+  },[CartList])
 
   async function fetchProducts() {
     const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Bean')
@@ -31,6 +43,7 @@ function GetStartedScreen2() {
   useEffect(() => {
     fetchProducts()
     fetchProducts2()
+    getLocalStorage()
   }, [])
 
   useEffect(() => {

@@ -1,3 +1,7 @@
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
+import { useEffect, useState } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -6,18 +10,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { COLORS } from "../theme/theme";
-import { useState } from "react";
-import GradientBGIcon from "../components/GradientBGIcon";
-import PaymentMethod from "../components/PaymentMethod";
-import PaymentFooter from "../components/PaymentFooter";
-import { LinearGradient } from "expo-linear-gradient";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { FontAwesome6, FontAwesome5 } from "@expo/vector-icons";
-import { useStore } from "../store/store";
-import PopUpAnimation from "../components/PopUpAnimation";
 import { useDispatch, useSelector } from "react-redux";
+import GradientBGIcon from "../components/GradientBGIcon";
+import PaymentFooter from "../components/PaymentFooter";
+import PaymentMethod from "../components/PaymentMethod";
+import PopUpAnimation from "../components/PopUpAnimation";
 import { productsSlice } from "../store/states/products";
+import { useStore } from "../store/store";
+import { COLORS } from "../theme/theme";
 
 const PaymentList = [
   {
@@ -58,13 +58,18 @@ function PaymentScreen({ navigation, route }) {
   const [showAnimation, setShowAnimation] = useState(false);
   const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
   const dispatch = useDispatch()
-  const addToOrderHistoryListFromCart = useStore(
-    (state) => state.addToOrderHistoryListFromCart
-  );
+
+  const CartList = useSelector(state => state.products.CartList)
+  async function localStored() {
+    await AsyncStorage.setItem('SaveCart', JSON.stringify(CartList))
+  }
+
+  useEffect(()=>{localStored()},[CartList])
 
   function buttonPressHandler() {
     setShowAnimation(true);
     // addToOrderHistoryListFromCart();
+    dispatch(productsSlice.actions.ADD_TO_ORDER_HISTORY_LIST_FROM_CART())
     dispatch(productsSlice.actions.UPDATE_CARTLIST([]))
     dispatch(productsSlice.actions.CACULATE_CART_PRICE())
     calcullateCartPrice();

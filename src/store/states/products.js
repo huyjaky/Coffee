@@ -166,11 +166,13 @@ export const productsSlice = createSlice({
       return state
     },
     ADD_TO_ORDER_HISTORY_LIST_FROM_CART: (state, action) => {
-      let temp = state.CartList.reduce(
-        (accumulator, currentValue) =>
-          accumulator + parseFloat(currentValue.ItemPrice),
-        0
-      );
+      // let temp = state.CartList.reduce(
+      //   (accumulator, currentValue) =>
+      //     accumulator + parseFloat(currentValue.manage_prices.prices.price),
+      //   0
+      // );
+      const temp = parseFloat(state.CartPrice)
+      console.log(temp);
       if (state.OrderHistoryList.length > 0) {
         state.OrderHistoryList.unshift({
           OrderDate:
@@ -178,7 +180,7 @@ export const productsSlice = createSlice({
             " " +
             new Date().toLocaleTimeString(),
           CartList: state.CartList,
-          CartListPrice: temp.toFixed(2).toString(),
+          CartListPrice: temp.toString(),
         });
       } else {
         state.OrderHistoryList.push({
@@ -187,10 +189,9 @@ export const productsSlice = createSlice({
             " " +
             new Date().toLocaleTimeString(),
           CartList: state.CartList,
-          CartListPrice: temp.toFixed(2).toString(),
+          CartListPrice: temp.toString(),
         });
       }
-      state.CartList = [];
     }
   }
 })

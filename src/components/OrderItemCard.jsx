@@ -5,12 +5,7 @@ import { COLORS } from "../theme/theme";
 import { AntDesign } from "@expo/vector-icons";
 
 function OrderItemCard({
-  type,
-  name,
-  imagelink_square,
-  special_ingredient,
-  prices,
-  ItemPrice,
+  item
 }) {
   return (
     <LinearGradient
@@ -22,27 +17,24 @@ function OrderItemCard({
     >
       <View style={styles.CardInfoContainer}>
         <View style={styles.CardImageInfoContainer}>
-          <Image source={imagelink_square} style={styles.Image} />
+          <Image source={item.imagelink_square} style={styles.Image} />
           <View>
-            <Text style={styles.CardTitle}>{name}</Text>
-            <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
+            <Text style={styles.CardTitle}>{item.name}</Text>
+            <Text style={styles.CardSubtitle}>{item.special_ingredient}</Text>
           </View>
         </View>
       </View>
-      {prices.map((data, index) => (
+      {item.manage_prices.map((data, index) => (
         <View
           key={index.toString()}
           style={styles.CardTableRow}
-          onPress={() => {
-            navigationH;
-          }}
+          onPress={() => { }}
         >
           <View style={styles.CardTableRow}>
             <View style={styles.SizeBoxLeft}>
               <Text
                 style={[
                   styles.SizeText,
-                  { fontSize: type === "Bean" ? 12 : 14 },
                 ]}
               >
                 {data.quantity}
@@ -56,8 +48,8 @@ function OrderItemCard({
 
             <View style={styles.PriceBoxRight}>
               <Text style={styles.PriceCurrence}>
-                {data.currency}
-                <Text style={styles.Price}>{data.price}</Text>
+                $
+                <Text style={styles.Price}>{data.prices.price}</Text>
               </Text>
             </View>
           </View>
@@ -67,7 +59,7 @@ function OrderItemCard({
               Total:
             </Text>
             <Text style={styles.CardQuantityPriceText}>
-              $ {(data.quantity * data.price).toFixed(2).toString()}
+              $ {(data.quantity * data.prices.price).toString()}
             </Text>
           </View>
         </View>

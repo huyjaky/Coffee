@@ -1,16 +1,17 @@
+import { Entypo } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   Image,
-  ScrollView,
   StyleSheet,
-  View,
   Text,
   TouchableOpacity,
+  View
 } from "react-native";
-import { COLORS } from "../theme/theme";
-import { Entypo } from "@expo/vector-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { productsSlice } from "../store/states/products";
+import { COLORS } from "../theme/theme";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function CartIt({
   id,
@@ -20,6 +21,13 @@ function CartIt({
   prices,
 }) {
   const dispatch = useDispatch()
+
+  const CartList = useSelector(state => state.products.CartList)
+  async function localStored() {
+    await AsyncStorage.setItem('SaveCart', JSON.stringify(CartList))
+  }
+  useEffect(()=>{localStored()},[CartList])
+
   return (
     <View>
       <LinearGradient

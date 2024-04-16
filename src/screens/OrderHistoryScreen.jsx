@@ -12,7 +12,7 @@ import { COLORS } from "../theme/theme";
 import HeaderBar from "../components/HeaderBar";
 import EmptyListAnimation from "../components/EmptyListAnimation";
 import PopUpAnimation from "../components/PopUpAnimation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OrderHistoryCard from "../components/OrderHistoryCard";
 import { useSelector } from "react-redux";
 
@@ -22,13 +22,10 @@ function OrderHistoryScreen({ navigation }) {
   const [showAnimation, setShowAnimation] = useState(false);
   // console.log("History length = ", OrderHistoryList.length);
   // console.log("History = ", OrderHistoryList);
+  useEffect(()=>{},[OrderHistoryList])
 
-  function navigationHandler({ index, id, type }) {
-    navigation.push("Details", {
-      index,
-      id,
-      type,
-    });
+  function navigationHandler() {
+    navigation.push("Details");
   }
 
   function buttonPressHandler() {
