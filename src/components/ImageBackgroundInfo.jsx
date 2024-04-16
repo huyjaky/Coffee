@@ -26,11 +26,16 @@ function ImageBackgroundInfo({
   const [isFavor, setIsFavor] = useState(item.favourite)
   const dispatch = useDispatch()
 
+  async function alterTable() {
+    const { error } = await supabase.from('products').update({ favourite: !isFavor }).eq('id_pr', item.id_pr)
+    console.log(error);
+  }
+
   function toggleFavor() {
     // update in db
-    // const { error } = await supabase.from('products').update({ favourite: !isFavor }).eq('id_pr', id)
     setIsFavor(!isFavor)
     dispatch(productsSlice.actions.TOGGLE_FAVORITE(item))
+    alterTable()
   }
 
   useEffect(() => {}, [item])

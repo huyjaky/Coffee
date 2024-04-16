@@ -39,7 +39,7 @@ function CartScreen({ navigation, route }) {
     navigation.push("Payment");
   }
 
-  useEffect(()=>{dispatch(productsSlice.actions.CACULATE_CART_PRICE())},[cartPrice])
+  useEffect(()=>{dispatch(productsSlice.actions.CACULATE_CART_PRICE())},[CartList])
 
   return (
     <View style={styles.ScreenContainer}>

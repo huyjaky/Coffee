@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TOGGLE_FAVORITE, UPDATE_FAVORITE_LIST, UPDATE_PRICESLIST, UPDATE_PRODUCTS } from "./actions";
+import { ADD_TO_ORDER_HISTORY_LIST_FROM_CART, TOGGLE_FAVORITE, UPDATE_CARTLIST, UPDATE_FAVORITE_LIST, UPDATE_PRICESLIST, UPDATE_PRODUCTS } from "./actions";
 import { supabase } from "../supabase";
 import { Alert } from "react-native";
 
@@ -33,6 +33,10 @@ export const productsSlice = createSlice({
     },
     UPDATE_FAVORITE_LIST: (state, action) => {
       state.FavoritesList = action.payload.filter((item) => item.favourite == true)
+      return state
+    },
+    UPDATE_CARTLIST : (state, action) =>{
+      state.CartList = action.payload
       return state
     },
     ADD_TO_CART: (state, action) => {
@@ -69,7 +73,7 @@ export const productsSlice = createSlice({
       if (found === false) {
         state.CartList.push(action.payload);
       }
-
+      if (state.CartList.length !== 0) console.log(state.CartList[0].manage_prices);
     },
     INCREATEMENT_CART_ITEM_QUANTITY: (state, action) => {
       console.log('action', action);
@@ -160,6 +164,33 @@ export const productsSlice = createSlice({
         console.log('test', state.productsList[0].favourite);
       }
       return state
+    },
+    ADD_TO_ORDER_HISTORY_LIST_FROM_CART: (state, action) => {
+      let temp = state.CartList.reduce(
+        (accumulator, currentValue) =>
+          accumulator + parseFloat(currentValue.ItemPrice),
+        0
+      );
+      if (state.OrderHistoryList.length > 0) {
+        state.OrderHistoryList.unshift({
+          OrderDate:
+            new Date().toDateString() +
+            " " +
+            new Date().toLocaleTimeString(),
+          CartList: state.CartList,
+          CartListPrice: temp.toFixed(2).toString(),
+        });
+      } else {
+        state.OrderHistoryList.push({
+          OrderDate:
+            new Date().toDateString() +
+            " " +
+            new Date().toLocaleTimeString(),
+          CartList: state.CartList,
+          CartListPrice: temp.toFixed(2).toString(),
+        });
+      }
+      state.CartList = [];
     }
   }
 })

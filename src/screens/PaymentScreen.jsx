@@ -16,7 +16,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome6, FontAwesome5 } from "@expo/vector-icons";
 import { useStore } from "../store/store";
 import PopUpAnimation from "../components/PopUpAnimation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { productsSlice } from "../store/states/products";
 
 const PaymentList = [
   {
@@ -56,13 +57,16 @@ function PaymentScreen({ navigation, route }) {
   const [paymentMode, setPaymentMode] = useState("Credit Card");
   const [showAnimation, setShowAnimation] = useState(false);
   const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
+  const dispatch = useDispatch()
   const addToOrderHistoryListFromCart = useStore(
     (state) => state.addToOrderHistoryListFromCart
   );
 
   function buttonPressHandler() {
     setShowAnimation(true);
-    addToOrderHistoryListFromCart();
+    // addToOrderHistoryListFromCart();
+    dispatch(productsSlice.actions.UPDATE_CARTLIST([]))
+    dispatch(productsSlice.actions.CACULATE_CART_PRICE())
     calcullateCartPrice();
     setTimeout(() => {
       setShowAnimation(false);

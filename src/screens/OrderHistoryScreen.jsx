@@ -14,9 +14,10 @@ import EmptyListAnimation from "../components/EmptyListAnimation";
 import PopUpAnimation from "../components/PopUpAnimation";
 import { useState } from "react";
 import OrderHistoryCard from "../components/OrderHistoryCard";
+import { useSelector } from "react-redux";
 
 function OrderHistoryScreen({ navigation }) {
-  const OrderHistoryList = useStore((state) => state.OrderHistoryList);
+  const OrderHistoryList = useSelector((state) => state.products.OrderHistoryList);
   const tabBarHeight = useBottomTabBarHeight();
   const [showAnimation, setShowAnimation] = useState(false);
   // console.log("History length = ", OrderHistoryList.length);
