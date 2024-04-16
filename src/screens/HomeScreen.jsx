@@ -23,7 +23,8 @@ import supabase from "../store/supabase";
 import { useDispatch, useSelector } from "react-redux";
 import { productsSlice } from "../store/states/products";
 
-function getCategoriesFromData(data) {
+function getCategoriesFromData(data1, data2) {
+  const data = data1.concat(data2)
   let temp = {};
   for (let i = 0; i < data.length; i++) {
     if (temp[data[i].type_pr] == undefined) {
@@ -37,7 +38,8 @@ function getCategoriesFromData(data) {
   return categories;
 }
 
-function getProductList(category, data) {
+function getProductList(category, data1, data2) {
+  const data = data1.concat(data2)
   if (category == "All") {
     return data;
   } else {
@@ -50,6 +52,7 @@ function getProductList(category, data) {
 function HomeScreen({ navigation }) {
   const [data, setData] = useState([]);
   const productsList = useSelector((state) => state.products.productsList)
+  const productsList2 = useSelector((state)=> state.products.productsList2)
   console.log(productsList);
   const dispatch = useDispatch()
 
@@ -84,7 +87,7 @@ function HomeScreen({ navigation }) {
   // console.log(BeanList);
   const [searchText, setSearchText] = useState("");
   const [categories, setCatehories] = useState(
-    getCategoriesFromData(productsList)
+    getCategoriesFromData(productsList, productsList2)
   );
 
   const [categoryIndex, setCategoryIndex] = useState({
@@ -92,7 +95,7 @@ function HomeScreen({ navigation }) {
     category: categories[0],
   });
   const [sortedProducts, setsortedProducts] = useState(
-    getProductList(categoryIndex.category, productsList)
+    getProductList(categoryIndex.category, productsList, productsList2)
   );
   // console.log("sortedProducts = ", sortedProducts.length);
 
@@ -131,15 +134,6 @@ function HomeScreen({ navigation }) {
     manage_prices,
   ) {
 
-    // addToCart({
-    //   id,
-    //   index,
-    //   name,
-    //   imagelink_square,
-    //   special_ingredient,
-    //   type,
-    //   prices,
-    // });
     dispatch(productsSlice.actions.ADD_TO_CART({
       id,
       index,
@@ -228,7 +222,7 @@ function HomeScreen({ navigation }) {
                     category: categories[index],
                   });
                   setsortedProducts([
-                    ...getProductList(categories[index], productsList),
+                    ...getProductList(categories[index], productsList, productsList2),
                   ]);
                 }}
                 style={styles.CategoryScrollViewItem}
@@ -286,52 +280,52 @@ function HomeScreen({ navigation }) {
                   special_ingredient={item?.special_ingredient}
                   average_rating={item?.average_rating}
                   price={item?.manage_prices[0]}
-                  buttonPressHandler={ProductCardAddToCard}
                 />
               </TouchableOpacity>
             );
           }}
         />
 
-        <Text style={styles.DrugTitle}>Coffee Beans</Text>
+        <Text style={styles.DrugTitle}>Coffee </Text>
         {/* Beans FlatList */}
-        {/* <FlatList
+        <FlatList
+          ref={ListRef}
           horizontal
+          ListEmptyComponent={
+            <View style={styles.EmptyListContainer}>
+              <Text style={styles.CategoryText}>No Products Available</Text>
+            </View>
+          }
           showsHorizontalScrollIndicator={false}
-          data={BeanList}
-          contentContainerStyle={[
-            styles.FlatListContainer,
-            { marginBottom: tabBarHeight },
-          ]}
-          keyExtractor={(item) => item?.id}
+          data={productsList2}
+          contentContainerStyle={styles.FlatListContainer}
+          keyExtractor={(item) => item?.id_pr}
           renderItem={({ item }) => {
+            console.log('flatt', item);
             return (
               <TouchableOpacity
                 onPress={() => {
                   navigation.push("Details", {
                     index: item?.index,
-                    id: item?.id,
-                    type: item?.type,
-                    name: item?.name,
+                    id: item?.id_pr,
+                    type: item?.type_pr,
                   });
                 }}
               >
                 <ProductCard
-                  id={item?.id}
-                  index={item?.index}
-                  type={item?.type}
-                  roasted={item?.roasted}
+                  id={item?.id_pr}
+                  index={item?.index_pr}
+                  type={item?.type_pr}
                   imagelink_square={item?.imagelink_square}
-                  name={item?.name}
+                  name={item?.name_pr}
                   special_ingredient={item?.special_ingredient}
                   average_rating={item?.average_rating}
-                  price={item?.prices[2]}
-                  buttonPressHandler={ProductCardAddToCard}
+                  price={item?.manage_prices[0]}
                 />
               </TouchableOpacity>
             );
           }}
-        /> */}
+        />
 
         <Text style={styles.CoffeBeansTitle}>Text</Text>
         {/* Beans FlatList */}
@@ -420,5 +414,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 36 * 3.6,
+  },
+CoffeBeansTitle: {
+    fontSize: 18,
+    marginLeft: 30,
+    marginTop: 70,
+    fontWeight: "600",
+    color: COLORS.secondaryLightGreyHex,
+    color: "#230C02",
   },
 });

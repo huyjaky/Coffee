@@ -1,8 +1,9 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import { ADD_TO_CART, CACULATE_CART_PRICE, UPDATE_PRICESLIST, UPDATE_PRODUCTS } from "./actions";
+import { ADD_TO_CART, CACULATE_CART_PRICE, UPDATE_PRICESLIST, UPDATE_PRODUCTS, UPDATE_PRODUCTS2 } from "./actions";
 
 const initialState = {
   productsList: [],
+  productsList2: [],
   pricesList: [],
   CartList: [],
   CartPrice: 0,
@@ -17,6 +18,10 @@ export const productsSlice = createSlice({
   reducers: {
     UPDATE_PRODUCTS: (state, action) => {
       state.productsList = state.productsList.concat(action.payload)
+      return state
+    },
+    UPDATE_PRODUCTS2: (state, action) => {
+      state.productsList2 = state.productsList2.concat(action.payload)
       return state
     },
     ADD_TO_CART: (state, action) => {
@@ -53,8 +58,6 @@ export const productsSlice = createSlice({
         state.CartList.push(action.payload);
       }
 
-      console.log('action', action.payload);
-      console.log('state', state.CartList[0].manage_prices);
     },
     CACULATE_CART_PRICE: (state, action) => {
       let totalPrice = 0;
@@ -71,7 +74,6 @@ export const productsSlice = createSlice({
       }
       state.CartPrice = totalPrice.toFixed(2).toString();
     }
-
   }
 })
 

@@ -39,7 +39,6 @@ function CoffeeCard({
         resizeMode="cover"
         style={styles.CardImageBG}
         source={require('../assets/coffee_assets/excelsa_coffee_beans/excelsa_coffee_beans_square.png')}
-      // source={{ uri: '../assets/coffee_assets/excelsa_coffee_beans/excelsa_coffee_beans_square.png' }}
       >
         <View style={styles.CardRatingContainer}>
           <AntDesign name="star" size={16} color={COLORS.primaryIconYellow} />

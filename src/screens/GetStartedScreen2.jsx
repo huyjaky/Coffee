@@ -13,24 +13,33 @@ import { COLORS } from "../theme/theme";
 function GetStartedScreen2() {
   const navigation = useNavigation();
   const productsList = useSelector((state) => state.products.productsList)
+  const productsList2 = useSelector((state) => state.products.productsList2)
   const dispatch = useDispatch()
 
-  async function fetchManagePrices() {
-    const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))")
-    console.log('home',data[0].manage_prices);
-
+  async function fetchProducts() {
+    const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Bean')
+    console.log('home', data);
     dispatch(productsSlice.actions.UPDATE_PRODUCTS(data))
 
+    if (error) Alert.alert(error)
+  }
+
+
+  async function fetchProducts2() {
+
+    const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Coffee')
+    dispatch(productsSlice.actions.UPDATE_PRODUCTS2(data))
 
     if (error) Alert.alert(error)
   }
 
   useEffect(() => {
-    fetchManagePrices()
+    fetchProducts()
+    fetchProducts2()
   }, [])
 
   useEffect(() => {
-  }, [productsList])
+  }, [productsList2, productsList])
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
