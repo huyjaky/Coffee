@@ -17,6 +17,8 @@ import LoginScreen2 from "./src/screens/LoginScreen2";
 import SignupScreen2 from "./src/screens/SignupScreen2";
 import CartScreen from "./src/screens/CartScreen";
 import HomeScreen from "./src/screens/HomeScreen";
+import ManageOrderScreen from "./src/screens/ManageOrderScreen";
+import ManageProductScreen from "./src/screens/ManageProductScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +40,16 @@ function AuthenticatedStack() {
         component={PaymentScreen}
         options={{ animation: "slide_from_bottom" }}
       ></Stack.Screen>
+      <Stack.Screen
+        name="ManageOrder"
+        component={ManageOrderScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="ManageProduct"
+        component={ManageProductScreen}
+        options={{ animation: "slide_from_right" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -52,6 +64,7 @@ function AuthStack() {
       <Stack.Screen name="Login" component={LoginScreen2} />
       <Stack.Screen name="SignUp" component={SignupScreen2} />
       <Stack.Screen name="Home" component={HomeScreen} />
+
     </Stack.Navigator>
   );
 }
