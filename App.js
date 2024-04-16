@@ -19,6 +19,7 @@ import CartScreen from "./src/screens/CartScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import ManageOrderScreen from "./src/screens/ManageOrderScreen";
 import ManageProductScreen from "./src/screens/ManageProductScreen";
+import ManageUserScreen from "./src/screens/ManageUserScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,11 @@ function AuthenticatedStack() {
       <Stack.Screen
         name="ManageProduct"
         component={ManageProductScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+            <Stack.Screen
+        name="ManageUser"
+        component={ManageUserScreen}
         options={{ animation: "slide_from_right" }}
       />
     </Stack.Navigator>
