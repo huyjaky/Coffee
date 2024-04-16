@@ -20,7 +20,8 @@ import { productsSlice } from "../store/states/products";
 function CartScreen({ navigation, route }) {
   const productsList = useSelector((state)=> state.products.productsList)
   const productsList2 = useSelector((state)=> state.products.productsList2)
-  const CartList = useSelector((state)=>state.products.CartList);
+  const CartList = useSelector((state)=>state.products.CartList)
+  const cartPrice = useSelector((state)=> state.products.CartPrice)
   const dispatch = useDispatch()
 
   const CartPrice = useSelector((state)=>state.products.CartPrice);
@@ -35,10 +36,10 @@ function CartScreen({ navigation, route }) {
   const tabBarHeight = useBottomTabBarHeight();
 
   function buttonPressHandler() {
-    navigation.push("Payment", { amount: CartPrice });
+    navigation.push("Payment");
   }
 
-  useEffect(()=>{dispatch(productsSlice.actions.CACULATE_CART_PRICE())},[])
+  useEffect(()=>{dispatch(productsSlice.actions.CACULATE_CART_PRICE())},[cartPrice])
 
   return (
     <View style={styles.ScreenContainer}>

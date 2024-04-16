@@ -1,10 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../theme/theme";
 import { useDispatch } from "react-redux";
-import { productsSlice } from "../store/states/products";
 
 function PaymentFooter({ price, buttonPressHandler, buttonTitle }) {
-  const dispatch = useDispatch()
   return (
     <View style={styles.PriceFooter}>
       <View style={styles.PriceContainer}>
@@ -13,9 +11,7 @@ function PaymentFooter({ price, buttonPressHandler, buttonTitle }) {
           {price.currency} <Text style={styles.Price}>${price}</Text>
         </Text>
       </View>
-      <TouchableOpacity style={styles.PayButton} onPress={()=>{
-        dispatch(productsSlice.actions.ADD_TO_CART())
-      }}>
+      <TouchableOpacity style={styles.PayButton} onPress={buttonPressHandler}>
         <Text style={styles.ButtonText}>{buttonTitle}</Text>
       </TouchableOpacity>
     </View>

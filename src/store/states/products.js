@@ -30,6 +30,7 @@ export const productsSlice = createSlice({
       return state
     },
     ADD_TO_CART: (state, action) => {
+      console.log('action', action);
       let found = false;
       for (let i = 0; i < state.CartList.length; i++) {
         if (state.CartList[i].id_pr === action.payload.id_pr) {

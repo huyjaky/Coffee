@@ -13,6 +13,7 @@ import PaymentScreen from "./src/screens/PaymentScreen";
 import SignupScreen2 from "./src/screens/SignupScreen2";
 import AuthContextProvider, { AuthContext } from "./src/store/auth-context";
 import { store } from "./src/store/states/store";
+import CartScreen from "./src/screens/CartScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,12 @@ function AuthenticatedStack() {
         component={PaymentScreen}
         options={{ animation: "slide_from_bottom" }}
       ></Stack.Screen>
+      <Stack.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{ animation: 'default' }}
+      ></Stack.Screen>
+
     </Stack.Navigator>
   );
 }

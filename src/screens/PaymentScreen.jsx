@@ -16,6 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome6, FontAwesome5 } from "@expo/vector-icons";
 import { useStore } from "../store/store";
 import PopUpAnimation from "../components/PopUpAnimation";
+import { useSelector } from "react-redux";
 
 const PaymentList = [
   {
@@ -51,6 +52,7 @@ const PaymentList = [
 ];
 
 function PaymentScreen({ navigation, route }) {
+  const cartPrice = useSelector((state)=> state.products.CartPrice)
   const [paymentMode, setPaymentMode] = useState("Credit Card");
   const [showAnimation, setShowAnimation] = useState(false);
   const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
@@ -178,7 +180,7 @@ function PaymentScreen({ navigation, route }) {
 
       <PaymentFooter
         buttonTitle={`Pay With ${paymentMode}`}
-        price={{ price: route?.params?.amount, currency: "$" }}
+        price={cartPrice}
         buttonPressHandler={buttonPressHandler}
       />
     </View>

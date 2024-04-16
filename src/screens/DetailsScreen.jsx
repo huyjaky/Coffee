@@ -12,12 +12,13 @@ import { COLORS } from "../theme/theme";
 import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
 import { useEffect, useState } from "react";
 import PaymentFooter from "../components/PaymentFooter";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { productsSlice } from "../store/states/products";
 
 function DetailsScreen({ navigation, route }) {
   // console.log("route = ", route.params);
   const ItemofIndex = useSelector((state)=>state.products.currentDetailCart);
-
+  const dispatch = useDispatch()
   useEffect(()=>{},[ItemofIndex])
 
   const addToFavoriteList = useStore((state) => state.addToFavoriteList);
@@ -147,18 +148,12 @@ function DetailsScreen({ navigation, route }) {
         <PaymentFooter
           price={price.prices.price}
           buttonTitle="Add to Cart"
-          // buttonPressHandler={() => {
-          //   addToCartHandler({
-          //     id: ItemofIndex.id_pr,
-          //     index: ItemofIndex.index,
-          //     name: ItemofIndex.name_pr,
-          //     roasted: ItemofIndex.roasted,
-          //     imagelink_square: ItemofIndex.imagelink_square,
-          //     special_ingredient: ItemofIndex.special_ingredient,
-          //     type: ItemofIndex.type_pr,
-          //     price: price,
-          //   });
-          // }}
+          buttonPressHandler={() => {
+            const temp = {...ItemofIndex, manage_prices: [{prices: {...price.prices}, quantity:1}]}
+            dispatch(productsSlice.actions.ADD_TO_CART(temp))
+            dispatch(productsSlice.actions.CACULATE_CART_PRICE())
+            BackHandler()
+          }}
         />
       </ScrollView>
     </View>
