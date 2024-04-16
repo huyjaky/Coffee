@@ -32,7 +32,7 @@ export const productsSlice = createSlice({
     ADD_TO_CART: (state, action) => {
       let found = false;
       for (let i = 0; i < state.CartList.length; i++) {
-        if (state.CartList[i].id === action.payload.id) {
+        if (state.CartList[i].id_pr === action.payload.id_pr) {
           found = true;
           let size = false;
           for (let j = 0; j < state.CartList[i].manage_prices.length; j++) {
@@ -65,10 +65,11 @@ export const productsSlice = createSlice({
 
     },
     INCREATEMENT_CART_ITEM_QUANTITY: (state, action) => {
+      console.log('action',action);
       for (let i = 0; i < state.CartList.length; i++) {
         if (state.CartList[i].id_pr === action.payload.id_pr) {
           for (let j = 0; j < state.CartList[i].manage_prices.length; j++) {
-            if (state.CartList[i].manage_prices[j].prices.size == action.payload.size) {
+            if (state.CartList[i].manage_prices[j].prices.size == action.payload.prices.size) {
               state.CartList[i].manage_prices[j].quantity++;
               break;
             }
@@ -80,7 +81,7 @@ export const productsSlice = createSlice({
       for (let i = 0; i < state.CartList.length ; i++) {
         if (state.CartList[i].id_pr == action.payload.id_pr) {
           for (let j = 0; j < state.CartList[i].manage_prices.length; j++) {
-            if (state.CartList[i].manage_prices[j].prices.size == action.payload.size) {
+            if (state.CartList[i].manage_prices[j].prices.size == action.payload.prices.size) {
               if (state.CartList[i].manage_prices.length > 1) {
                 if (state.CartList[i].manage_prices[j].quantity > 1) {
                   state.CartList[i].manage_prices[j].quantity--;

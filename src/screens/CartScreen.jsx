@@ -61,7 +61,7 @@ function CartScreen({ navigation, route }) {
                   <TouchableOpacity
                     onPress={() => {
                       const products = productsList.concat(productsList2)
-                      const current_pr = products.find((item)=> item.id_pr = data.id)
+                      const current_pr = products.find((item)=> item.id_pr = data.id_pr)
                       dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(current_pr))
                       navigation.push("Details");
                     }}

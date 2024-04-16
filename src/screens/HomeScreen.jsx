@@ -249,16 +249,7 @@ function HomeScreen({ navigation }) {
                   navigation.push("Details");
                 }}
               >
-                <ProductCard
-                  id={item?.id_pr}
-                  index={item?.index_pr}
-                  type={item?.type_pr}
-                  imagelink_square={item?.imagelink_square}
-                  name={item?.name_pr}
-                  special_ingredient={item?.special_ingredient}
-                  average_rating={item?.average_rating}
-                  price={item?.manage_prices[0]}
-                />
+                <ProductCard item={item}/>
               </TouchableOpacity>
             );
           }}
@@ -286,17 +277,7 @@ function HomeScreen({ navigation }) {
                   navigation.push("Details");
                 }}
               >
-                <ProductCard
-                  id={item?.id_pr}
-                  index={item?.index_pr}
-                  type={item?.type_pr}
-                  imagelink_square={item?.imagelink_square}
-                  name={item?.name_pr}
-                  special_ingredient={item?.special_ingredient}
-                  average_rating={item?.average_rating}
-                  price={item?.manage_prices[0]}
-                  
-                />
+                <ProductCard item={item} />
               </TouchableOpacity>
             );
           }}

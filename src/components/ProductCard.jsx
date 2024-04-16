@@ -16,15 +16,9 @@ import BGIcon from "./BGIcon";
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 
 function CoffeeCard({
-  id,
-  index,
-  type,
-  imagelink_square,
-  name,
-  special_ingredient,
-  average_rating,
-  price,
+  item
 }) {
+  console.log('item', item);
   const dispatch = useDispatch()
   return (
     <LinearGradient
@@ -42,29 +36,19 @@ function CoffeeCard({
       >
         <View style={styles.CardRatingContainer}>
           <AntDesign name="star" size={16} color={COLORS.primaryIconYellow} />
-          <Text style={styles.CardRatingText}>{average_rating}</Text>
+          <Text style={styles.CardRatingText}>{item.average_rating}</Text>
         </View>
       </ImageBackground>
-      <Text style={styles.CardTitle}>{name}</Text>
-      <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
+      <Text style={styles.CardTitle}>{item.name_pr}</Text>
+      <Text style={styles.CardSubtitle}>{item.special_ingredient}</Text>
       <View style={styles.CardFooterRow}>
         <Text style={styles.CardPriceCurrency}>
-          $<Text style={styles.CartPrice}>{price.prices.price}</Text>
+          $<Text style={styles.CartPrice}>{item.manage_prices[0].prices.price}</Text>
           {/* $<Text style={styles.CartPrice}>15</Text> */}
         </Text>
         <TouchableOpacity
-
           onPress={() => {
-            dispatch(productsSlice.actions.ADD_TO_CART({
-              id,
-              index,
-              type,
-              imagelink_square,
-              name,
-              special_ingredient,
-              average_rating,
-              manage_prices: [{...price, quantity: 1}]
-            }))
+            dispatch(productsSlice.actions.ADD_TO_CART({...item, manage_prices: [{prices: {...item.manage_prices[0].prices}, quantity: 1}]}))
           }}
         >
           <BGIcon

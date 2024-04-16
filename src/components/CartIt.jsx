@@ -18,8 +18,6 @@ function CartIt({
   imagelink_square,
   special_ingredient,
   prices,
-  incrementCartItemQuantityHandler,
-  decrementCartItemQuantityHandler,
 }) {
   const dispatch = useDispatch()
   return (
@@ -55,7 +53,7 @@ function CartIt({
                     style={styles.CartItemIcon}
                     onPress={() => {
                       // decrementCartItemQuantityHandler(id, data.size);
-                      dispatch(productsSlice.actions.DECREATEMENT_CART_ITEM_QUANTITY(data.prices))
+                      dispatch(productsSlice.actions.DECREATEMENT_CART_ITEM_QUANTITY({prices: data.prices, id_pr: id}))
                       dispatch(productsSlice.actions.CACULATE_CART_PRICE())
                     }}
                   >
@@ -74,7 +72,7 @@ function CartIt({
                     style={styles.CartItemIcon}
                     onPress={() => {
                       // incrementCartItemQuantityHandler(id, data.size);
-                      dispatch(productsSlice.actions.INCREATEMENT_CART_ITEM_QUANTITY(data.prices))
+                      dispatch(productsSlice.actions.INCREATEMENT_CART_ITEM_QUANTITY({prices: data.prices, id_pr: id}))
                       dispatch(productsSlice.actions.CACULATE_CART_PRICE())
                     }}
                   >
