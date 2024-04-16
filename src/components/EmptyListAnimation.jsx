@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   LottieText: {
     fontWeight: "600",
     fontSize: 16,
-    color: COLORS.primaryOrangeHex,
+    color: COLORS.primaryTextBlue,
     textAlign: "center",
   },
 });

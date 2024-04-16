@@ -112,14 +112,12 @@ const styles = StyleSheet.create({
   CardTitle: {
     fontWeight: "600",
     fontSize: 18,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTitle,
   },
   CardSubtitle: {
     fontWeight: "800",
     fontSize: 12,
-    // color: COLORS.secondaryLightGreyHex,
-    color: "#693a27",
+    color:  COLORS.primaryTextBlue,
   },
   CardCurrency: {
     fontWeight: "bold",
@@ -176,7 +174,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     fontWeight: "bold",
     fontSize: 18,
-    color: "#693a27",
+    color: COLORS.primaryNovel,
   },
 
   CardIconMultiple: {}

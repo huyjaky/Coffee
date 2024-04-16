@@ -29,8 +29,7 @@ const styles = StyleSheet.create({
   },
   HeaderText: {
     fontSize: FONTSIZE.size_20,
-    color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTextBlue,
     fontWeight: "bold",
   },
 });
