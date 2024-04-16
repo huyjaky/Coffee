@@ -13,10 +13,17 @@ import HeaderBar from "../components/HeaderBar";
 import EmptyListAnimation from "../components/EmptyListAnimation";
 import PaymentFooter from "../components/PaymentFooter";
 import CartIt from "../components/CartIt";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { productsSlice } from "../store/states/products";
 
 function CartScreen({ navigation, route }) {
-  const CartList = useStore((state) => state.CartList);
-  const CartPrice = useStore((state) => state.CartPrice);
+  const productsList = useSelector((state)=> state.products.productsList)
+  const productsList2 = useSelector((state)=> state.products.productsList2)
+  const CartList = useSelector((state)=>state.products.CartList);
+  const dispatch = useDispatch()
+
+  const CartPrice = useSelector((state)=>state.products.CartPrice);
   const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
   const incrementCartItemQuantity = useStore(
     (state) => state.incrementCartItemQuantity
@@ -31,15 +38,8 @@ function CartScreen({ navigation, route }) {
     navigation.push("Payment", { amount: CartPrice });
   }
 
-  function incrementCartItemQuantityHandler(id, size) {
-    incrementCartItemQuantity(id, size);
-    calcullateCartPrice();
-  }
+  useEffect(()=>{dispatch(productsSlice.actions.CACULATE_CART_PRICE())},[])
 
-  function decrementCartItemQuantityHandler(id, size) {
-    decrementCartItemQuantity(id, size);
-    calcullateCartPrice();
-  }
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} hidden={true} />
@@ -57,31 +57,22 @@ function CartScreen({ navigation, route }) {
               <EmptyListAnimation title="Cart is Empty" />
             ) : (
               <View style={styles.ListItemContainer}>
-                {CartList.map((data) => (
+                {CartList?.map((data) => (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.push("Details", {
-                        index: data.index,
-                        id: data.id,
-                        type: data.type,
-                      });
+                      const products = productsList.concat(productsList2)
+                      const current_pr = products.find((item)=> item.id_pr = data.id)
+                      dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(current_pr))
+                      navigation.push("Details");
                     }}
-                    key={data.id}
+                    key={data.id_pr}
                   >
                     <CartIt
-                      id={data.id}
-                      name={data.name}
+                      id={data.id_pr}
+                      name={data.name_pr}
                       imagelink_square={data.imagelink_square}
                       special_ingredient={data.special_ingredient}
-                      roasted={data.roasted}
-                      prices={data.prices}
-                      type={data.type}
-                      incrementCartItemQuantityHandler={
-                        incrementCartItemQuantityHandler
-                      }
-                      decrementCartItemQuantityHandler={
-                        decrementCartItemQuantityHandler
-                      }
+                      prices={data.manage_prices}
                     />
                   </TouchableOpacity>
                 ))}
@@ -92,7 +83,7 @@ function CartScreen({ navigation, route }) {
           {CartList.length !== 0 ? (
             <PaymentFooter
               buttonTitle="Pay"
-              price={{ price: CartPrice, currency: "$" }}
+              price={CartPrice}
               buttonPressHandler={buttonPressHandler}
             />
           ) : null}

@@ -18,7 +18,6 @@ function GetStartedScreen2() {
 
   async function fetchProducts() {
     const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Bean')
-    console.log('home', data);
     dispatch(productsSlice.actions.UPDATE_PRODUCTS(data))
 
     if (error) Alert.alert(error)

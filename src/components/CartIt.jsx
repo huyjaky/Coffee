@@ -9,18 +9,19 @@ import {
 } from "react-native";
 import { COLORS } from "../theme/theme";
 import { Entypo } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { productsSlice } from "../store/states/products";
 
 function CartIt({
   id,
   name,
   imagelink_square,
   special_ingredient,
-  roasted,
   prices,
-  type,
   incrementCartItemQuantityHandler,
   decrementCartItemQuantityHandler,
 }) {
+  const dispatch = useDispatch()
   return (
     <View>
       <LinearGradient
@@ -44,8 +45,8 @@ function CartIt({
 
                 <View style={styles.CartItemSizeValueContainer}>
                   <Text style={styles.SizeCurrency}>
-                    {data.currency}
-                    <Text style={styles.SizePrice}>{data.price}</Text>
+                    $
+                    <Text style={styles.SizePrice}>{data.prices.price}</Text>
                   </Text>
                 </View>
 
@@ -53,7 +54,9 @@ function CartIt({
                   <TouchableOpacity
                     style={styles.CartItemIcon}
                     onPress={() => {
-                      decrementCartItemQuantityHandler(id, data.size);
+                      // decrementCartItemQuantityHandler(id, data.size);
+                      dispatch(productsSlice.actions.DECREATEMENT_CART_ITEM_QUANTITY(data.prices))
+                      dispatch(productsSlice.actions.CACULATE_CART_PRICE())
                     }}
                   >
                     <Entypo
@@ -70,7 +73,9 @@ function CartIt({
                   <TouchableOpacity
                     style={styles.CartItemIcon}
                     onPress={() => {
-                      incrementCartItemQuantityHandler(id, data.size);
+                      // incrementCartItemQuantityHandler(id, data.size);
+                      dispatch(productsSlice.actions.INCREATEMENT_CART_ITEM_QUANTITY(data.prices))
+                      dispatch(productsSlice.actions.CACULATE_CART_PRICE())
                     }}
                   >
                     <Entypo

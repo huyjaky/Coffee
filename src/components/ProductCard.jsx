@@ -55,7 +55,6 @@ function CoffeeCard({
         <TouchableOpacity
 
           onPress={() => {
-            console.log(price);
             dispatch(productsSlice.actions.ADD_TO_CART({
               id,
               index,

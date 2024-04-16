@@ -20,9 +20,9 @@ function ImageBackgroundInfo({
   ingredients,
   average_rating,
   ratings_count,
-  roasted,
   BackHandler,
   ToggleFavourite,
+  derived,
 }) {
   return (
     <View>
@@ -79,21 +79,13 @@ function ImageBackgroundInfo({
           <View style={styles.ImageInfoInnerContainer}>
             <View style={styles.InfoContainerRow}>
               <View>
-                <Text
-                  style={[
-                    styles.ItemTitleText,
-                    { color: type === "Bean" ? "#d25018" : "#230C02" },
-                  ]}
-                >
+                <Text style={[styles.ItemTitleText,]} >
                   {name}
                 </Text>
                 <Text
-                  style={[
-                    styles.ItemSubtitleText,
-                    { color: type === "Bean" ? "#d25018" : "#230C02" },
-                  ]}
+                  style={[styles.ItemSubtitleText,]}
                 >
-                  {special_ingredient}
+                  {derived}
                 </Text>
               </View>
               <View style={styles.ItemPropertiesContainer}>
@@ -130,7 +122,7 @@ function ImageBackgroundInfo({
                   name="star"
                   size={20}
                   color={COLORS.primaryOrangeHex}
-                  // color="#693a27"
+                // color="#693a27"
                 />
                 <Text
                   style={[
@@ -150,7 +142,7 @@ function ImageBackgroundInfo({
                 </Text>
               </View>
               <View style={styles.RoastedContainer}>
-                <Text style={styles.RoastedText}>{roasted}</Text>
+                <Text style={styles.RoastedText}>roasted</Text>
               </View>
             </View>
           </View>

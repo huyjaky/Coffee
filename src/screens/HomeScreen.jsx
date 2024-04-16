@@ -33,6 +33,15 @@ function getCategoriesFromData(data1, data2) {
       temp[data[i].type_pr]++;
     }
   }
+
+  for (let i = 0; i < data.length; i++) {
+    if (temp[data[i].derived] == undefined) {
+      temp[data[i].derived] = 1;
+    } else {
+      temp[data[i].derived]++;
+    }
+  }
+
   let categories = Object.keys(temp);
   categories.unshift("All");
   return categories;
@@ -44,6 +53,7 @@ function getProductList(category, data1, data2) {
     return data;
   } else {
     let productsList = data.filter((item) => item.type_pr == category);
+    if (productsList.length == 0) productsList = data.filter((item) => item.derived == category)
     return productsList;
   }
 }
@@ -52,8 +62,7 @@ function getProductList(category, data1, data2) {
 function HomeScreen({ navigation }) {
   const [data, setData] = useState([]);
   const productsList = useSelector((state) => state.products.productsList)
-  const productsList2 = useSelector((state)=> state.products.productsList2)
-  console.log(productsList);
+  const productsList2 = useSelector((state) => state.products.productsList2)
   const dispatch = useDispatch()
 
 
@@ -122,33 +131,6 @@ function HomeScreen({ navigation }) {
     setCategoryIndex({ index: 0, category: categories[0] });
     setsortedProducts([...CoffeeList]);
     setSearchText("");
-  }
-
-  function ProductCardAddToCard(
-    id,
-    index,
-    name,
-    imagelink_square,
-    special_ingredient,
-    type,
-    manage_prices,
-  ) {
-
-    dispatch(productsSlice.actions.ADD_TO_CART({
-      id,
-      index,
-      name,
-      imagelink_square,
-      special_ingredient,
-      type,
-      manage_prices,
-    }))
-    calcullateCartPrice();
-    ToastAndroid.showWithGravity(
-      `${name} is Added to Cart`,
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER
-    );
   }
 
   return (
@@ -260,15 +242,11 @@ function HomeScreen({ navigation }) {
           contentContainerStyle={styles.FlatListContainer}
           keyExtractor={(item) => item?.id_pr}
           renderItem={({ item }) => {
-            console.log('flatt', item);
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push("Details", {
-                    index: item?.index,
-                    id: item?.id_pr,
-                    type: item?.type_pr,
-                  });
+                  dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item))
+                  navigation.push("Details");
                 }}
               >
                 <ProductCard
@@ -301,15 +279,11 @@ function HomeScreen({ navigation }) {
           contentContainerStyle={styles.FlatListContainer}
           keyExtractor={(item) => item?.id_pr}
           renderItem={({ item }) => {
-            console.log('flatt', item);
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push("Details", {
-                    index: item?.index,
-                    id: item?.id_pr,
-                    type: item?.type_pr,
-                  });
+                  dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item))
+                  navigation.push("Details");
                 }}
               >
                 <ProductCard
@@ -321,6 +295,7 @@ function HomeScreen({ navigation }) {
                   special_ingredient={item?.special_ingredient}
                   average_rating={item?.average_rating}
                   price={item?.manage_prices[0]}
+                  
                 />
               </TouchableOpacity>
             );
@@ -415,7 +390,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 36 * 3.6,
   },
-CoffeBeansTitle: {
+  CoffeBeansTitle: {
     fontSize: 18,
     marginLeft: 30,
     marginTop: 70,
