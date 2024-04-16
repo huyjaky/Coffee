@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -6,27 +7,24 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-} from "react-native";
-import { useStore } from "../store/store";
-import { COLORS } from "../theme/theme";
-import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
-import { useState } from "react";
-import PaymentFooter from "../components/PaymentFooter";
+} from 'react-native';
+import { useStore } from '../store/store';
+import { COLORS } from '../theme/theme';
+import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
+import PaymentFooter from '../components/PaymentFooter';
 
 function DetailsScreen({ navigation, route }) {
-  // console.log("route = ", route.params);
   const ItemofIndex = useStore((state) =>
-    route.params.type === "Coffee" ? state.CoffeeList : state.BeanList
+    route.params.type === 'Coffee' ? state.CoffeeList : state.BeanList
   )[route.params.index];
 
   const addToFavoriteList = useStore((state) => state.addToFavoriteList);
   const addToCart = useStore((state) => state.addToCart);
   const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
-  const deleteFromFavoriteList = useStore(
-    (state) => state.deleteFromFavoriteList
-  );
+  const deleteFromFavoriteList = useStore((state) => state.deleteFromFavoriteList);
 
   const [fullDesc, setFullDesc] = useState(false);
+  const [fullIngredient, setFullIngredient] = useState(false);
   const [price, setPrice] = useState(ItemofIndex.prices[0]);
 
   function ToggleFavourite(favourite, type, id) {
@@ -58,8 +56,9 @@ function DetailsScreen({ navigation, route }) {
       prices: [{ ...price, quantity: 1 }],
     });
     calcullateCartPrice();
-    navigation.navigate("Cart");
+    navigation.navigate('Cart');
   }
+
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} hidden={true} />
@@ -85,28 +84,28 @@ function DetailsScreen({ navigation, route }) {
 
         <View style={styles.FooterInfoArea}>
           <Text style={styles.InfoTitle}>Description</Text>
-          {fullDesc ? (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                setFullDesc((prev) => !prev);
-              }}
-            >
-              <Text style={styles.DescriptionText}>
-                {ItemofIndex.description}
-              </Text>
-            </TouchableWithoutFeedback>
-          ) : (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                setFullDesc((prev) => !prev);
-              }}
-            >
-              <Text style={styles.DescriptionText} numberOfLines={3}>
-                {ItemofIndex.description}
-              </Text>
-            </TouchableWithoutFeedback>
-          )}
-          <Text style={styles.InfoTitle}>Size</Text>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setFullDesc((prev) => !prev);
+            }}
+          >
+            <Text style={styles.DescriptionText} numberOfLines={fullDesc ? undefined : 3}>
+              {ItemofIndex.description}
+            </Text>
+          </TouchableWithoutFeedback>
+
+          <Text style={styles.InfoTitle}>Ingredient</Text>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setFullIngredient((prev) => !prev);
+            }}
+          >
+            <Text style={styles.DescriptionText} numberOfLines={fullIngredient ? undefined : 3}>
+              {ItemofIndex.special_ingredient}
+            </Text>
+          </TouchableWithoutFeedback>
+
+          <Text style={[styles.InfoTitle,styles.InfoTitleSize]}>Size</Text>
           <View style={styles.SizeOuterContainer}>
             {ItemofIndex.prices.map((data) => (
               <TouchableOpacity
@@ -128,7 +127,7 @@ function DetailsScreen({ navigation, route }) {
                   style={[
                     styles.SizeText,
                     {
-                      fontSize: ItemofIndex.type === "Bean" ? 14 : 16,
+                      fontSize: ItemofIndex.type === 'Bean' ? 14 : 16,
                       color:
                         data.size === price.size
                           ? COLORS.primaryButtonBlue
@@ -168,49 +167,49 @@ export default DetailsScreen;
 const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
-    // backgroundColor: COLORS.primaryBlackHex,
     backgroundColor: COLORS.primaryBackground,
   },
   ScrollViewFlex: {
     flexGrow: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   FooterInfoArea: {
     padding: 20,
   },
   InfoTitle: {
-    fontWeight: "bold",
-    letterSpacing: 3,
-    fontSize: 16,
-    // color: COLORS.primaryLightGreyHex,
-    color: "#230C02",
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    fontSize: 18,
+    color: COLORS.primaryButtonBlueNavi,
     marginBottom: 10,
+  },
+  InfoTitleSize: {
+    fontSize: 20,
+    color: COLORS.primaryTitle
   },
   DescriptionText: {
     letterSpacing: 0.5,
-    fontWeight: "800",
+    fontWeight: '800',
     fontSize: 14,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: '#230C02',
     marginBottom: 30,
   },
   SizeOuterContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 20,
   },
   SizeBox: {
     flex: 1,
-    // backgroundColor: COLORS.primaryDarkGreyHex,
     backgroundColor: COLORS.primaryBackgroundCard,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 48,
     borderRadius: 10,
     borderWidth: 2,
   },
   SizeText: {
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
