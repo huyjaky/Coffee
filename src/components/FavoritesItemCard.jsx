@@ -1,36 +1,16 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, View } from "react-native";
 import ImageBackgroundInfo from "./ImageBackgroundInfo";
-import { LinearGradient } from "expo-linear-gradient";
-import { COLORS } from "../theme/theme";
 
 function FavoritesItemCard({
-  id,
-  imagelink_portrait,
-  name,
-  special_ingredient,
-  type,
-  ingredients,
-  average_rating,
-  ratings_count,
-  roasted,
-  description,
-  favourite,
+  item,
   ToggleFavouriteItem,
 }) {
   return (
     <View style={styles.CardContainer}>
       <ImageBackgroundInfo
+        item={item}
         EnableBackHandler={false}
-        imagelink_portrait={imagelink_portrait}
-        type={type}
-        id={id}
-        favourite={favourite}
-        name={name}
-        special_ingredient={special_ingredient}
-        ingredients={ingredients}
-        average_rating={average_rating}
-        ratings_count={ratings_count}
-        roasted={roasted}
         ToggleFavourite={ToggleFavouriteItem}
       />
       <LinearGradient
@@ -41,7 +21,7 @@ function FavoritesItemCard({
         style={styles.ContainerLinearGradient}
       >
         <Text style={styles.DescriptionTitle}>Description</Text>
-        <Text style={styles.DescriptionText}>{description}</Text>
+        <Text style={styles.DescriptionText}>{item.des}</Text>
       </LinearGradient>
     </View>
   );

@@ -17,13 +17,12 @@ import { productsSlice } from "../store/states/products";
 
 function DetailsScreen({ navigation, route }) {
   // console.log("route = ", route.params);
-  const ItemofIndex = useSelector((state)=>state.products.currentDetailCart);
+  const ItemofIndex = useSelector((state) => state.products.currentDetailCart);
   const dispatch = useDispatch()
-  useEffect(()=>{},[ItemofIndex])
+  useEffect(()=>{}, [ItemofIndex])
 
   const addToFavoriteList = useStore((state) => state.addToFavoriteList);
-  const addToCart = useStore((state) => state.addToCart);
-  const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
+
   const deleteFromFavoriteList = useStore(
     (state) => state.deleteFromFavoriteList
   );
@@ -39,29 +38,7 @@ function DetailsScreen({ navigation, route }) {
     navigation.pop();
   }
 
-  function addToCartHandler({
-    id,
-    index,
-    name,
-    roasted,
-    imagelink_square,
-    special_ingredient,
-    type,
-    price,
-  }) {
-    addToCart({
-      id,
-      index,
-      name,
-      roasted,
-      imagelink_square,
-      special_ingredient,
-      type,
-      prices: [{ ...price, quantity: 1 }],
-    });
-    calcullateCartPrice();
-    navigation.navigate("Cart");
-  }
+
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} hidden={true} />
@@ -71,18 +48,9 @@ function DetailsScreen({ navigation, route }) {
       >
         <ImageBackgroundInfo
           EnableBackHandler={true}
-          imagelink_portrait={ItemofIndex.imagelink_portrait}
-          type={ItemofIndex.type_pr}
-          id={ItemofIndex.id_pr}
-          favourite={ItemofIndex.favourite}
-          name={ItemofIndex.name_pr}
-          special_ingredient={ItemofIndex.special_ingredient}
-          ingredients={ItemofIndex.ingredients}
-          average_rating={ItemofIndex.average_rating}
-          ratings_count={ItemofIndex.ratings_count}
-          BackHandler={BackHandler}
+          item={ItemofIndex}
           ToggleFavourite={ToggleFavourite}
-          derived={ItemofIndex.derived}
+          BackHandler={BackHandler}
         />
 
         <View style={styles.FooterInfoArea}>
@@ -123,7 +91,7 @@ function DetailsScreen({ navigation, route }) {
                       data.prices.size === price.prices.size
                         ? COLORS.primaryButtonBlue
                         : // : COLORS.primaryDarkGreyHex,
-                          "#fbd09c99",
+                        "#fbd09c99",
                   },
                 ]}
               >
@@ -149,7 +117,7 @@ function DetailsScreen({ navigation, route }) {
           price={price.prices.price}
           buttonTitle="Add to Cart"
           buttonPressHandler={() => {
-            const temp = {...ItemofIndex, manage_prices: [{prices: {...price.prices}, quantity:1}]}
+            const temp = { ...ItemofIndex, manage_prices: [{ prices: { ...price.prices }, quantity: 1 }] }
             dispatch(productsSlice.actions.ADD_TO_CART(temp))
             dispatch(productsSlice.actions.CACULATE_CART_PRICE())
             BackHandler()

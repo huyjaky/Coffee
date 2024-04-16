@@ -1,5 +1,7 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
-import { ADD_TO_CART, CACULATE_CART_PRICE, DECREATEMENT_CART_ITEM_QUANTITY, INCREATEMENT_CART_ITEM_QUANTITY, UPDATE_CURRENT_DETAIL_CART, UPDATE_PRICESLIST, UPDATE_PRODUCTS, UPDATE_PRODUCTS2 } from "./actions";
+import { createSlice } from "@reduxjs/toolkit";
+import { TOGGLE_FAVORITE, UPDATE_FAVORITE_LIST, UPDATE_PRICESLIST, UPDATE_PRODUCTS } from "./actions";
+import { supabase } from "../supabase";
+import { Alert } from "react-native";
 
 const initialState = {
   productsList: [],
@@ -25,8 +27,12 @@ export const productsSlice = createSlice({
       state.productsList2 = state.productsList2.concat(action.payload)
       return state
     },
-    UPDATE_CURRENT_DETAIL_CART: (state, action) =>{
+    UPDATE_CURRENT_DETAIL_CART: (state, action) => {
       state.currentDetailCart = action.payload
+      return state
+    },
+    UPDATE_FAVORITE_LIST: (state, action) => {
+      state.FavoritesList = action.payload.filter((item) => item.favourite == true)
       return state
     },
     ADD_TO_CART: (state, action) => {
@@ -66,7 +72,7 @@ export const productsSlice = createSlice({
 
     },
     INCREATEMENT_CART_ITEM_QUANTITY: (state, action) => {
-      console.log('action',action);
+      console.log('action', action);
       for (let i = 0; i < state.CartList.length; i++) {
         if (state.CartList[i].id_pr === action.payload.id_pr) {
           for (let j = 0; j < state.CartList[i].manage_prices.length; j++) {
@@ -79,7 +85,7 @@ export const productsSlice = createSlice({
       }
     },
     DECREATEMENT_CART_ITEM_QUANTITY: (state, action) => {
-      for (let i = 0; i < state.CartList.length ; i++) {
+      for (let i = 0; i < state.CartList.length; i++) {
         if (state.CartList[i].id_pr == action.payload.id_pr) {
           for (let j = 0; j < state.CartList[i].manage_prices.length; j++) {
             if (state.CartList[i].manage_prices[j].prices.size == action.payload.prices.size) {
@@ -117,6 +123,44 @@ export const productsSlice = createSlice({
       }
       state.CartPrice = totalPrice.toFixed(2).toString();
     },
+    TOGGLE_FAVORITE: (state, action) => {
+      // remove it from fvlist
+      if (action.payload.favourite == true) {
+        state.FavoritesList = state.FavoritesList.filter(item => item.id_pr !== action.payload.id_pr);
+
+        // change values favour in local client
+        state.productsList = state.productsList.map((item) => {
+          if (item.id_pr === action.payload.id_pr) {
+            item.favourite = false
+          }
+          return item
+        })
+        state.productsList2 = state.productsList2.map((item) => {
+          if (item.id_pr === action.payload.id_pr) {
+            item.favourite = false
+          }
+          return item
+        })
+      } else if (action.payload.favourite == false) {
+        state.FavoritesList.push({ ...action.payload, favourite: true })
+
+        // change values favour in local client
+        state.productsList = state.productsList.map((item) => {
+          if (item.id_pr === action.payload.id_pr) {
+            item.favourite = true
+          }
+          return item
+        })
+        state.productsList2 = state.productsList2.map((item) => {
+          if (item.id_pr === action.payload.id_pr) {
+            item.favourite = true
+          }
+          return item
+        })
+        console.log('test', state.productsList[0].favourite);
+      }
+      return state
+    }
   }
 })
 

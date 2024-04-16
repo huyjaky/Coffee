@@ -14,9 +14,13 @@ import EmptyListAnimation from "../components/EmptyListAnimation";
 import PaymentFooter from "../components/PaymentFooter";
 import CartIt from "../components/CartIt";
 import FavoritesItemCard from "../components/FavoritesItemCard";
+import { useDispatch, useSelector } from "react-redux";
+import { productsSlice } from "../store/states/products";
+import { useEffect } from "react";
 
 function FavoritesScreen({ navigation }) {
-  const FavoritesList = useStore((state) => state.FavoritesList);
+  const FavoritesList = useSelector((state) => state.products.FavoritesList);
+  const dispatch = useDispatch()
   const addToFavoriteList = useStore((state) => state.addToFavoriteList);
   const deleteFromFavoriteList = useStore(
     (state) => state.deleteFromFavoriteList
@@ -25,6 +29,8 @@ function FavoritesScreen({ navigation }) {
   function ToggleFavourite(favourite, type, id) {
     favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
   }
+
+  useEffect(()=>{},[FavoritesList])
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -38,33 +44,20 @@ function FavoritesScreen({ navigation }) {
           <View style={styles.ItemContainer}>
             <HeaderBar title="Favourites" />
 
-            {FavoritesList.length === 0 ? (
+            {FavoritesList?.length === 0 ? (
               <EmptyListAnimation title="No favourites" />
             ) : (
               <View style={styles.ListItemContainer}>
-                {FavoritesList.map((data) => (
+                {FavoritesList?.map((data, index) => (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.push("Details", {
-                        index: data.index,
-                        id: data.id,
-                        type: data.type,
-                      });
+                      dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(data))
+                      navigation.push("Details");
                     }}
-                    key={data.id}
+                    key={index}
                   >
                     <FavoritesItemCard
-                      id={data.id}
-                      imagelink_portrait={data.imagelink_portrait}
-                      name={data.name}
-                      special_ingredient={data.special_ingredient}
-                      type={data.type}
-                      ingredients={data.ingredients}
-                      average_rating={data.average_rating}
-                      ratings_count={data.ratings_count}
-                      roasted={data.roasted}
-                      description={data.description}
-                      favourite={data.favourite}
+                      item={data}
                       ToggleFavouriteItem={ToggleFavourite}
                     />
                   </TouchableOpacity>

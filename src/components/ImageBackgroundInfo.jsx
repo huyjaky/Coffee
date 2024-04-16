@@ -1,33 +1,45 @@
+import { AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   ImageBackground,
   StyleSheet,
   Text,
+  TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native";
-import GradientBGIcon from "./GradientBGIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
-import { MaterialCommunityIcons, Entypo, AntDesign } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import { supabase } from "../store/supabase";
+import { err } from "react-native-svg";
 
 function ImageBackgroundInfo({
+  item,
   EnableBackHandler,
-  imagelink_portrait,
-  type,
-  id,
-  favourite,
-  name,
-  special_ingredient,
-  ingredients,
-  average_rating,
-  ratings_count,
   BackHandler,
   ToggleFavourite,
-  derived,
 }) {
+
+  const FavoritesList = useSelector((state) => state.products.FavoritesList);
+  const item2 = useSelector((state) => state.products.currentDetailCart)
+  const [isFavor, setIsFavor] = useState(item.favourite)
+  const dispatch = useDispatch()
+
+  function toggleFavor() {
+    // update in db
+    // const { error } = await supabase.from('products').update({ favourite: !isFavor }).eq('id_pr', id)
+    setIsFavor(!isFavor)
+    dispatch(productsSlice.actions.TOGGLE_FAVORITE(item))
+  }
+
+  useEffect(() => {}, [item])
+
+
   return (
     <View>
       <ImageBackground
-        source={imagelink_portrait}
+        source={item.imagelink_portrait}
         style={styles.ItemBackgroundImage}
       >
         {EnableBackHandler ? (
@@ -37,41 +49,40 @@ function ImageBackgroundInfo({
                 BackHandler();
               }}
             >
-              <GradientBGIcon
-                name="arrow-back"
+              <AntDesign
+                name="arrowleft"
                 color={COLORS.primaryLightGreyHex}
-                size={16}
+                size={40}
               />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                ToggleFavourite(favourite, type, id);
+                toggleFavor()
               }}
             >
-              <GradientBGIcon
+              <AntDesign
                 name="heart"
                 color={
-                  favourite ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex
+                  isFavor ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex
                 }
-                size={16}
+                size={40}
               />
             </TouchableOpacity>
           </View>
         ) : (
           <View style={styles.ImageHeaderBarContainerWithoutBack}>
-            <TouchableOpacity
+            <TouchableHighlight
               onPress={() => {
-                ToggleFavourite(favourite, type, id);
-              }}
-            >
-              <GradientBGIcon
-                name="heart"
-                color={
-                  favourite ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex
-                }
-                size={16}
-              />
-            </TouchableOpacity>
+                toggleFavor()
+              }} >
+              <View>
+                <AntDesign
+                  name="heart"
+                  color={isFavor ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex}
+                  size={40}
+                />
+              </View>
+            </TouchableHighlight>
           </View>
         )}
 
@@ -80,39 +91,39 @@ function ImageBackgroundInfo({
             <View style={styles.InfoContainerRow}>
               <View>
                 <Text style={[styles.ItemTitleText,]} >
-                  {name}
+                  {item.name_pr}
                 </Text>
                 <Text
                   style={[styles.ItemSubtitleText,]}
                 >
-                  {derived}
+                  {item.derived}
                 </Text>
               </View>
               <View style={styles.ItemPropertiesContainer}>
                 <View style={styles.ProperFirst}>
                   <MaterialCommunityIcons
-                    name={type === "Bean" ? "seed" : "coffee"}
-                    size={type === "Bean" ? 18 : 24}
+                    name={item.type_pr === "Bean" ? "seed" : "coffee"}
+                    size={item.type_pr === "Bean" ? 18 : 24}
                     // color={COLORS.primaryOrangeHex}
                     color="#230C02"
                   />
                   <Text
                     style={[
                       styles.PropertyTextFirst,
-                      { marginTop: type === "Bean" ? 6 : 0 },
+                      { marginTop: item.type_pr === "Bean" ? 6 : 0 },
                     ]}
                   >
-                    {type}
+                    {item.type_pr}
                   </Text>
                 </View>
                 <View style={styles.ProperFirst}>
                   <Entypo
-                    name={type === "Bean" ? "location-pin" : "drop"}
+                    name={item.type_pr === "Bean" ? "location-pin" : "drop"}
                     size={16}
                     // color={COLORS.primaryOrangeHex}
                     color="#230C02"
                   />
-                  <Text style={styles.PropertyTextLast}>{ingredients}</Text>
+                  <Text style={styles.PropertyTextLast}>{item.ingredients}</Text>
                 </View>
               </View>
             </View>
@@ -127,18 +138,18 @@ function ImageBackgroundInfo({
                 <Text
                   style={[
                     styles.RatingText,
-                    { color: type === "Bean" ? "#d25018" : "#230C02" },
+                    { color: item.type_pr === "Bean" ? "#d25018" : "#230C02" },
                   ]}
                 >
-                  {average_rating}
+                  {item.average_rating}
                 </Text>
                 <Text
                   style={[
                     styles.RatingCountText,
-                    { color: type === "Bean" ? "#d25018" : "#230C02" },
+                    { color: item.type_pr === "Bean" ? "#d25018" : "#230C02" },
                   ]}
                 >
-                  ({ratings_count})
+                  ({item.ratings_count})
                 </Text>
               </View>
               <View style={styles.RoastedContainer}>

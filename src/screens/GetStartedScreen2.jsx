@@ -19,16 +19,12 @@ function GetStartedScreen2() {
   async function fetchProducts() {
     const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Bean')
     dispatch(productsSlice.actions.UPDATE_PRODUCTS(data))
-
     if (error) Alert.alert(error)
   }
 
-
   async function fetchProducts2() {
-
     const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Coffee')
     dispatch(productsSlice.actions.UPDATE_PRODUCTS2(data))
-
     if (error) Alert.alert(error)
   }
 
@@ -38,6 +34,7 @@ function GetStartedScreen2() {
   }, [])
 
   useEffect(() => {
+    dispatch(productsSlice.actions.UPDATE_FAVORITE_LIST(productsList.concat(productsList2)))
   }, [productsList2, productsList])
 
   return (

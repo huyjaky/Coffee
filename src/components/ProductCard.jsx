@@ -18,7 +18,6 @@ const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 function CoffeeCard({
   item
 }) {
-  console.log('item', item);
   const dispatch = useDispatch()
   return (
     <LinearGradient

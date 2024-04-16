@@ -60,39 +60,16 @@ function getProductList(category, data1, data2) {
 
 
 function HomeScreen({ navigation }) {
-  const [data, setData] = useState([]);
   const productsList = useSelector((state) => state.products.productsList)
   const productsList2 = useSelector((state) => state.products.productsList2)
+  const FavoritesList = useSelector((state) => state.products.FavoritesList)
   const dispatch = useDispatch()
 
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const { data, error } = await supabase.from("Coffee").select("*");
-        if (error) {
-          console.log("error fetching data", error);
-        } else {
-          // console.log(data);
-          setData(data);
-        }
-      } catch (error) {
-        console.log("error: ", error);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  console.log("Data: ", data);
-
-  const addToCart = useStore((state) => state.addToCart);
-  const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
-  const tabBarHeight = useBottomTabBarHeight();
   const ListRef = useRef();
 
   const CoffeeList = useStore((state) => state.CoffeeList);
-  const BeanList = useStore((state) => state.BeanList);
+
   // console.log(BeanList);
   const [searchText, setSearchText] = useState("");
   const [categories, setCatehories] = useState(
@@ -106,6 +83,16 @@ function HomeScreen({ navigation }) {
   const [sortedProducts, setsortedProducts] = useState(
     getProductList(categoryIndex.category, productsList, productsList2)
   );
+
+  
+  useEffect(() => {
+    setsortedProducts(
+      getProductList(categoryIndex.category, productsList, productsList2)
+    )
+  }, [FavoritesList, productsList, productsList2])
+
+  useEffect(()=>{},[sortedProducts])
+
   // console.log("sortedProducts = ", sortedProducts.length);
 
   function searchCoffee(search) {
@@ -132,6 +119,8 @@ function HomeScreen({ navigation }) {
     setsortedProducts([...CoffeeList]);
     setSearchText("");
   }
+
+  useEffect(() => { }, [productsList, productsList2])
 
   return (
     <View style={styles.ScreenContainer}>
@@ -249,7 +238,7 @@ function HomeScreen({ navigation }) {
                   navigation.push("Details");
                 }}
               >
-                <ProductCard item={item}/>
+                <ProductCard item={item} />
               </TouchableOpacity>
             );
           }}
