@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -8,13 +8,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
+import PaymentFooter from "../components/PaymentFooter";
+import { productsSlice } from "../store/states/products";
 import { useStore } from "../store/store";
 import { COLORS } from "../theme/theme";
-import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
-import { useEffect, useState } from "react";
-import PaymentFooter from "../components/PaymentFooter";
-import { useDispatch, useSelector } from "react-redux";
-import { productsSlice } from "../store/states/products";
 
 function DetailsScreen({ navigation, route }) {
   // console.log("route = ", route.params);
