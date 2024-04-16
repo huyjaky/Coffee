@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -133,49 +134,49 @@ export default DetailsScreen;
 const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
-    // backgroundColor: COLORS.primaryBlackHex,
     backgroundColor: COLORS.primaryBackground,
   },
   ScrollViewFlex: {
     flexGrow: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   FooterInfoArea: {
     padding: 20,
   },
   InfoTitle: {
-    fontWeight: "bold",
-    letterSpacing: 3,
-    fontSize: 16,
-    // color: COLORS.primaryLightGreyHex,
-    color: "#230C02",
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    fontSize: 18,
+    color: COLORS.primaryButtonBlueNavi,
     marginBottom: 10,
+  },
+  InfoTitleSize: {
+    fontSize: 20,
+    color: COLORS.primaryTitle
   },
   DescriptionText: {
     letterSpacing: 0.5,
-    fontWeight: "800",
+    fontWeight: '800',
     fontSize: 14,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: '#230C02',
     marginBottom: 30,
   },
   SizeOuterContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 20,
   },
   SizeBox: {
     flex: 1,
-    // backgroundColor: COLORS.primaryDarkGreyHex,
     backgroundColor: COLORS.primaryBackgroundCard,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 48,
     borderRadius: 10,
     borderWidth: 2,
   },
   SizeText: {
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });

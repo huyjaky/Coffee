@@ -7,6 +7,7 @@ import OrderHistoryScreen from "../screens/OrderHistoryScreen";
 import { COLORS } from "../theme/theme";
 import { BlurView } from "@react-native-community/blur";
 import { Ionicons, Entypo } from "@expo/vector-icons";
+import AdminScreen from "../screens/AdminScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +19,6 @@ function TabNavigator() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyle,
-        
         tabBarActiveBackgroundColor: COLORS.primaryBackground,
         tabBarInactiveBackgroundColor: COLORS.primaryBackground
       }}
@@ -32,22 +32,7 @@ function TabNavigator() {
               name="home"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
-              }
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Cart"
-        component={CartScreen}
-        options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name="cart"
-              size={25}
-              color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryButtonGreen : COLORS.primaryTitle
               }
             />
           ),
@@ -62,12 +47,28 @@ function TabNavigator() {
               name="heart"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryButtonGreen : COLORS.primaryTitle
               }
             />
           ),
         }}
       />
+      <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name="cart"
+              size={25}
+              color={
+                focused ? COLORS.primaryButtonGreen : COLORS.primaryTitle
+              }
+            />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="History"
         component={OrderHistoryScreen}
@@ -77,7 +78,23 @@ function TabNavigator() {
               name="bell"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryButtonGreen : COLORS.primaryTitle
+              }
+            />
+          ),
+        }}
+      />
+      
+      <Tab.Screen
+        name="Admin"
+        component={AdminScreen}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Entypo
+              name="lock"
+              size={25}
+              color={
+                focused ? COLORS.primaryButtonGreen : COLORS.primaryTitle
               }
             />
           ),

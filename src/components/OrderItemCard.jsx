@@ -104,14 +104,12 @@ const styles = StyleSheet.create({
   CardTitle: {
     fontWeight: "600",
     fontSize: 18,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryTitle,
   },
   CardSubtitle: {
     fontWeight: "800",
     fontSize: 12,
-    // color: COLORS.secondaryLightGreyHex,
-    color: "#693a27",
+    color:  COLORS.primaryTextBlue,
   },
   CardCurrency: {
     fontWeight: "bold",
@@ -146,7 +144,7 @@ const styles = StyleSheet.create({
   },
   PriceBoxRight: {
     // backgroundColor: COLORS.primaryBlackHex,
-    backgroundColor: "#f6ddd3",
+    backgroundColor: COLORS.primaryButtonGreen,
     height: 45,
     flex: 1,
     borderTopRightRadius: 10,
@@ -157,18 +155,18 @@ const styles = StyleSheet.create({
   },
   PriceCurrence: {
     fontWeight: "bold",
-    fontSize: 16,
-    color: "#693a27",
+    fontSize: 20,
+    color: COLORS.primaryNovel,
   },
   Price: {
-    color: "#88310c",
+    color: COLORS.primaryBackground,
   },
   CardQuantityPriceText: {
     flex: 1,
     textAlign: "right",
     fontWeight: "bold",
     fontSize: 18,
-    color: "#693a27",
+    color: COLORS.primaryNovel,
   },
 
   CardIconMultiple: {}

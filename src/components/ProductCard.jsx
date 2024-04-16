@@ -77,9 +77,7 @@ export default CoffeeCard;
 const styles = StyleSheet.create({
   CardLinearGradientContainer: {
     padding: 15,
-    borderTopLeftRadius: 40,
-    borderBottomRightRadius: 40,
-
+    borderRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

@@ -53,18 +53,17 @@ const styles = StyleSheet.create({
   HeaderTitle: {
     fontWeight: "bold",
     fontSize: 16,
-    color: COLORS.primaryWhiteHex,
-    color: "#693a27",
+    color: COLORS.primaryNovel,
   },
   HeaderSubtitle: {
     fontWeight: "400",
     fontSize: 13,
-    color: COLORS.primaryOrangeHex,
+    color: COLORS.primaryNovel,
   },
   HeaderPrice: {
     fontWeight: "600",
     fontSize: 14,
-    color: COLORS.primaryOrangeHex,
+    color: COLORS.primaryNovel,
   },
   PriceContainer: {
     alignItems: "flex-end",
