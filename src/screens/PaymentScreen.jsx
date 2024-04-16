@@ -60,8 +60,10 @@ function PaymentScreen({ navigation, route }) {
   const dispatch = useDispatch()
 
   const CartList = useSelector(state => state.products.CartList)
+  // const OrderHistoryList = useSelector(state => state.OrderHistoryList)
   async function localStored() {
     await AsyncStorage.setItem('SaveCart', JSON.stringify(CartList))
+    // await AsyncStorage.setItem('SaveOrderHistory', JSON.stringify(OrderHistoryList))
   }
 
   useEffect(()=>{localStored()},[CartList])

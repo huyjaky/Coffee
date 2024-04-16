@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ADD_TO_ORDER_HISTORY_LIST_FROM_CART, TOGGLE_FAVORITE, UPDATE_CARTLIST, UPDATE_FAVORITE_LIST, UPDATE_PRICESLIST, UPDATE_PRODUCTS } from "./actions";
+import { ADD_TO_ORDER_HISTORY_LIST_FROM_CART, TOGGLE_FAVORITE, UPDATE_CARTLIST, UPDATE_FAVORITE_LIST, UPDATE_ORDER_HISTORY_LIST_FROM_CART, UPDATE_PRICESLIST, UPDATE_PRODUCTS } from "./actions";
 import { supabase } from "../supabase";
 import { Alert } from "react-native";
 
@@ -37,6 +37,10 @@ export const productsSlice = createSlice({
     },
     UPDATE_CARTLIST : (state, action) =>{
       state.CartList = action.payload
+      return state
+    },
+    UPDATE_ORDER_HISTORY_LIST_FROM_CART: (state, action) =>{
+      state.OrderHistoryList = action.payload
       return state
     },
     ADD_TO_CART: (state, action) => {

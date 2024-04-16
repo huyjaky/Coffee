@@ -16,17 +16,28 @@ function GetStartedScreen2() {
   const productsList = useSelector((state) => state.products.productsList)
   const productsList2 = useSelector((state) => state.products.productsList2)
   const CartList = useSelector(state => state.products.CartList)
+  const OrderHistoryList = useSelector(state => state.OrderHistoryList)
   const dispatch = useDispatch()
 
 
   async function getLocalStorage() {
-      await AsyncStorage.getItem('SaveCart').then(value => dispatch(productsSlice.actions.UPDATE_CARTLIST(JSON.parse(value))))
+    await AsyncStorage.getItem('SaveCart').then(value => {
+      if (value) {
+        dispatch(productsSlice.actions.UPDATE_CARTLIST(JSON.parse(value)))
+      }
+    })
+    await AsyncStorage.getItem('SaveOrderHistory').then(value => {
+      if (value) {
+        dispatch(productsSlice.actions.UPDATE_ORDER_HISTORY_LIST_FROM_CART(JSON.parse(value)))
+      }
+    })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(CartList)
+    console.log(OrderHistoryList);
     dispatch(productsSlice.actions.CACULATE_CART_PRICE())
-  },[CartList])
+  }, [CartList, OrderHistoryList])
 
   async function fetchProducts() {
     const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Bean')

@@ -15,6 +15,7 @@ import PopUpAnimation from "../components/PopUpAnimation";
 import { useEffect, useState } from "react";
 import OrderHistoryCard from "../components/OrderHistoryCard";
 import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function OrderHistoryScreen({ navigation }) {
   const OrderHistoryList = useSelector((state) => state.products.OrderHistoryList);
@@ -22,7 +23,12 @@ function OrderHistoryScreen({ navigation }) {
   const [showAnimation, setShowAnimation] = useState(false);
   // console.log("History length = ", OrderHistoryList.length);
   // console.log("History = ", OrderHistoryList);
-  useEffect(()=>{},[OrderHistoryList])
+
+  async function localStored() {
+    await AsyncStorage.setItem('SaveOrderHistory', JSON.stringify(OrderHistoryList))
+  }
+
+  useEffect(() => {localStored()}, [OrderHistoryList])
 
   function navigationHandler() {
     navigation.push("Details");
