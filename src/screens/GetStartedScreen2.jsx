@@ -40,13 +40,13 @@ function GetStartedScreen2() {
   }, [CartList, OrderHistoryList])
 
   async function fetchProducts() {
-    const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Bean')
+    const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('category_pr', 'medical equipment')
     dispatch(productsSlice.actions.UPDATE_PRODUCTS(data))
     if (error) Alert.alert(error)
   }
 
   async function fetchProducts2() {
-    const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('type_pr', 'Coffee')
+    const { data, error } = await supabase.from('products').select("*, manage_prices(prices(prices_id, size, unit, price))").eq('category_pr', 'medicine')
     dispatch(productsSlice.actions.UPDATE_PRODUCTS2(data))
     if (error) Alert.alert(error)
   }

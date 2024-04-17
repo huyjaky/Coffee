@@ -1,20 +1,19 @@
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useEffect } from "react";
 import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { COLORS } from "../theme/theme";
-import HeaderBar from "../components/HeaderBar";
-import EmptyListAnimation from "../components/EmptyListAnimation";
-import PaymentFooter from "../components/PaymentFooter";
-import CartIt from "../components/CartIt";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import CartIt from "../components/CartIt";
+import EmptyListAnimation from "../components/EmptyListAnimation";
+import HeaderBar from "../components/HeaderBar";
+import PaymentFooter from "../components/PaymentFooter";
 import { productsSlice } from "../store/states/products";
+import { COLORS } from "../theme/theme";
 
 function CartScreen({ navigation, route }) {
   const productsList = useSelector((state)=> state.products.productsList)

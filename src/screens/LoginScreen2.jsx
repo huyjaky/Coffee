@@ -28,16 +28,19 @@ import { useContext, useEffect, useState } from "react";
 import { COLORS } from "../theme/theme";
 import { Session } from '@supabase/supabase-js'
 import { supabase } from "../store/supabase";
+import { useSelector } from "react-redux";
 
 
 
-function LoginScreen2({ session }) {
+function LoginScreen2() {
   const navigation = useNavigation();
 
   const authCtx = useContext(AuthContext);
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const user = useSelector(state => state.user.user)
+
 
   async function signInWithEmail() {
     setLoading(true)
@@ -45,15 +48,16 @@ function LoginScreen2({ session }) {
       email: email,
       password: password,
     })
-
     if (error) {
       Alert.alert(error.message)
     } else {
-
       // Login success
       authCtx.login()
     }
+    setLoading(false)
   }
+
+
 
 
 
@@ -170,7 +174,7 @@ function LoginScreen2({ session }) {
           >
 
             <TouchableOpacity
-              onPress={()=>signInWithEmail()}
+              onPress={() => signInWithEmail()}
               disabled={loading}
               style={{
                 paddingVertical: 12,

@@ -16,6 +16,9 @@ import HeaderBar from "../components/HeaderBar";
 import ProductCard from "../components/ProductCard";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
+import { supabase } from "../store/supabase";
+import { Session } from '@supabase/supabase-js'
+import { userSlice } from "../store/states/user";
 
 function getCategoriesFromData(data1, data2) {
   const data = data1.concat(data2)
@@ -36,6 +39,14 @@ function getCategoriesFromData(data1, data2) {
     }
   }
 
+  for (let i = 0; i < data.length; i++) {
+    if (temp[data[i].category_pr] == undefined) {
+      temp[data[i].category_pr] = 1;
+    } else {
+      temp[data[i].category_pr]++;
+    }
+  }
+
   let categories = Object.keys(temp);
   categories.unshift("All");
   return categories;
@@ -46,9 +57,14 @@ function getProductList(category, data1, data2) {
   if (category == "All") {
     return data;
   } else {
-    let productsList = data.filter((item) => item.type_pr == category);
-    if (productsList.length == 0) productsList = data.filter((item) => item.derived == category)
-    return productsList;
+    if (category === 'medical equipment' || category === 'medicine') {
+      let productsList = data.filter((item) => item.category_pr == category);
+      return productsList;
+    } else  {
+      let productsList = data.filter((item) => item.derived == category)
+      if (productsList.length == 0) productsList = data.filter((item) => item.type_pr == category)
+      return productsList
+    }
   }
 }
 
@@ -100,6 +116,36 @@ function HomeScreen({ navigation }) {
     }
   }
 
+  // initially update user
+  const [session, setSession] = useState(null)
+  const user = useSelector(state => state.user.user)
+
+  async function fetchExtra() {
+    if (session?.access_token) {
+      // console.log(session.user.id); dot user is must step to call id inside session
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id)
+      if (!error && data) dispatch(userSlice.actions.UPDATE_CURRENT_USER({
+        ...session,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        role: data.role
+      }))
+    }
+  }
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+
+  useEffect(() => {
+    fetchExtra()
+  }, [session])
+  //---------------------------------------------------------------
 
   useEffect(() => {
     setsortedProducts(
@@ -113,7 +159,7 @@ function HomeScreen({ navigation }) {
     searchCoffee()
   }, [productAll, searchText])
 
-  // console.log("sortedProducts = ", sortedProducts.length);
+
 
 
 
