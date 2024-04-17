@@ -62,7 +62,7 @@ function HomeScreen({ navigation }) {
 
   const ListRef = useRef();
 
-  const productAll = productsList.concat(productsList2);
+  const [productAll, setProductAll] = useState(productsList.concat(productsList2));
 
   // console.log(BeanList);
   const [searchText, setSearchText] = useState("");
@@ -78,19 +78,15 @@ function HomeScreen({ navigation }) {
     getProductList(categoryIndex.category, productsList, productsList2)
   );
 
+  function searchCoffee() {
+    if (searchText === '') {
+      setsortedProducts(
+        getProductList(categoryIndex.category, productsList, productsList2)
+      )
+      return
+    }
 
-  useEffect(() => {
-    setsortedProducts(
-      getProductList(categoryIndex.category, productsList, productsList2)
-    )
-  }, [FavoritesList, productsList, productsList2])
-
-  useEffect(() => { }, [sortedProducts])
-
-  // console.log("sortedProducts = ", sortedProducts.length);
-
-  function searchCoffee(search) {
-    if (search !== "") {
+    if (searchText !== "") {
       ListRef?.current?.scrollToOffset({
         animated: true,
         offset: 0,
@@ -98,11 +94,28 @@ function HomeScreen({ navigation }) {
       setCategoryIndex({ index: 0, category: categories[0] });
       setsortedProducts([
         ...productAll?.filter((item) =>
-          item?.name?.toLowerCase()?.includes(search?.toLowerCase())
+          item?.name_pr?.toLowerCase()?.includes(searchText?.toLowerCase())
         ),
       ]);
     }
   }
+
+
+  useEffect(() => {
+    setsortedProducts(
+      getProductList(categoryIndex.category, productsList, productsList2)
+    )
+    setProductAll(productsList.concat(productsList2))
+  }, [FavoritesList, productsList, productsList2])
+
+  useEffect(() => { }, [sortedProducts])
+  useEffect(() => {
+    searchCoffee()
+  }, [productAll, searchText])
+
+  // console.log("sortedProducts = ", sortedProducts.length);
+
+
 
   function resetSearchCoffee() {
     ListRef?.current?.scrollToOffset({
@@ -147,7 +160,7 @@ function HomeScreen({ navigation }) {
             value={searchText}
             onChangeText={(text) => {
               setSearchText(text);
-              searchCoffee(text);
+
             }}
             placeholderTextColor={COLORS.primaryWhiteHex}
             style={styles.TextInputContainer}
@@ -224,9 +237,10 @@ function HomeScreen({ navigation }) {
           data={sortedProducts}
           contentContainerStyle={styles.FlatListContainer}
           keyExtractor={(item) => item?.id_pr}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item))
                   navigation.push("Details");
@@ -252,9 +266,10 @@ function HomeScreen({ navigation }) {
           data={productsList2}
           contentContainerStyle={styles.FlatListContainer}
           keyExtractor={(item) => item?.id_pr}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
+                key={index}
                 onPress={() => {
                   dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item))
                   navigation.push("Details");
@@ -266,7 +281,7 @@ function HomeScreen({ navigation }) {
           }}
         />
 
-        <Text style={styles.CoffeBeansTitle}>Text</Text>
+        <Text style={styles.CoffeBeansTitle}></Text>
         {/* Beans FlatList */}
       </ScrollView>
     </View>
