@@ -1,3 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -6,22 +8,14 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  ToastAndroid,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import { useStore } from "../store/store";
-import { useEffect, useRef, useState } from "react";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { COLORS, FONTFAMILY } from "../theme/theme";
-import HeaderBar from "../components/HeaderBar";
-import { useFonts } from "expo-font";
-import { useCallback } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import ProductCard from "../components/ProductCard";
-import supabase from "../store/supabase";
 import { useDispatch, useSelector } from "react-redux";
+import HeaderBar from "../components/HeaderBar";
+import ProductCard from "../components/ProductCard";
 import { productsSlice } from "../store/states/products";
+import { COLORS } from "../theme/theme";
 
 function getCategoriesFromData(data1, data2) {
   const data = data1.concat(data2)
@@ -68,7 +62,7 @@ function HomeScreen({ navigation }) {
 
   const ListRef = useRef();
 
-  const CoffeeList = useStore((state) => state.CoffeeList);
+  const productAll = productsList.concat(productsList2);
 
   // console.log(BeanList);
   const [searchText, setSearchText] = useState("");
@@ -84,14 +78,14 @@ function HomeScreen({ navigation }) {
     getProductList(categoryIndex.category, productsList, productsList2)
   );
 
-  
+
   useEffect(() => {
     setsortedProducts(
       getProductList(categoryIndex.category, productsList, productsList2)
     )
   }, [FavoritesList, productsList, productsList2])
 
-  useEffect(()=>{},[sortedProducts])
+  useEffect(() => { }, [sortedProducts])
 
   // console.log("sortedProducts = ", sortedProducts.length);
 
@@ -103,7 +97,7 @@ function HomeScreen({ navigation }) {
       });
       setCategoryIndex({ index: 0, category: categories[0] });
       setsortedProducts([
-        ...CoffeeList?.filter((item) =>
+        ...productAll?.filter((item) =>
           item?.name?.toLowerCase()?.includes(search?.toLowerCase())
         ),
       ]);
@@ -116,7 +110,7 @@ function HomeScreen({ navigation }) {
       offset: 0,
     });
     setCategoryIndex({ index: 0, category: categories[0] });
-    setsortedProducts([...CoffeeList]);
+    setsortedProducts([...productAll]);
     setSearchText("");
   }
 

@@ -4,14 +4,12 @@ import ImageBackgroundInfo from "./ImageBackgroundInfo";
 
 function FavoritesItemCard({
   item,
-  ToggleFavouriteItem,
 }) {
   return (
     <View style={styles.CardContainer}>
       <ImageBackgroundInfo
         item={item}
         EnableBackHandler={false}
-        ToggleFavourite={ToggleFavouriteItem}
       />
       <LinearGradient
         start={{ x: 0, y: 0 }}

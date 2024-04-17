@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useStore } from "../store/store";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { COLORS } from "../theme/theme";
 import HeaderBar from "../components/HeaderBar";
@@ -25,13 +24,6 @@ function CartScreen({ navigation, route }) {
   const dispatch = useDispatch()
 
   const CartPrice = useSelector((state)=>state.products.CartPrice);
-  const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
-  const incrementCartItemQuantity = useStore(
-    (state) => state.incrementCartItemQuantity
-  );
-  const decrementCartItemQuantity = useStore(
-    (state) => state.decrementCartItemQuantity
-  );
   // console.log("CartList = ", CartList.length);
   const tabBarHeight = useBottomTabBarHeight();
 

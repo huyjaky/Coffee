@@ -1,34 +1,25 @@
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useEffect } from "react";
 import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import { useStore } from "../store/store";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { COLORS } from "../theme/theme";
-import HeaderBar from "../components/HeaderBar";
-import EmptyListAnimation from "../components/EmptyListAnimation";
-import PaymentFooter from "../components/PaymentFooter";
-import CartIt from "../components/CartIt";
-import FavoritesItemCard from "../components/FavoritesItemCard";
 import { useDispatch, useSelector } from "react-redux";
+import EmptyListAnimation from "../components/EmptyListAnimation";
+import FavoritesItemCard from "../components/FavoritesItemCard";
+import HeaderBar from "../components/HeaderBar";
 import { productsSlice } from "../store/states/products";
-import { useEffect } from "react";
+import { COLORS } from "../theme/theme";
 
 function FavoritesScreen({ navigation }) {
   const FavoritesList = useSelector((state) => state.products.FavoritesList);
   const dispatch = useDispatch()
-  const addToFavoriteList = useStore((state) => state.addToFavoriteList);
-  const deleteFromFavoriteList = useStore(
-    (state) => state.deleteFromFavoriteList
-  );
+
   const tabBarHeight = useBottomTabBarHeight();
-  function ToggleFavourite(favourite, type, id) {
-    favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
-  }
+
 
   useEffect(()=>{},[FavoritesList])
   return (
@@ -58,7 +49,6 @@ function FavoritesScreen({ navigation }) {
                   >
                     <FavoritesItemCard
                       item={data}
-                      ToggleFavouriteItem={ToggleFavourite}
                     />
                   </TouchableOpacity>
                 ))}

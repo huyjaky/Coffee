@@ -16,7 +16,6 @@ import PaymentFooter from "../components/PaymentFooter";
 import PaymentMethod from "../components/PaymentMethod";
 import PopUpAnimation from "../components/PopUpAnimation";
 import { productsSlice } from "../store/states/products";
-import { useStore } from "../store/store";
 import { COLORS } from "../theme/theme";
 
 const PaymentList = [
@@ -56,7 +55,6 @@ function PaymentScreen({ navigation, route }) {
   const cartPrice = useSelector((state)=> state.products.CartPrice)
   const [paymentMode, setPaymentMode] = useState("Credit Card");
   const [showAnimation, setShowAnimation] = useState(false);
-  const calcullateCartPrice = useStore((state) => state.calcullateCartPrice);
   const dispatch = useDispatch()
 
   const CartList = useSelector(state => state.products.CartList)
@@ -74,7 +72,6 @@ function PaymentScreen({ navigation, route }) {
     dispatch(productsSlice.actions.ADD_TO_ORDER_HISTORY_LIST_FROM_CART())
     dispatch(productsSlice.actions.UPDATE_CARTLIST([]))
     dispatch(productsSlice.actions.CACULATE_CART_PRICE())
-    calcullateCartPrice();
     setTimeout(() => {
       setShowAnimation(false);
       navigation.navigate("History");

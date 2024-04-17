@@ -19,7 +19,7 @@ function OrderItemCard({
         <View style={styles.CardImageInfoContainer}>
           <Image source={item.imagelink_square} style={styles.Image} />
           <View>
-            <Text style={styles.CardTitle}>{item.name}</Text>
+            <Text style={styles.CardTitle}>{item.name_pr}</Text>
             <Text style={styles.CardSubtitle}>{item.special_ingredient}</Text>
           </View>
         </View>

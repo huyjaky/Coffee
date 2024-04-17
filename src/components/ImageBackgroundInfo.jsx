@@ -18,7 +18,6 @@ function ImageBackgroundInfo({
   item,
   EnableBackHandler,
   BackHandler,
-  ToggleFavourite,
 }) {
 
   const FavoritesList = useSelector((state) => state.products.FavoritesList);

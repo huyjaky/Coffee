@@ -1,6 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../theme/theme";
 import OrderItemCard from "./OrderItemCard";
+import { useDispatch } from "react-redux";
+import { productsSlice } from "../store/states/products";
 
 function OrderHistoryCard({
   navigationHandler,
@@ -8,6 +10,7 @@ function OrderHistoryCard({
   CartListPrice,
   OrderDate,
 }) {
+  const dispatch = useDispatch()
   return (
     <View style={styles.CardContainer}>
       <View style={styles.CardHeader}>
@@ -25,6 +28,7 @@ function OrderHistoryCard({
           <TouchableOpacity
             key={index.toString() + data.id_pr}
             onPress={() => {
+              dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(data))
               navigationHandler();
             }}
           >

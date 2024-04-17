@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
 import PaymentFooter from "../components/PaymentFooter";
 import { productsSlice } from "../store/states/products";
-import { useStore } from "../store/store";
 import { COLORS } from "../theme/theme";
 
 function DetailsScreen({ navigation, route }) {
@@ -21,18 +20,10 @@ function DetailsScreen({ navigation, route }) {
   const dispatch = useDispatch()
   useEffect(()=>{}, [ItemofIndex])
 
-  const addToFavoriteList = useStore((state) => state.addToFavoriteList);
-
-  const deleteFromFavoriteList = useStore(
-    (state) => state.deleteFromFavoriteList
-  );
 
   const [fullDesc, setFullDesc] = useState(false);
   const [price, setPrice] = useState(ItemofIndex.manage_prices[0]);
 
-  function ToggleFavourite(favourite, type, id) {
-    favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
-  }
 
   function BackHandler() {
     navigation.pop();
@@ -49,7 +40,6 @@ function DetailsScreen({ navigation, route }) {
         <ImageBackgroundInfo
           EnableBackHandler={true}
           item={ItemofIndex}
-          ToggleFavourite={ToggleFavourite}
           BackHandler={BackHandler}
         />
 

@@ -1,3 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -5,22 +9,19 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useStore } from "../store/store";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { StatusBar } from "expo-status-bar";
-import { COLORS } from "../theme/theme";
-import HeaderBar from "../components/HeaderBar";
+import { useDispatch, useSelector } from "react-redux";
 import EmptyListAnimation from "../components/EmptyListAnimation";
-import PopUpAnimation from "../components/PopUpAnimation";
-import { useEffect, useState } from "react";
+import HeaderBar from "../components/HeaderBar";
 import OrderHistoryCard from "../components/OrderHistoryCard";
-import { useSelector } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import PopUpAnimation from "../components/PopUpAnimation";
+import { productsSlice } from "../store/states/products";
+import { COLORS } from "../theme/theme";
 
 function OrderHistoryScreen({ navigation }) {
   const OrderHistoryList = useSelector((state) => state.products.OrderHistoryList);
   const tabBarHeight = useBottomTabBarHeight();
   const [showAnimation, setShowAnimation] = useState(false);
+  const dispatch = useDispatch()
   // console.log("History length = ", OrderHistoryList.length);
   // console.log("History = ", OrderHistoryList);
 
@@ -28,9 +29,10 @@ function OrderHistoryScreen({ navigation }) {
     await AsyncStorage.setItem('SaveOrderHistory', JSON.stringify(OrderHistoryList))
   }
 
-  useEffect(() => {localStored()}, [OrderHistoryList])
+  useEffect(() => { localStored() }, [OrderHistoryList])
 
   function navigationHandler() {
+
     navigation.push("Details");
   }
 
