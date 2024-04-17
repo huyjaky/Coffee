@@ -7,7 +7,7 @@ import { AuthContext } from "../store/auth-context";
 function ProfilePic({ name, color, size }) {
   const authCtx = useContext(AuthContext);
   return (
-    <Pressable style={styles.ImageContainer}>
+    <Pressable style={styles.ImageContainer} onPress={()=>{authCtx.logout()}}>
       <Image
         style={styles.Image}
         // source={{ uri: "../assets/app_images/avatar.png" }}
