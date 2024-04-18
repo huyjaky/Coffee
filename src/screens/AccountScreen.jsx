@@ -1,11 +1,14 @@
+import { useNavigation } from '@react-navigation/native';
 import { useContext, useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { useSelector } from 'react-redux';
-import { supabase } from "../store/supabase";
-import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../store/auth-context';
-import * as Linking from 'expo-linking'
+import { supabase } from "../store/supabase";
+
+import * as Linking from "expo-linking";
+import PopUpAnimation from '../components/PopUpAnimation';
+
 
 export default function Account() {
   const [loading, setLoading] = useState(true)
@@ -14,8 +17,13 @@ export default function Account() {
   const [firstName, setFirstName] = useState(user.first_name)
   const [lastName, setLastName] = useState(user.last_name)
   const [password, setPassword] = useState('')
+  const [showAnimation, setShowAnimation] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState('')
   const authCtx = useContext(AuthContext);
+
+  const url = Linking.useURL();
+  console.log({ url });
+
 
   useEffect(() => {
     if (user) getProfile()
@@ -60,63 +68,82 @@ export default function Account() {
     }
   }
 
-  const resetPassword = async (email) => {
-    const resetPasswordURL = Linking.createURL("/ResetPassword");
-
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: resetPasswordURL,
+  async function resetPassword() {
+    const redirect = 'http://localhost:8081'
+    const { data, error } = await supabase.auth.resetPasswordForEmail(user.user.email, {
+      redirectTo: 'http://localhost:3000/'
     });
-
+    setTimeout(() => {
+      setShowAnimation(false);
+    }, 4000);
     return { data, error };
   };
+  useEffect(() => { }, [showAnimation])
 
-  useEffect(() => {
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event == "PASSWORD_RECOVERY") {
-        const newPassword = prompt("What would you like your new password to be?");
-        const { data, error } = await supabase.auth
-          .updateUser({ password: newPassword })
-
-        if (data) alert("Password updated successfully!")
-        if (error) alert("There was an error updating your password.")
-      }
-    })
-  }, [])
+  // replicate from server
+  supabase.channel('profiles').on('postgres_changes', {
+    event: '*',
+    schema: 'public',
+    table: 'profiles'
+  },
+    (payload) => {
+      console.log('from payload', payload);
+      const eventType = payload.eventType
+      const newRecord = payload.new
+      const oldRecord = payload.old
+      setShowAnimation(true)
+      console.log(eventType);
+      console.log(newRecord);
+    }
+  ).subscribe()
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input label="Email" value={user?.user?.email} />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Input label="First name" value={firstName || ''} onChangeText={(text) => setFirstName(text)} />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Input label="Last name" value={lastName || ''} onChangeText={(text) => setLastName(text)} />
-      </View>
-
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title={loading ? 'Loading ...' : 'Update'}
-          onPress={() => updateProfile()}
-          disabled={loading}
+    <View style={{height: '100%'}}>
+      {showAnimation ? (
+        <PopUpAnimation
+          style={styles.LottieAnimation}
+          source={require("../lottie/successful.json")}
         />
+      ) : null}
+      <View style={styles.container}>
+
+
+        <View style={[styles.verticallySpaced, styles.mt20]}>
+          <Input label="Email" value={user?.user?.email} />
+        </View>
+        <View style={styles.verticallySpaced}>
+          <Input label="First name" value={firstName || ''} onChangeText={(text) => setFirstName(text)} />
+        </View>
+        <View style={styles.verticallySpaced}>
+          <Input label="Last name" value={lastName || ''} onChangeText={(text) => setLastName(text)} />
+        </View>
+
+        <View style={[styles.verticallySpaced, styles.mt20]}>
+          <Button
+            title={loading ? 'Loading ...' : 'Update'}
+            onPress={() => updateProfile()}
+            disabled={loading}
+          />
+        </View>
+
+        <View style={[styles.verticallySpaced]}>
+          <Button
+            title={loading ? 'Loading ...' : 'Reset Password'}
+            onPress={() => {
+              resetPassword()
+            }}
+            disabled={loading}
+          />
+        </View>
+
+        <View style={styles.verticallySpaced}>
+          <Button title="Sign Out" onPress={() => {
+            supabase.auth.signOut()
+            authCtx.logout()
+          }} />
+        </View>
       </View>
 
-      {/* <View style={[styles.verticallySpaced]}>
-        <Button
-          title={loading ? 'Loading ...' : 'Reset Password'}
-          onPress={() => resetPassword()}
-          disabled={loading}
-        />
-      </View> */}
-
-      <View style={styles.verticallySpaced}>
-        <Button title="Sign Out" onPress={() => {
-          supabase.auth.signOut()
-          authCtx.logout()
-        }} />
-      </View>
     </View>
   )
 }
@@ -133,5 +160,11 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20,
+  },
+  LottieAnimation: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    zIndex:10
   },
 })
