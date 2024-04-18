@@ -73,13 +73,18 @@ function AuthenticatedStack() {
 function AuthStack() {
   return (
     <Stack.Navigator
-      initialRouteName="GetStarted"
+      initialRouteName="Dev"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="GetStarted" component={GetStartedScreen2} />
       <Stack.Screen name="Login" component={LoginScreen2} />
       <Stack.Screen name="SignUp" component={SignupScreen2} />
       <Stack.Screen name="Home" component={HomeScreen} />
+
+
+
+      {/* dev form */}
+      <Stack.Screen name="Dev" component={ManageOrderScreen} />
 
     </Stack.Navigator>
   );
