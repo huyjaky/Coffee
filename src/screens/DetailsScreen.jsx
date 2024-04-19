@@ -7,28 +7,57 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  FlatList
 } from "react-native";
+import { NavigationContainer } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
 import PaymentFooter from "../components/PaymentFooter";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
-
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 function DetailsScreen({ navigation, route }) {
   // console.log("route = ", route.params);
   const ItemofIndex = useSelector((state) => state.products.currentDetailCart);
   const dispatch = useDispatch()
-  useEffect(()=>{}, [ItemofIndex])
+  useEffect(() => { }, [ItemofIndex])
 
-
+  const Tab = createMaterialTopTabNavigator();
   const [fullDesc, setFullDesc] = useState(false);
   const [price, setPrice] = useState(ItemofIndex.manage_prices[0]);
-
+  const DATA = [
+    {
+      id: '1',
+      title: 'Item 1',
+      image: 123,
+      description: 'Description of item 1',
+    },
+    {
+      id: '2',
+      title: 'Item 2',
+      image: 123,
+      description: 'Description of item 2',
+    },
+  ];
 
   function BackHandler() {
     navigation.pop();
   }
+  function HomeScreen() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Home</Text>
+      </View>
+    );
+  }
 
+  function SettingsScreen() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Settings!</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.ScreenContainer}>
@@ -42,7 +71,7 @@ function DetailsScreen({ navigation, route }) {
           item={ItemofIndex}
           BackHandler={BackHandler}
         />
-
+        {/* 
         <View style={styles.FooterInfoArea}>
           <Text style={styles.InfoTitle}>Description</Text>
           {fullDesc ? (
@@ -102,7 +131,12 @@ function DetailsScreen({ navigation, route }) {
               </TouchableOpacity>
             ))}
           </View>
-        </View>
+        </View> */}
+        <Tab.Navigator>
+          <Tab.Screen name="Information" component={HomeScreen} />
+          <Tab.Screen name="Ingredient" component={SettingsScreen} />
+          <Tab.Screen name="Special Ingredient" component={SettingsScreen} />
+        </Tab.Navigator>
         <PaymentFooter
           price={price.prices.price}
           buttonTitle="Add to Cart"
