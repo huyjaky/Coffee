@@ -163,7 +163,7 @@ function HomeScreen({ navigation }) {
 
 
 
-  function resetSearchCoffee() {
+  function resetSearch() {
     ListRef?.current?.scrollToOffset({
       animated: true,
       offset: 0,
@@ -186,7 +186,7 @@ function HomeScreen({ navigation }) {
         <HeaderBar title="Home Screens" />
 
         <Text style={styles.ScreenTitle}>
-          Find the best{"\n"}coffee for you
+          An easy way {"\n     "} to find your med!
         </Text>
 
         {/* Search Input */}
@@ -202,7 +202,7 @@ function HomeScreen({ navigation }) {
             }
           />
           <TextInput
-            placeholder="Find Your Coffee..."
+            placeholder="Find Product..."
             value={searchText}
             onChangeText={(text) => {
               setSearchText(text);
@@ -214,7 +214,7 @@ function HomeScreen({ navigation }) {
           {searchText?.length > 0 ? (
             <TouchableOpacity
               onPress={() => {
-                resetSearchCoffee();
+                resetSearch();
               }}
             >
               <Ionicons

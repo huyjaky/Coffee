@@ -22,6 +22,14 @@ function OrderHistoryCard({
           <Text style={styles.HeaderTitle}>Total Amount</Text>
           <Text style={styles.HeaderPrice}>${CartListPrice}</Text>
         </View>
+        <View style={styles.ViewOrderButton}>
+          <TouchableOpacity>
+            <Text
+              style={styles.ViewOrderBtnText}>
+              View Status
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.ListContainer}>
         {CartList.map((data, index) => (
@@ -52,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: 20,
+    gap: 10,
   },
   HeaderTitle: {
     fontWeight: "bold",
@@ -65,12 +73,27 @@ const styles = StyleSheet.create({
     color: COLORS.primaryNovel,
   },
   HeaderPrice: {
-    fontWeight: "600",
+    textAlign: 'center',
+    fontWeight: "400",
     fontSize: 14,
     color: COLORS.primaryNovel,
   },
+  ViewOrderButton: {
+    height: 40,
+    width: 70,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: COLORS.primaryButtonGreen,
+  },
+  ViewOrderBtnText: {
+    textAlign: 'center',
+    fontWeight: "600",
+    fontSize: 10,
+    color: COLORS.primaryBackground,
+  },
   PriceContainer: {
-    alignItems: "flex-end",
+    alignItems: "center",
   },
   ListContainer: {
     gap: 20,
