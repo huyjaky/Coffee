@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../store/supabase";
 import { err } from "react-native-svg";
 
-function ImageBackgroundInfo({
+function ImageFavouriteBG({
   item,
   EnableBackHandler,
   BackHandler,
@@ -107,9 +107,8 @@ function ImageBackgroundInfo({
                 <View style={styles.ProperFirst}>
                   <MaterialCommunityIcons
                     name={item.type_pr === "Bean" ? "seed" : "coffee"}
-                    size={item.type_pr === "Bean" ? 18 : 24}
-                    // color={COLORS.primaryOrangeHex}
-                    color="#230C02"
+                    size={14}
+                    color={COLORS.primaryBackground}
                   />
                   <Text
                     style={[
@@ -123,40 +122,11 @@ function ImageBackgroundInfo({
                 <View style={styles.ProperFirst}>
                   <Entypo
                     name={item.type_pr === "Bean" ? "location-pin" : "drop"}
-                    size={16}
+                    size={12}
                     color= {COLORS.primaryBackground}
                   />
-                  <Text style={styles.PropertyTextLast}>{item.ingredients}</Text>
+                  {/* <Text style={styles.PropertyTextLast}>{item.ingredients}</Text> */}
                 </View>
-              </View>
-            </View>
-            <View style={styles.InfoContainerRow}>
-              <View style={styles.RatingContainer}>
-                <AntDesign
-                  name="star"
-                  size={20}
-                  color={COLORS.primaryOrangeHex}
-                // color="#693a27"
-                />
-                <Text
-                  style={[
-                    styles.RatingText,
-                    { color: item.type_pr === "Bean" ? "#d25018" : "#230C02" },
-                  ]}
-                >
-                  {item.average_rating}
-                </Text>
-                <Text
-                  style={[
-                    styles.RatingCountText,
-                    { color: item.type_pr === "Bean" ? "#d25018" : "#230C02" },
-                  ]}
-                >
-                  ({item.ratings_count})
-                </Text>
-              </View>
-              <View style={styles.RoastedContainer}>
-                <Text style={styles.RoastedText}>roasted</Text>
               </View>
             </View>
           </View>
@@ -166,12 +136,12 @@ function ImageBackgroundInfo({
   );
 }
 
-export default ImageBackgroundInfo;
+export default ImageFavouriteBG;
 
 const styles = StyleSheet.create({
   ItemBackgroundImage: {
     width: "100%",
-    aspectRatio: 20 / 25,
+    aspectRatio: 2,
     justifyContent: "space-between",
   },
   ImageHeaderBarContainerWithBack: {
@@ -218,9 +188,9 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   ProperFirst: {
-    height: 55,
-    width: 55,
-    borderRadius: 15,
+    height: 40,
+    width: 40,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: COLORS.primaryButtonGreen,

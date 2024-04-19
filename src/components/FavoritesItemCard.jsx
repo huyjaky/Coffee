@@ -1,25 +1,24 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, View } from "react-native";
 import ImageBackgroundInfo from "./ImageBackgroundInfo";
+import ImageFavouriteBG from "./ImageFavouriteBG";
+import { COLORS } from "../theme/theme";
 
 function FavoritesItemCard({
   item,
 }) {
   return (
     <View style={styles.CardContainer}>
-      <ImageBackgroundInfo
+      <ImageFavouriteBG
         item={item}
         EnableBackHandler={false}
       />
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        // colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-        colors={["#f5dab5", "#b39c7f"]}
+        colors={["#b8d8e0", COLORS.primaryBackground]}
         style={styles.ContainerLinearGradient}
       >
-        <Text style={styles.DescriptionTitle}>Description</Text>
-        <Text style={styles.DescriptionText}>{item.des}</Text>
       </LinearGradient>
     </View>
   );

@@ -132,7 +132,7 @@ function DetailsScreen({ navigation, route }) {
             ))}
           </View>
         </View> */}
-        <Tab.Navigator>
+        <Tab.Navigator ta>
           <Tab.Screen name="Information" component={HomeScreen} />
           <Tab.Screen name="Ingredient" component={SettingsScreen} />
           <Tab.Screen name="Special Ingredient" component={SettingsScreen} />

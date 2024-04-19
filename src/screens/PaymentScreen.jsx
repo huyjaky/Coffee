@@ -52,7 +52,7 @@ const PaymentList = [
 ];
 
 function PaymentScreen({ navigation, route }) {
-  const cartPrice = useSelector((state)=> state.products.CartPrice)
+  const cartPrice = useSelector((state) => state.products.CartPrice)
   const [paymentMode, setPaymentMode] = useState("Credit Card");
   const [showAnimation, setShowAnimation] = useState(false);
   const dispatch = useDispatch()
@@ -64,7 +64,7 @@ function PaymentScreen({ navigation, route }) {
     // await AsyncStorage.setItem('SaveOrderHistory', JSON.stringify(OrderHistoryList))
   }
 
-  useEffect(()=>{localStored()},[CartList])
+  useEffect(() => { localStored() }, [CartList])
 
   function buttonPressHandler() {
     setShowAnimation(true);
