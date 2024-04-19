@@ -68,8 +68,8 @@ export default function Account() {
     }
   }
 
+  // reset pass function
   async function resetPassword() {
-    const redirect = 'http://localhost:8081'
     const { data, error } = await supabase.auth.resetPasswordForEmail(user.user.email, {
       redirectTo: 'http://localhost:3000/'
     });
@@ -80,25 +80,19 @@ export default function Account() {
   };
   useEffect(() => { }, [showAnimation])
 
-  // replicate from server
+  // replicate from server 
   supabase.channel('profiles').on('postgres_changes', {
     event: '*',
     schema: 'public',
     table: 'profiles'
   },
     (payload) => {
-      console.log('from payload', payload);
-      const eventType = payload.eventType
-      const newRecord = payload.new
-      const oldRecord = payload.old
       setShowAnimation(true)
-      console.log(eventType);
-      console.log(newRecord);
     }
   ).subscribe()
 
   return (
-    <View style={{height: '100%'}}>
+    <View style={{ height: '100%' }}>
       {showAnimation ? (
         <PopUpAnimation
           style={styles.LottieAnimation}
@@ -165,6 +159,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     flex: 1,
-    zIndex:10
+    zIndex: 10
   },
 })

@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { formData } from '../data/form';
+import { supabase } from '../store/supabase';
+import { v4 as uuidv4 } from 'uuid';
 
 function ManageOrderScreen({ navigation }) {
   // Define state for managing orders
@@ -38,32 +40,51 @@ function ManageOrderScreen({ navigation }) {
     // You can use setOrders to update the state by removing the specified order
   };
 
+  // const [id_pr, setId_pr] = useState(uuidv4())
+  // const [prices_id, setPrices_id] = useState(uuidv4())
+  const [prices, setPrices] = useState([
+    { prices_id: uuidv4(), price: parseFloat(20), unit: 'gm', size: 10 }
+  ])
 
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {
+      id_pr: uuidv4(),
       name_pr: 'Mouse',
       des: 'auto mouse',
       imagelink_square: 'img1',
       imagelink_portrait: 'img2',
       ingredients: 'plastic',
       special_ingredient: 'ultra plastic',
-
       // dung floatParse chinh lai sau
-      avarage_rating: '1',
-      ratings_count: '1.2',
-      // chinh lai 1 0
-      favourite: '1',
+      average_rating: parseFloat(1),
+      ratings_count: parseFloat(1.2),
+      // cai nay chinh choice cung duoc
+      favourite: 1,
       type_pr: 'type pr qq',
-      index_pr: productsList.concat(productsList2).length+'',
+      index_pr: productsList.concat(productsList2).length,
       // hoan thien giao dien thi chinh lai cai nay
-      owned_id: 'id1',
+      owned_id: 'f337d26b-2961-4ff1-b114-3592d4c440bb',
       derived: 'my house',
-      category_pr: 'my dick too big'
+      category_pr: 'my dick too big',
+      // bao gom realease va pending
+      status: 'realease',
     }
   });
-  const onSubmit = data => {
-    console.log(data);
-  };
+
+  async function createProduct(data) {
+    const { error } = await supabase.from('products').insert({ ...data })
+    console.log(error)
+    return
+  }
+
+  async function updatedProduct(data) {
+    const { error } = await supabase.from('products').update({ ...data }).eq('')
+    console.log(error)
+    return
+  }
+
+
+  console.log('errors', errors);
 
   const onChange = arg => {
     return {
@@ -71,12 +92,10 @@ function ManageOrderScreen({ navigation }) {
     };
   };
 
-  console.log('errors', errors);
 
   return (
     <View style={styles.container}>
       <ScrollView>
-
         {formData.map((item, index) => {
           return (
             <>
@@ -88,7 +107,7 @@ function ManageOrderScreen({ navigation }) {
                     style={styles.input}
                     onBlur={onBlur}
                     onChangeText={value => onChange(value)}
-                    value={value}
+                    value={`${value}`}
                   />
                 )}
                 name={item.id}
@@ -97,6 +116,7 @@ function ManageOrderScreen({ navigation }) {
             </>
           )
         })}
+
 
         <View style={styles.button}>
           <Button
@@ -113,10 +133,21 @@ function ManageOrderScreen({ navigation }) {
           <Button
             style={styles.buttonInner}
             color
-            title="Button"
-            onPress={handleSubmit(onSubmit)}
+            title="Create"
+            onPress={handleSubmit(createProduct)}
           />
         </View>
+
+
+        <View style={styles.button}>
+          <Button
+            style={styles.buttonInner}
+            color
+            title="Update"
+            onPress={handleSubmit(updatedProduct)}
+          />
+        </View>
+
       </ScrollView>
     </View>
   );
@@ -146,9 +177,11 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'white',
-    borderColor: 'none',
     height: 40,
     padding: 10,
     borderRadius: 4,
   },
+  prices: {
+
+  }
 });

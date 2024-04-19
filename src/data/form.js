@@ -5,12 +5,13 @@ export const formData = [
   { name: 'Special Ingredient', id: 'special_ingredient' },
   { name: 'Image Link Square', id: 'imagelink_square' },
   { name: 'Image Link Portrait', id: 'imagelink_portrait' },
-  { name: 'Average Rating', id: 'avarage_rating' },
+  { name: 'Average Rating', id: 'average_rating' },
   { name: 'Ratings Count', id: 'ratings_count' },
   { name: 'Favourite', id: 'favourite' },
   { name: 'Type Product', id: 'type_pr' },
   { name: 'Index Product', id: 'index_pr' },
   { name: 'Owned ID', id: 'owned_id' },
   { name: 'Derived', id: 'derived' },
-  { name: 'Category Product', id: 'category_pr' }
+  { name: 'Category Product', id: 'category_pr' },
+  { name: 'Status', id: 'status' }
 ];
