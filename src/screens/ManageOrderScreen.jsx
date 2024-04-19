@@ -1,6 +1,9 @@
 import Constants from 'expo-constants';
 import * as React from 'react';
 import { useState } from 'react';
+
+import { AntDesign } from "@expo/vector-icons";
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   Button,
@@ -10,12 +13,13 @@ import {
   TextInput,
   View
 } from 'react-native';
+import 'react-native-get-random-values';
 import { useSelector } from 'react-redux';
-import { formData } from '../data/form';
-import { supabase } from '../store/supabase';
 import { v4 as uuidv4 } from 'uuid';
+import { formData, formDataPrice } from '../data/form';
+import { supabase } from '../store/supabase';
 
-function ManageOrderScreen({ navigation }) {
+function ManageOrderScreen({ navigation, isUpdate }) {
   // Define state for managing orders
   const [orders, setOrders] = useState([]);
   const productsList = useSelector(state => state.products.productsList)
@@ -40,14 +44,11 @@ function ManageOrderScreen({ navigation }) {
     // You can use setOrders to update the state by removing the specified order
   };
 
-  // const [id_pr, setId_pr] = useState(uuidv4())
-  // const [prices_id, setPrices_id] = useState(uuidv4())
-  const [prices, setPrices] = useState([
-    { prices_id: uuidv4(), price: parseFloat(20), unit: 'gm', size: 10 }
-  ])
 
-  const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
-    defaultValues: {
+  const currentDetailCart = useSelector(state => state.products.currentDetailCart)
+  // register, setValue, handleSubmit, control, reset, formState: { errors }
+  const products = useForm({
+    defaultValues: isUpdate ? { ...currentDetailCart } : {
       id_pr: uuidv4(),
       name_pr: 'Mouse',
       des: 'auto mouse',
@@ -71,20 +72,69 @@ function ManageOrderScreen({ navigation }) {
     }
   });
 
+  const prices = useForm({
+    defaultValues: {
+      prices_id: uuidv4(),
+      unit: '',
+      price: '',
+      size: '',
+    }
+  })
+
+  function convertPriceList(data) {
+    const temp = []
+    data.manage_prices.map((item) => {
+      temp.push({ ...item.prices })
+      return item
+    })
+    return temp
+  }
+
+  const [pricesList, setPriceList] = useState(isUpdate ? convertPriceList : [{
+    prices_id: uuidv4(), unit: 'gm', price: '123', size: '123'
+  }])
+
+  useEffect(() => { }, [pricesList])
+
+  function convertPricesWithProduct(data) {
+    const temp = []
+    pricesList.map((item)=>{
+      temp.push({prices_id: item.prices_id, id_pr: data.id_pr})
+      return item
+    })
+  }
+
+  async function insertPirces(data) {
+    const insertPrice = await supabase.from('prices').insert(pricesList)
+    const insertManagePrice = await supabase.from('manage_prices').insert(convertPricesWithProduct(data))
+    console.log('insertManagePrice',insertManagePrice.error);
+    console.log('insertPirces',insertPrice.error);
+  }
+
+  async function updatePrices(data) {
+    const { data, error } = await supabase.from('prices').upsert(pricesList)
+    if (error) {
+      console.log(error);
+      return
+    };
+  }
+
   async function createProduct(data) {
     const { error } = await supabase.from('products').insert({ ...data })
+    insertPirces(data)
     console.log(error)
     return
   }
 
   async function updatedProduct(data) {
-    const { error } = await supabase.from('products').update({ ...data }).eq('')
+    const { error } = await supabase.from('products').upsert({ ...data })
+    updatePrices(data)
     console.log(error)
     return
   }
 
 
-  console.log('errors', errors);
+  console.log('errors', products.formState.errors);
 
   const onChange = arg => {
     return {
@@ -93,15 +143,17 @@ function ManageOrderScreen({ navigation }) {
   };
 
 
+
   return (
     <View style={styles.container}>
+
       <ScrollView>
         {formData.map((item, index) => {
           return (
             <>
-              <Text style={styles.label}>{item.name}</Text>
+              <Text style={styles.label} key={index}>{item.name}</Text>
               <Controller
-                control={control}
+                control={products.control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     style={styles.input}
@@ -117,6 +169,59 @@ function ManageOrderScreen({ navigation }) {
           )
         })}
 
+        {pricesList.map((item1, index1) => {
+          return (
+            <View key={index1} style={styles.prices}>
+              {
+                formDataPrice.map((item2, index2) => {
+                  return (
+                    <View key={index2} style={styles.pricesItem}>
+                      <View >
+                        <Text style={styles.label}>{item2.name}</Text>
+                        <Controller
+                          control={prices.control}
+                          render={({ field: { onChange, onBlur, value } }) => (
+                            <TextInput
+                              style={styles.input}
+                              onBlur={onBlur}
+                              onChangeText={value => onChange(value)}
+                              value={`${value}`}
+                            />
+                          )}
+                          name={item2.id}
+                          rules={{ required: true }}
+                        />
+                      </View>
+                    </View>
+                  )
+                })
+              }
+              <View>
+
+                <AntDesign
+                  name="close"
+                  color='white'
+                  size={40}
+                />
+              </View>
+            </View>
+          )
+        })}
+
+
+        <View style={styles.button}>
+          <Button
+            style={styles.buttonInner}
+            color
+            title="+"
+            onPress={() => {
+              console.log(typeof (pricesList));
+              setPriceList([...pricesList,
+              { prices_id: uuidv4(), unit: 'gm', price: '123', size: '123' }
+              ])
+            }}
+          />
+        </View>
 
         <View style={styles.button}>
           <Button
@@ -133,21 +238,11 @@ function ManageOrderScreen({ navigation }) {
           <Button
             style={styles.buttonInner}
             color
-            title="Create"
-            onPress={handleSubmit(createProduct)}
+            title={isUpdate ? 'Update' : 'Create'}
+            // onPress={products.handleSubmit(createProduct)}
+            onPress={prices.handleSubmit(isUpdate ? updatedProduct : createProduct)}
           />
         </View>
-
-
-        <View style={styles.button}>
-          <Button
-            style={styles.buttonInner}
-            color
-            title="Update"
-            onPress={handleSubmit(updatedProduct)}
-          />
-        </View>
-
       </ScrollView>
     </View>
   );
@@ -156,6 +251,15 @@ function ManageOrderScreen({ navigation }) {
 export default ManageOrderScreen;
 
 const styles = StyleSheet.create({
+  prices: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end'
+  },
+  pricesItem: {
+    width: '25%'
+  },
   label: {
     color: 'white',
     margin: 20,
@@ -181,7 +285,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 4,
   },
-  prices: {
 
-  }
 });

@@ -15,3 +15,9 @@ export const formData = [
   { name: 'Category Product', id: 'category_pr' },
   { name: 'Status', id: 'status' }
 ];
+
+export const formDataPrice = [
+  { name: 'Price', id: 'price' },
+  { name: 'Unit', id: 'unit' },
+  { name: 'Size', id: 'size' },
+]

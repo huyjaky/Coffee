@@ -73,7 +73,7 @@ function AuthenticatedStack() {
 function AuthStack() {
   return (
     <Stack.Navigator
-      initialRouteName="Dev"
+      initialRouteName="GetStarted"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="GetStarted" component={GetStartedScreen2} />
