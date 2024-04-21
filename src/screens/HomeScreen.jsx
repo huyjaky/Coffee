@@ -126,10 +126,11 @@ function HomeScreen({ navigation }) {
       const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id)
       if (!error && data) dispatch(userSlice.actions.UPDATE_CURRENT_USER({
         ...session,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        role: data.role
+        first_name: data[0].first_name,
+        last_name: data[0].last_name,
+        role: data[0].role
       }))
+
     }
   }
 

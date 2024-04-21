@@ -16,11 +16,13 @@ import OrderHistoryCard from "../components/OrderHistoryCard";
 import PopUpAnimation from "../components/PopUpAnimation";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
+import { supabase } from "../store/supabase";
 
 function OrderHistoryScreen({ navigation }) {
   const OrderHistoryList = useSelector((state) => state.products.OrderHistoryList);
   const tabBarHeight = useBottomTabBarHeight();
   const [showAnimation, setShowAnimation] = useState(false);
+  const user = useSelector(state => state.user.user)
   const dispatch = useDispatch()
   // console.log("History length = ", OrderHistoryList.length);
   // console.log("History = ", OrderHistoryList);
@@ -32,7 +34,6 @@ function OrderHistoryScreen({ navigation }) {
   useEffect(() => { localStored() }, [OrderHistoryList])
 
   function navigationHandler() {
-
     navigation.push("Details");
   }
 
@@ -46,6 +47,25 @@ function OrderHistoryScreen({ navigation }) {
     //   navigation.push("FeedBack");
     // }, 2000);
   }
+
+  async function fetchIdCartList() {
+    // const { data ,count, error } = await supabase.from('order_history').select('*', {count: 'exact', head: 'true'}).eq('id', user.user.id)
+    // console.log('count', count);
+    // console.log('data', data);
+    // if (!error) return count
+    const { data, error } = await supabase.rpc('products')
+    console.log(data)
+  }
+
+  async function fetchCartList() {
+    const { data, error } = await supabase.from('products').select("*, manage_prices:order_history(prices(*), id, order_time, quantity)")
+    console.log('data', data[1].manage_prices);
+    if (error) console.log(error);
+    return
+  }
+  fetchIdCartList()
+
+
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} hidden={true} />

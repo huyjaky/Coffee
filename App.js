@@ -17,6 +17,7 @@ import CartScreen from "./src/screens/CartScreen";
 import ManageOrderScreen from "./src/screens/ManageOrderScreen";
 import ManageProductScreen from "./src/screens/ManageProductScreen";
 import ManageUserScreen from "./src/screens/ManageUserScreen";
+import Account from "./src/screens/AccountScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,18 +48,23 @@ function AuthenticatedStack() {
       <Stack.Screen
         name="ManageOrder"
         component={ManageOrderScreen}
-        options={{ animation: "slide_from_right" }}
+        options={{ animation: "slide_from_bottom" }}
       >
       </Stack.Screen>
       <Stack.Screen
         name="ManageProduct"
         component={ManageProductScreen}
-        options={{ animation: "slide_from_right" }}
+        options={{ animation: "slide_from_bottom" }}
       />
       <Stack.Screen
         name="ManageUser"
         component={ManageUserScreen}
-        options={{ animation: "slide_from_right" }}
+        options={{ animation: "slide_from_bottom" }}
+      />
+      <Stack.Screen
+        name="Account"
+        component={Account}
+        options={{ animation: "slide_from_bottom" }}
       />
     </Stack.Navigator>
   );
@@ -74,6 +80,11 @@ function AuthStack() {
       <Stack.Screen name="Login" component={LoginScreen2} />
       <Stack.Screen name="SignUp" component={SignupScreen2} />
       <Stack.Screen name="Home" component={HomeScreen} />
+
+
+
+      {/* dev form */}
+      <Stack.Screen name="Dev" component={ManageOrderScreen} />
 
     </Stack.Navigator>
   );

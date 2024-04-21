@@ -5,7 +5,6 @@ import CartScreen from "../screens/CartScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import OrderHistoryScreen from "../screens/OrderHistoryScreen";
 import { COLORS } from "../theme/theme";
-import { BlurView } from "@react-native-community/blur";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import AdminScreen from "../screens/AdminScreen";
 
@@ -84,7 +83,7 @@ function TabNavigator() {
           ),
         }}
       />
-      
+
       <Tab.Screen
         name="Admin"
         component={AdminScreen}
