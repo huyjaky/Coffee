@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
 import BGIcon from "./BGIcon";
+import { supabase } from "../store/supabase";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 
@@ -21,8 +22,18 @@ function CoffeeCard({
   item
 }) {
   const CartList = useSelector(state => state.products.CartList)
+  const user = useSelector(state=> state.user.user)
   async function localStored() {
     await AsyncStorage.setItem('SaveCart', JSON.stringify(CartList))
+  }
+
+  async function addToCartDB(id_pr, prices_id) {
+    const {data, error} = await supabase.rpc('add_product_to_cart', {
+      user_id_vr: user.user.id,
+      id_pr_vr: id_pr,
+      prices_id_vr: prices_id
+    })
+    console.log('addToCartDb', error);
   }
 
   useEffect(()=>{localStored()},[CartList])
@@ -57,6 +68,7 @@ function CoffeeCard({
         <TouchableOpacity
           onPress={() => {
             dispatch(productsSlice.actions.ADD_TO_CART({...item, manage_prices: [{prices: {...item.manage_prices[0].prices}, quantity: 1}]}))
+            addToCartDB(item.id_pr, item.manage_prices[0].prices.prices_id)
           }}
         >
           <BGIcon

@@ -26,25 +26,6 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   const productsList2 = useSelector(state => state.products.productsList2)
   const user = useSelector(state => state.user.user)
 
-  // Function to add a new order
-  const addOrder = () => {
-    // Implement logic to add a new order to the orders list
-    // You can use setOrders to update the state with the new order
-  };
-
-  // Function to edit an existing order
-  const editOrder = (index, updatedOrder) => {
-    // Implement logic to edit an existing order in the orders list
-    // You can use setOrders to update the state with the modified order
-  };
-
-  // Function to delete an order
-  const deleteOrder = (index) => {
-    // Implement logic to delete an order from the orders list
-    // You can use setOrders to update the state by removing the specified order
-  };
-
-
   const currentDetailCart = useSelector(state => state.products.currentDetailCart)
   // register, setValue, handleSubmit, control, reset, formState: { errors }
   const products = useForm({
@@ -104,6 +85,12 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     })
   }
 
+  async function removePrices(prices_id) {
+    const {error} = await supabase.from('prices').delete().eq('prices_id', prices_id);
+    console.log('remove prices', error);
+  }
+
+
   async function insertPirces(data) {
     const insertPrice = await supabase.from('prices').insert(pricesList)
     const insertManagePrice = await supabase.from('manage_prices').insert(convertPricesWithProduct(data))
@@ -112,17 +99,20 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   }
 
   async function updatePrices(data) {
-    const { data, error } = await supabase.from('prices').upsert(pricesList)
-    if (error) {
-      console.log(error);
-      return
-    };
+    const updatePrices = await supabase.from('prices').upsert(pricesList)
+    console.log('updatePrices', updatePrices.error);
+  }
+
+
+  async function removeProduct(data) {
+    const removeProduct = await supabase.from('products').delete().eq('id_pr', data.id_pr)
+    console.log('remove product', removeProduct.error);
   }
 
   async function createProduct(data) {
     const { error } = await supabase.from('products').insert({ ...data })
     insertPirces(data)
-    console.log(error)
+    console.log('create products',error)
     return
   }
 

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ADD_TO_ORDER_HISTORY_LIST_FROM_CART, TOGGLE_FAVORITE, UPDATE_CARTLIST, UPDATE_FAVORITE_LIST, UPDATE_ORDER_HISTORY_LIST_FROM_CART, UPDATE_PRICESLIST, UPDATE_PRODUCTS } from "./actions";
 import { supabase } from "../supabase";
 import { Alert } from "react-native";
+import { addPrToCartList } from "../actionDB";
 
 const initialState = {
   productsList: [],
@@ -44,7 +45,6 @@ export const productsSlice = createSlice({
       return state
     },
     ADD_TO_CART: (state, action) => {
-      console.log('action', action);
       let found = false;
       for (let i = 0; i < state.CartList.length; i++) {
         if (state.CartList[i].id_pr === action.payload.id_pr) {
@@ -77,10 +77,8 @@ export const productsSlice = createSlice({
       if (found === false) {
         state.CartList.push(action.payload);
       }
-      if (state.CartList.length !== 0) console.log(state.CartList[0].manage_prices);
     },
     INCREATEMENT_CART_ITEM_QUANTITY: (state, action) => {
-      console.log('action', action);
       for (let i = 0; i < state.CartList.length; i++) {
         if (state.CartList[i].id_pr === action.payload.id_pr) {
           for (let j = 0; j < state.CartList[i].manage_prices.length; j++) {
@@ -165,7 +163,6 @@ export const productsSlice = createSlice({
           }
           return item
         })
-        console.log('test', state.productsList[0].favourite);
       }
       return state
     },
@@ -176,7 +173,6 @@ export const productsSlice = createSlice({
       //   0
       // );
       const temp = parseFloat(state.CartPrice)
-      console.log(temp);
       if (state.OrderHistoryList.length > 0) {
         state.OrderHistoryList.unshift({
           OrderDate:
