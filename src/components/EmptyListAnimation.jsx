@@ -7,7 +7,7 @@ function EmptyListAnimation({ title }) {
     <View style={styles.EmptyCartContainer}>
       <LottieView
         style={styles.LottieStyle}
-        source={require("../lottie/coffeecup.json")}
+        source={require("../lottie/pill.json")}
         autoPlay
         loop
       />
