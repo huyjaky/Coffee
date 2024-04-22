@@ -20,19 +20,6 @@ function GetStartedScreen2() {
   const dispatch = useDispatch()
 
 
-  async function getLocalStorage() {
-    await AsyncStorage.getItem('SaveCart').then(value => {
-      if (value) {
-        dispatch(productsSlice.actions.UPDATE_CARTLIST(JSON.parse(value)))
-      }
-    })
-    await AsyncStorage.getItem('SaveOrderHistory').then(value => {
-      if (value) {
-        dispatch(productsSlice.actions.UPDATE_ORDER_HISTORY_LIST_FROM_CART(JSON.parse(value)))
-      }
-    })
-  }
-
   useEffect(() => {
     console.log(CartList)
     console.log(OrderHistoryList);
@@ -56,7 +43,7 @@ function GetStartedScreen2() {
   useEffect(() => {
     fetchProducts()
     fetchProducts2()
-    getLocalStorage()
+    // getLocalStorage()
   }, [])
 
   useEffect(() => {

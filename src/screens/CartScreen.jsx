@@ -13,16 +13,18 @@ import EmptyListAnimation from "../components/EmptyListAnimation";
 import HeaderBar from "../components/HeaderBar";
 import PaymentFooter from "../components/PaymentFooter";
 import { productsSlice } from "../store/states/products";
+import { supabase } from "../store/supabase";
 import { COLORS } from "../theme/theme";
 
 function CartScreen({ navigation, route }) {
-  const productsList = useSelector((state)=> state.products.productsList)
-  const productsList2 = useSelector((state)=> state.products.productsList2)
-  const CartList = useSelector((state)=>state.products.CartList)
-  const cartPrice = useSelector((state)=> state.products.CartPrice)
+  const productsList = useSelector((state) => state.products.productsList)
+  const productsList2 = useSelector((state) => state.products.productsList2)
+  const CartList = useSelector((state) => state.products.CartList)
+  const cartPrice = useSelector((state) => state.products.CartPrice)
+  const user = useSelector(state => state.user.user)
   const dispatch = useDispatch()
 
-  const CartPrice = useSelector((state)=>state.products.CartPrice);
+  const CartPrice = useSelector((state) => state.products.CartPrice);
   // console.log("CartList = ", CartList.length);
   const tabBarHeight = useBottomTabBarHeight();
 
@@ -30,7 +32,8 @@ function CartScreen({ navigation, route }) {
     navigation.push("Payment");
   }
 
-  useEffect(()=>{dispatch(productsSlice.actions.CACULATE_CART_PRICE())},[CartList])
+  useEffect(()=>{}, [CartList])
+  useEffect(() => { dispatch(productsSlice.actions.CACULATE_CART_PRICE()) }, [CartList])
 
   return (
     <View style={styles.ScreenContainer}>
@@ -53,7 +56,7 @@ function CartScreen({ navigation, route }) {
                   <TouchableOpacity
                     onPress={() => {
                       const products = productsList.concat(productsList2)
-                      const current_pr = products.find((item)=> item.id_pr = data.id_pr)
+                      const current_pr = products.find((item) => item.id_pr = data.id_pr)
                       dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(current_pr))
                       navigation.push("Details");
                     }}

@@ -9,9 +9,8 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { productsSlice } from "../store/states/products";
+import { supabase } from "../store/supabase";
 import { COLORS } from "../theme/theme";
-import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function CartIt({
   id,
@@ -21,12 +20,20 @@ function CartIt({
   prices,
 }) {
   const dispatch = useDispatch()
-
+  const user = useSelector(state=>state.user.user)
   const CartList = useSelector(state => state.products.CartList)
-  async function localStored() {
-    await AsyncStorage.setItem('SaveCart', JSON.stringify(CartList))
+
+
+  async function addToCartDB(id_pr, prices_id, is_inscrease) {
+
+    const {data, error} = await supabase.rpc('add_product_to_cart', {
+      user_id_vr: user.user.id,
+      id_pr_vr: id_pr,
+      prices_id_vr: prices_id,
+      is_inscrease: is_inscrease,
+    })
+    console.log('addToCartDb', error);
   }
-  useEffect(()=>{localStored()},[CartList])
 
   return (
     <View>
@@ -63,6 +70,7 @@ function CartIt({
                       // decrementCartItemQuantityHandler(id, data.size);
                       dispatch(productsSlice.actions.DECREATEMENT_CART_ITEM_QUANTITY({prices: data.prices, id_pr: id}))
                       dispatch(productsSlice.actions.CACULATE_CART_PRICE())
+                      addToCartDB(id, data.prices.prices_id, false)
                     }}
                   >
                     <Entypo
@@ -82,6 +90,7 @@ function CartIt({
                       // incrementCartItemQuantityHandler(id, data.size);
                       dispatch(productsSlice.actions.INCREATEMENT_CART_ITEM_QUANTITY({prices: data.prices, id_pr: id}))
                       dispatch(productsSlice.actions.CACULATE_CART_PRICE())
+                      addToCartDB(id, data.prices.prices_id, true)
                     }}
                   >
                     <Entypo

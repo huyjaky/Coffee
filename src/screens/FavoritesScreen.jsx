@@ -17,7 +17,6 @@ import { COLORS } from "../theme/theme";
 function FavoritesScreen({ navigation }) {
   const FavoritesList = useSelector((state) => state.products.FavoritesList);
   const dispatch = useDispatch()
-
   const tabBarHeight = useBottomTabBarHeight();
 
 

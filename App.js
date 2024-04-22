@@ -81,8 +81,6 @@ function AuthStack() {
       <Stack.Screen name="SignUp" component={SignupScreen2} />
       <Stack.Screen name="Home" component={HomeScreen} />
 
-
-
       {/* dev form */}
       <Stack.Screen name="Dev" component={ManageOrderScreen} />
 
