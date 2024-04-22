@@ -27,11 +27,6 @@ function OrderHistoryScreen({ navigation }) {
   // console.log("History length = ", OrderHistoryList.length);
   // console.log("History = ", OrderHistoryList);
 
-  async function localStored() {
-    await AsyncStorage.setItem('SaveOrderHistory', JSON.stringify(OrderHistoryList))
-  }
-
-  useEffect(() => { localStored() }, [OrderHistoryList])
 
   function navigationHandler() {
     navigation.push("Details");
@@ -42,29 +37,9 @@ function OrderHistoryScreen({ navigation }) {
     setTimeout(() => {
       setShowAnimation(false);
     }, 2000);
-
-    // setTimeout(() => {
-    //   navigation.push("FeedBack");
-    // }, 2000);
   }
 
-  async function fetchIdCartList() {
-    // const { data ,count, error } = await supabase.from('order_history').select('*', {count: 'exact', head: 'true'}).eq('id', user.user.id)
-    // console.log('count', count);
-    // console.log('data', data);
-    // if (!error) return count
-    const { data, error } = await supabase.rpc('products')
-    console.log(data)
-  }
-
-  async function fetchCartList() {
-    const { data, error } = await supabase.from('products').select("*, manage_prices:order_history(prices(*), id, order_time, quantity)")
-    console.log('data', data[1].manage_prices);
-    if (error) console.log(error);
-    return
-  }
-  fetchIdCartList()
-
+  useEffect(()=>{},[OrderHistoryList])
 
   return (
     <View style={styles.ScreenContainer}>

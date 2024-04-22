@@ -23,20 +23,23 @@ function CoffeeCard({
 }) {
   const CartList = useSelector(state => state.products.CartList)
   const user = useSelector(state=> state.user.user)
-  async function localStored() {
-    await AsyncStorage.setItem('SaveCart', JSON.stringify(CartList))
-  }
+
 
   async function addToCartDB(id_pr, prices_id) {
+    // console.log({
+    //   user_id_vr: user.user.id,
+    //   id_pr_vr: id_pr,
+    //   prices_id_vr: prices_id
+    // });
     const {data, error} = await supabase.rpc('add_product_to_cart', {
       user_id_vr: user.user.id,
       id_pr_vr: id_pr,
-      prices_id_vr: prices_id
+      prices_id_vr: prices_id,
+      is_inscrease: true
     })
-    console.log('addToCartDb', error);
+    console.log('addToCartDb product cart', error);
   }
 
-  useEffect(()=>{localStored()},[CartList])
 
   const dispatch = useDispatch()
   return (

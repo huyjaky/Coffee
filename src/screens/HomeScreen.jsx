@@ -12,13 +12,13 @@ import {
   View
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
 import HeaderBar from "../components/HeaderBar";
 import ProductCard from "../components/ProductCard";
 import { productsSlice } from "../store/states/products";
-import { COLORS } from "../theme/theme";
-import { supabase } from "../store/supabase";
-import { Session } from '@supabase/supabase-js'
 import { userSlice } from "../store/states/user";
+import { supabase } from "../store/supabase";
+import { COLORS } from "../theme/theme";
 
 function getCategoriesFromData(data1, data2) {
   const data = data1.concat(data2)
@@ -148,6 +148,30 @@ function HomeScreen({ navigation }) {
   }, [session])
   //---------------------------------------------------------------
 
+
+
+  async function fetchCartList() {
+    const {data, error} = await supabase.rpc('get_cart_list', {
+      user_id_vr: user.user.id
+    })
+    dispatch(productsSlice.actions.UPDATE_CARTLIST(data.order_history_products))
+  }
+
+
+  async function fetchOrderHistory() {
+    const {data, error} = await supabase.rpc('get_order_history', {
+      user_id_vr: user.user.id
+    })
+    // console.log(data.order_history[0].CartList[0]);
+    dispatch(productsSlice.actions.UPDATE_ORDER_HISTORY_LIST_FROM_CART(data.order_history))
+  }
+
+  useEffect(()=>{
+    fetchCartList()
+    fetchOrderHistory()
+  },[user])
+
+
   useEffect(() => {
     setsortedProducts(
       getProductList(categoryIndex.category, productsList, productsList2)
@@ -235,7 +259,7 @@ function HomeScreen({ navigation }) {
           contentContainerStyle={styles.CategoryScrollViewStyle}
         >
           {categories?.map((data, index) => (
-            <View key={index} style={styles.CategoryScrollViewContainer}>
+            <View key={uuidv4()} style={styles.CategoryScrollViewContainer}>
               <TouchableOpacity
                 onPress={() => {
                   ListRef?.current?.scrollToOffset({
@@ -283,11 +307,11 @@ function HomeScreen({ navigation }) {
           showsHorizontalScrollIndicator={false}
           data={sortedProducts}
           contentContainerStyle={styles.FlatListContainer}
-          keyExtractor={(item) => item?.id_pr}
+          keyExtractor={item=>item?.id_pr}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
-                key={index}
+                key={uuidv4()}
                 onPress={() => {
                   dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item))
                   navigation.push("Details");
@@ -312,11 +336,11 @@ function HomeScreen({ navigation }) {
           showsHorizontalScrollIndicator={false}
           data={productsList2}
           contentContainerStyle={styles.FlatListContainer}
-          keyExtractor={(item) => item?.id_pr}
+          keyExtractor={item=>item?.id_pr}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
-                key={index}
+                key={uuidv4()}
                 onPress={() => {
                   dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item))
                   navigation.push("Details");
