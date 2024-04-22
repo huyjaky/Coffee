@@ -111,7 +111,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     console.log('insertPirces',insertPrice.error);
   }
 
-  async function updatePrices(data) {
+  async function updatePrices(_data) {
     const { data, error } = await supabase.from('prices').upsert(pricesList)
     if (error) {
       console.log(error);

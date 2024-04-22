@@ -47,7 +47,7 @@ function AuthenticatedStack() {
       ></Stack.Screen>
       <Stack.Screen
         name="ManageOrder"
-        component={ManageOrderScreen}
+        component={ManageProductScreen}
         options={{ animation: "slide_from_bottom" }}
       >
       </Stack.Screen>
