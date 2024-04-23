@@ -163,6 +163,7 @@ function HomeScreen({ navigation }) {
       user_id_vr: user.user.id
     })
     // console.log(data.order_history[0].CartList[0]);
+    if (data.order_history.length == 0) return
     dispatch(productsSlice.actions.UPDATE_ORDER_HISTORY_LIST_FROM_CART(data.order_history))
   }
 
