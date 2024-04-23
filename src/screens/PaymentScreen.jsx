@@ -61,7 +61,8 @@ function PaymentScreen({ navigation, route }) {
 
   async function getPaid() {
     const {data, error} = await supabase.rpc('get_paid', {
-      user_id_vr: user.user.id
+      user_id_vr: user.user.id,
+      cart_price: parseFloat(cartPrice)
     })
     console.log('getpaid', error);
   }
