@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, FlatList } from 'react-native';
 import { COLORS } from '../theme/theme';
-
+import { Menu, Center, Image } from 'native-base';
+import CRUDmenu from '../components/CRUDmenu';
 function ManageProductScreen({ navigation }) {
   // Define state for managing products
   const [products, setProducts] = useState([]);
-  const data = [{ name: "Drug1" }, { name: "Drug2" }, { name: "Drug3" }, { name: "Drug4" }, { name: "Drug5" }, { name: "Drug6" }, { name: "Drug7" },];
+  const data = [{ name: "Drug1" }, { name: "Drug2" }, { name: "Drug3" }, { name: "Drug4" }, { name: "Drug5" }, { name: "Drug6" }, { name: "Drug7" }, { name: "Drug8" }];
   // // Function to add a new product
   // const addProduct = () => {
   //   // Implement logic to add a new product to the products list
@@ -25,79 +26,25 @@ function ManageProductScreen({ navigation }) {
   // };
 
   return (
-    //   <ScrollView horizontal={true} style={styles.container}>
-    //   <View style={styles.table}>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>ID:</Text>
-    //       {/* <Text style={styles.value}>{id}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Name:</Text>
-    //       {/* <Text style={styles.value}>{name}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Description:</Text>
-    //       {/* <Text style={styles.value}>{description}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Ingredient:</Text>
-    //       {/* <Text style={styles.value}>{ingredient}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Special Ingredient:</Text>
-    //       {/* <Text style={styles.value}>{specialIngredient}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Average Rating:</Text>
-    //       {/* <Text style={styles.value}>{avgRating}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Rating Count:</Text>
-    //       {/* <Text style={styles.value}>{ratingCount}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Favourite:</Text>
-    //       {/* <Text style={styles.value}>{favourite ? 'Yes' : 'No'}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Type:</Text>
-    //       {/* <Text style={styles.value}>{type}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Index:</Text>
-    //       {/* <Text style={styles.value}>{index}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Owned ID:</Text>
-    //       {/* <Text style={styles.value}>{ownedId}</Text> */}
-    //     </View>
-    //     <View style={styles.row}>
-    //       <Text style={styles.header}>Derived:</Text>
-    //       {/* <Text style={styles.value}>{derived ? 'Yes' : 'No'}</Text> */}
-    //     </View>
-    //     <View style={styles.imageRow}>
-    //       <Text style={styles.header}>Image Square:</Text>
-    //       {/* <Image source={{ uri: imgSquare }} style={styles.image} /> */}
-    //     </View>
-    //     <View style={styles.imageRow}>
-    //       <Text style={styles.header}>Image Portrait:</Text>
-    //       {/* <Image source={{ uri: imgPortrait }} style={styles.image} /> */}
-    //     </View>
-    //   </View>
-    // </ScrollView>
     <View horizontal={true} style={styles.viewContainer}>
       <FlatList
         data={data}
-        numColumns={4}
+        numColumns={2}
         columnWrapperStyle={{ gap: 10, paddingHorizontal: 12 }}
         contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
         keyExtractor={(item, index) => item.name + index}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity style={styles.productItem}>
+            <View style={styles.productItem}>
+              <CRUDmenu style={styles.CRUDmenu} />
+              <Center>
+                <Image source={{
+                  uri: "https://wallpaperaccess.com/full/317501.jpg"
+                }} alt="Alternate Text" size="xl" />
+              </Center>
               <Text style={styles.productText}>{item.name}</Text>
-            </TouchableOpacity>)
+            </View>)
         }}>
 
       </FlatList>
@@ -161,11 +108,17 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: COLORS.primaryButtonGreen,
     flex: 1,
     height: 200,
-    borderRadius: 20
+    borderRadius: 10
+  },
+  CRUDmenu: {
+    zIndex:1,
+    position: 'absolute',
+    top: 10,
+    right: 5,
   },
   productText: {
     color: COLORS.primaryNovel

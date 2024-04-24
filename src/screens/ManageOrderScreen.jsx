@@ -18,7 +18,6 @@ import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { formData, formDataPrice } from '../data/form';
 import { supabase } from '../store/supabase';
-
 function ManageOrderScreen({ navigation, isUpdate }) {
   // Define state for managing orders
   const [orders, setOrders] = useState([]);
