@@ -1,7 +1,6 @@
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -16,6 +15,7 @@ import PaymentFooter from "../components/PaymentFooter";
 import PaymentMethod from "../components/PaymentMethod";
 import PopUpAnimation from "../components/PopUpAnimation";
 import { productsSlice } from "../store/states/products";
+import { supabase } from "../store/supabase";
 import { COLORS } from "../theme/theme";
 
 const PaymentList = [
@@ -53,16 +53,26 @@ const PaymentList = [
 
 function PaymentScreen({ navigation, route }) {
   const cartPrice = useSelector((state) => state.products.CartPrice)
+  const cartList= useSelector(state=>state.products.CartList)
   const [paymentMode, setPaymentMode] = useState("Credit Card");
   const [showAnimation, setShowAnimation] = useState(false);
+  const user = useSelector(state=>state.user.user)
   const dispatch = useDispatch()
+
+  async function getPaid() {
+    const {data, error} = await supabase.rpc('get_paid', {
+      user_id_vr: user.user.id,
+      cart_price: cartPrice
+    })
+    console.log('getpaid', error);
+  }
 
   function buttonPressHandler() {
     setShowAnimation(true);
-    // addToOrderHistoryListFromCart();
     dispatch(productsSlice.actions.ADD_TO_ORDER_HISTORY_LIST_FROM_CART())
     dispatch(productsSlice.actions.UPDATE_CARTLIST([]))
     dispatch(productsSlice.actions.CACULATE_CART_PRICE())
+    getPaid()
     setTimeout(() => {
       setShowAnimation(false);
       navigation.navigate("History");
