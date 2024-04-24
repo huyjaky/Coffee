@@ -42,9 +42,9 @@ function OrderHistoryCard({
               navigationHandler();
             }}
           >
-            {/* <OrderItemCard
+            <OrderItemCard
               item={data}
-            /> */}
+            />
           </TouchableOpacity>
         ))}
       </View>

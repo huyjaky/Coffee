@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   SizeBoxLeft: {
-    // backgroundColor: COLORS.primaryBlackHex,
     backgroundColor: COLORS.primaryButtonBlueNavi,
     height: 45,
     flex: 1,
