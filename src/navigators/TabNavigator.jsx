@@ -7,6 +7,7 @@ import OrderHistoryScreen from "../screens/OrderHistoryScreen";
 import { COLORS } from "../theme/theme";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import AdminScreen from "../screens/AdminScreen";
+import OrderHistoryScreen2 from "../screens/OrderHistoryScreen2";
 
 const Tab = createBottomTabNavigator();
 
@@ -70,7 +71,7 @@ function TabNavigator() {
 
       <Tab.Screen
         name="History"
-        component={OrderHistoryScreen}
+        component={OrderHistoryScreen2}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Entypo

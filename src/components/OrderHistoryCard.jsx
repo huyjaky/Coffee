@@ -9,6 +9,8 @@ function OrderHistoryCard({
   CartList,
   CartListPrice,
   OrderDate,
+  openModal,
+  order
 }) {
   const dispatch = useDispatch()
   return (
@@ -23,7 +25,7 @@ function OrderHistoryCard({
           <Text style={styles.HeaderPrice}>${CartListPrice}</Text>
         </View>
         <View style={styles.ViewOrderButton}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => openModal(order)}>
             <Text
               style={styles.ViewOrderBtnText}>
               View Status
@@ -40,9 +42,9 @@ function OrderHistoryCard({
               navigationHandler();
             }}
           >
-            <OrderItemCard
+            {/* <OrderItemCard
               item={data}
-            />
+            /> */}
           </TouchableOpacity>
         ))}
       </View>
