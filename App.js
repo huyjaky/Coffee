@@ -18,6 +18,8 @@ import ManageOrderScreen from "./src/screens/ManageOrderScreen";
 import ManageProductScreen from "./src/screens/ManageProductScreen";
 import ManageUserScreen from "./src/screens/ManageUserScreen";
 import Account from "./src/screens/AccountScreen";
+import { NativeBaseProvider } from "native-base";
+import NativeBaseScreen from "./src/screens/NativeBaseScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -73,7 +75,7 @@ function AuthenticatedStack() {
 function AuthStack() {
   return (
     <Stack.Navigator
-      initialRouteName="GetStarted"
+      initialRouteName="Dev"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="GetStarted" component={GetStartedScreen2} />
@@ -82,7 +84,7 @@ function AuthStack() {
       <Stack.Screen name="Home" component={HomeScreen} />
 
       {/* dev form */}
-      <Stack.Screen name="Dev" component={ManageOrderScreen} />
+      <Stack.Screen name="Dev" component={NativeBaseScreen} />
 
     </Stack.Navigator>
   );
@@ -110,7 +112,9 @@ export default function App() {
 
       <AuthContextProvider>
         <Provider store={store}>
-          <Navigation />
+          <NativeBaseProvider>
+            <Navigation />
+          </NativeBaseProvider>
         </Provider>
       </AuthContextProvider>
 
