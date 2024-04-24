@@ -68,6 +68,12 @@ function AuthenticatedStack() {
         component={Account}
         options={{ animation: "slide_from_bottom" }}
       />
+      {/* Product manager stack */}
+      <Stack.Screen
+        name="EditProductForm"
+        component={ManageOrderScreen}
+        options={{ animation: "slide_from_right" }}
+      />
     </Stack.Navigator>
   );
 }
