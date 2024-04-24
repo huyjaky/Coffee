@@ -21,21 +21,17 @@ function GetStartedScreen2() {
 
 
   useEffect(() => {
-    console.log(CartList)
-    console.log(OrderHistoryList);
     dispatch(productsSlice.actions.CACULATE_CART_PRICE())
   }, [CartList, OrderHistoryList])
 
   async function fetchProducts() {
     const { data, error } = await supabase.from('products').select("*,manage_prices(prices(*))").eq('category_pr', 'medical equipment')
-    console.log(data);
     dispatch(productsSlice.actions.UPDATE_PRODUCTS(data))
     if (error) Alert.alert(error)
   }
 
   async function fetchProducts2() {
     const { data, error } = await supabase.from('products').select("*,manage_prices(prices(*))").eq('category_pr', 'medicine')
-    console.log(data);
     dispatch(productsSlice.actions.UPDATE_PRODUCTS2(data))
     if (error) Alert.alert(error)
   }
@@ -62,10 +58,6 @@ function GetStartedScreen2() {
       >
         <Animated.View
           style={{ justifyContent: "center", alignItems: "center" }}
-          // entering={BounceInUp.springify()
-          //   .damping(2)
-          //   .stiffness(10)
-          //   .overshootClamping(false)}
           entering={FadeInUp.duration(1000).springify()}
         >
           <Text

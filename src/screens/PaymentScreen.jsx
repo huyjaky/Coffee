@@ -62,14 +62,13 @@ function PaymentScreen({ navigation, route }) {
   async function getPaid() {
     const {data, error} = await supabase.rpc('get_paid', {
       user_id_vr: user.user.id,
-      cart_price: parseFloat(cartPrice)
+      cart_price: cartPrice
     })
     console.log('getpaid', error);
   }
 
   function buttonPressHandler() {
     setShowAnimation(true);
-    console.log('cartlist', cartList);
     dispatch(productsSlice.actions.ADD_TO_ORDER_HISTORY_LIST_FROM_CART())
     dispatch(productsSlice.actions.UPDATE_CARTLIST([]))
     dispatch(productsSlice.actions.CACULATE_CART_PRICE())
