@@ -31,7 +31,7 @@ function OrderItemCard({
           onPress={() => { }}
         >
           <View style={styles.CardTableRow}>
-            <View style={styles.SizeBoxLeft}>
+            {/* <View style={styles.SizeBoxLeft}>
               <Text
                 style={[
                   styles.SizeText,
@@ -39,29 +39,31 @@ function OrderItemCard({
               >
                 {data.quantity}
               </Text>
-            </View>
-            <View style={styles.CardIconMultiple}>
+            </View> */}
+            <Text>Quantity: {data.quantity}</Text>
+            <Text>Price: {data.prices.price}</Text>
+            {/* <View style={styles.CardIconMultiple}>
               <Text>
                 <AntDesign name="close" size={20} color={"#230C02"} />
               </Text>
-            </View>
+            </View> */}
 
-            <View style={styles.PriceBoxRight}>
+            {/* <View style={styles.PriceBoxRight}>
               <Text style={styles.PriceCurrence}>
                 $
                 <Text style={styles.Price}>{data.prices.price}</Text>
               </Text>
-            </View>
+            </View> */}
           </View>
 
-          <View style={styles.CardTableRow}>
+          {/* <View style={styles.CardTableRow}>
             <Text style={styles.CardQuantityPriceText}>
               Total:
             </Text>
             <Text style={styles.CardQuantityPriceText}>
               $ {(data.quantity * data.prices.price).toString()}
             </Text>
-          </View>
+          </View> */}
         </View>
       ))}
     </LinearGradient>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { Ionicons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, FlatList } from 'react-native';
 import { COLORS } from '../theme/theme';
 import { Menu, Center, Image } from 'native-base';
 import CRUDmenu from '../components/CRUDmenu';
 function ManageProductScreen({ navigation }) {
   // Define state for managing products
+  const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState([]);
   const data = [{ name: "Drug1" }, { name: "Drug2" }, { name: "Drug3" }, { name: "Drug4" }, { name: "Drug5" }, { name: "Drug6" }, { name: "Drug7" }, { name: "Drug8" }];
   // // Function to add a new product
@@ -27,6 +29,43 @@ function ManageProductScreen({ navigation }) {
 
   return (
     <View horizontal={true} style={styles.viewContainer}>
+            {/* Search Input */}
+            <View style={styles.InputContainerComponent}>
+          <Ionicons
+            style={styles.InputIcon}
+            name="search"
+            size={18}
+            color={
+              searchText.length > 0
+                ? COLORS.primaryTextBlue
+                : COLORS.primaryWhiteHex
+            }
+          />
+          <TextInput
+            placeholder="Find Product..."
+            value={searchText}
+            onChangeText={(text) => {
+              setSearchText(text);
+
+            }}
+            placeholderTextColor={COLORS.primaryWhiteHex}
+            style={styles.TextInputContainer}
+          />
+          {searchText?.length > 0 ? (
+            <TouchableOpacity
+              onPress={() => {
+                resetSearch();
+              }}
+            >
+              <Ionicons
+                style={styles.InputIcon}
+                name="close"
+                size={16}
+                color={COLORS.primaryLightGreyHex}
+              />
+            </TouchableOpacity>
+          ) : null}
+        </View>
       <FlatList
         data={data}
         numColumns={2}
@@ -113,6 +152,23 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 200,
     borderRadius: 10
+  },
+  InputContainerComponent: {
+    flexDirection: "row",
+    margin: 30,
+    borderRadius: 20,
+    backgroundColor: COLORS.primaryTitle,
+    alignItems: "center",
+  },
+  InputIcon: {
+    marginHorizontal: 20,
+  },
+  TextInputContainer: {
+    flex: 1,
+    height: 60,
+    fontWeight: "600",
+    fontSize: 14,
+    color: COLORS.primaryWhiteHex,
   },
   CRUDmenu: {
     zIndex:1,
