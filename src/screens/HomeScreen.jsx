@@ -19,6 +19,7 @@ import { productsSlice } from "../store/states/products";
 import { userSlice } from "../store/states/user";
 import { supabase } from "../store/supabase";
 import { COLORS } from "../theme/theme";
+import LoadingSceen from "./LoadingScreen";
 
 function getCategoriesFromData(data1, data2) {
   const data = data1.concat(data2)
@@ -60,7 +61,7 @@ function getProductList(category, data1, data2) {
     if (category === 'medical equipment' || category === 'medicine') {
       let productsList = data.filter((item) => item.category_pr == category);
       return productsList;
-    } else  {
+    } else {
       let productsList = data.filter((item) => item.derived == category)
       if (productsList.length == 0) productsList = data.filter((item) => item.type_pr == category)
       return productsList
@@ -73,6 +74,11 @@ function HomeScreen({ navigation }) {
   const productsList = useSelector((state) => state.products.productsList)
   const productsList2 = useSelector((state) => state.products.productsList2)
   const FavoritesList = useSelector((state) => state.products.FavoritesList)
+  const [isLoading, setIsLoading] = useState({
+    get_user: false,
+    get_cart_list: false,
+    get_order_history: false
+  })
   const dispatch = useDispatch()
 
 
@@ -123,13 +129,16 @@ function HomeScreen({ navigation }) {
   async function fetchExtra() {
     if (session?.access_token) {
       // console.log(session.user.id); dot user is must step to call id inside session
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id)
-      if (!error && data) dispatch(userSlice.actions.UPDATE_CURRENT_USER({
-        ...session,
-        first_name: data[0].first_name,
-        last_name: data[0].last_name,
-        role: data[0].role
-      }))
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).then((data) => {
+
+        if (!error && data.data) dispatch(userSlice.actions.UPDATE_CURRENT_USER({
+          ...session,
+          first_name: data.data[0].first_name,
+          last_name: data.data[0].last_name,
+          role: data.data[0].role
+        }))
+        setIsLoading({ ...isLoading, get_user: true })
+      })
 
     }
   }
@@ -151,26 +160,30 @@ function HomeScreen({ navigation }) {
 
 
   async function fetchCartList() {
-    const {data, error} = await supabase.rpc('get_cart_list', {
+    const { data, error } = await supabase.rpc('get_cart_list', {
       user_id_vr: user.user.id
+    }).then((data) => {
+      dispatch(productsSlice.actions.UPDATE_CARTLIST(data.data.order_history_products))
+      setIsLoading({ ...isLoading, get_cart_list: true })
     })
-    dispatch(productsSlice.actions.UPDATE_CARTLIST(data.order_history_products))
   }
 
 
   async function fetchOrderHistory() {
-    const {data, error} = await supabase.rpc('get_order_history', {
+    const { data, error } = await supabase.rpc('get_order_history', {
       user_id_vr: user.user.id
+    }).then((data) => {
+      // console.log(data.order_history[0].CartList[0]);
+      if (data.data.order_history.length == 0) return
+      dispatch(productsSlice.actions.UPDATE_ORDER_HISTORY_LIST_FROM_CART(data.data.order_history))
+      setIsLoading({ ...isLoading, get_order_history: true })
     })
-    // console.log(data.order_history[0].CartList[0]);
-    if (data.order_history.length == 0) return
-    dispatch(productsSlice.actions.UPDATE_ORDER_HISTORY_LIST_FROM_CART(data.order_history))
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchCartList()
     fetchOrderHistory()
-  },[user])
+  }, [user])
 
 
   useEffect(() => {
@@ -185,7 +198,13 @@ function HomeScreen({ navigation }) {
     searchCoffee()
   }, [productAll, searchText])
 
+  useEffect(()=>{}, [isLoading])
 
+  if (isLoading.get_cart_list && isLoading.get_order_history && isLoading.get_user) {
+    return (
+      <LoadingSceen />
+    )
+  }
 
 
 
@@ -308,7 +327,7 @@ function HomeScreen({ navigation }) {
           showsHorizontalScrollIndicator={false}
           data={sortedProducts}
           contentContainerStyle={styles.FlatListContainer}
-          keyExtractor={item=>item?.id_pr}
+          keyExtractor={item => item?.id_pr}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
@@ -337,7 +356,7 @@ function HomeScreen({ navigation }) {
           showsHorizontalScrollIndicator={false}
           data={productsList2}
           contentContainerStyle={styles.FlatListContainer}
-          keyExtractor={item=>item?.id_pr}
+          keyExtractor={item => item?.id_pr}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity

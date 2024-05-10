@@ -10,6 +10,7 @@ import { productsSlice } from "../store/states/products";
 import { supabase } from "../store/supabase";
 import { COLORS } from "../theme/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LoadingSceen from "./LoadingScreen";
 
 function GetStartedScreen2() {
   const navigation = useNavigation();
@@ -18,6 +19,10 @@ function GetStartedScreen2() {
   const CartList = useSelector(state => state.products.CartList)
   const OrderHistoryList = useSelector(state => state.OrderHistoryList)
   const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState({
+    productsList: false,
+    productsList2: false
+  })
 
 
   useEffect(() => {
@@ -25,26 +30,38 @@ function GetStartedScreen2() {
   }, [CartList, OrderHistoryList])
 
   async function fetchProducts() {
-    const { data, error } = await supabase.from('products').select("*,manage_prices(prices(*))").eq('category_pr', 'medical equipment')
-    dispatch(productsSlice.actions.UPDATE_PRODUCTS(data))
-    if (error) Alert.alert(error)
+    const { data, error } = await supabase.from('products').select("*,manage_prices(prices(*))").eq('category_pr', 'medical equipment').then((data) => {
+      dispatch(productsSlice.actions.UPDATE_PRODUCTS(data.data))
+      if (error) Alert.alert(error)
+      setIsLoading({ ...isLoading, productsList: true })
+    })
   }
 
   async function fetchProducts2() {
-    const { data, error } = await supabase.from('products').select("*,manage_prices(prices(*))").eq('category_pr', 'medicine')
-    dispatch(productsSlice.actions.UPDATE_PRODUCTS2(data))
-    if (error) Alert.alert(error)
+    const { data, error } = await supabase.from('products').select("*,manage_prices(prices(*))").eq('category_pr', 'medicine').then((data) => {
+      dispatch(productsSlice.actions.UPDATE_PRODUCTS2(data.data))
+      if (error) Alert.alert(error)
+      setIsLoading({ ...isLoading, productsList2: true })
+    })
   }
 
   useEffect(() => {
     fetchProducts()
     fetchProducts2()
-    // getLocalStorage()
   }, [])
+
 
   useEffect(() => {
     dispatch(productsSlice.actions.UPDATE_FAVORITE_LIST(productsList.concat(productsList2)))
   }, [productsList2, productsList])
+
+  useEffect(()=>{},[isLoading])
+
+  if (isLoading.productsList && isLoading.productsList2) {
+    return (
+      <LoadingSceen />
+    )
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
