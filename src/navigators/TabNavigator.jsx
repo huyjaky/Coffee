@@ -1,13 +1,12 @@
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet, Text, View } from "react-native";
-import HomeScreen from "../screens/HomeScreen";
+import { StyleSheet } from "react-native";
+import AdminScreen from "../screens/AdminScreen";
 import CartScreen from "../screens/CartScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
-import OrderHistoryScreen from "../screens/OrderHistoryScreen";
-import { COLORS } from "../theme/theme";
-import { Ionicons, Entypo } from "@expo/vector-icons";
-import AdminScreen from "../screens/AdminScreen";
+import HomeScreen from "../screens/HomeScreen";
 import OrderHistoryScreen2 from "../screens/OrderHistoryScreen2";
+import { COLORS } from "../theme/theme";
 
 const Tab = createBottomTabNavigator();
 

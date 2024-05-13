@@ -38,7 +38,8 @@
             "src/assets/fonts/Poppins-SemiBold.ttf"
           ]
         }
-      ]
+      ],
+      "expo-router"
     ]
   }
 }
