@@ -1,73 +1,168 @@
-import React, { useState } from 'react';
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, FlatList } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
+import { useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import ProductCard from "../components/ProductCard";
 import { COLORS } from '../theme/theme';
-import { Menu, Center, Image } from 'native-base';
-import CRUDmenu from '../components/CRUDmenu';
+
+function getCategoriesFromData(data1, data2) {
+  const data = data1.concat(data2)
+  let temp = {};
+  for (let i = 0; i < data.length; i++) {
+    if (temp[data[i].type_pr] == undefined) {
+      temp[data[i].type_pr] = 1;
+    } else {
+      temp[data[i].type_pr]++;
+    }
+  }
+
+  for (let i = 0; i < data.length; i++) {
+    if (temp[data[i].derived] == undefined) {
+      temp[data[i].derived] = 1;
+    } else {
+      temp[data[i].derived]++;
+    }
+  }
+
+  for (let i = 0; i < data.length; i++) {
+    if (temp[data[i].category_pr] == undefined) {
+      temp[data[i].category_pr] = 1;
+    } else {
+      temp[data[i].category_pr]++;
+    }
+  }
+
+  let categories = Object.keys(temp);
+  categories.unshift("All");
+  return categories;
+}
+
+function getProductList(category, data1, data2) {
+  const data = data1.concat(data2)
+  if (category == "All") {
+    return data;
+  } else {
+    if (category === 'medical equipment' || category === 'medicine') {
+      let productsList = data.filter((item) => item.category_pr == category);
+      return productsList;
+    } else {
+      let productsList = data.filter((item) => item.derived == category)
+      if (productsList.length == 0) productsList = data.filter((item) => item.type_pr == category)
+      return productsList
+    }
+  }
+}
+
 function ManageProductScreen({ navigation }) {
   // Define state for managing products
+
   const [searchText, setSearchText] = useState("");
-  const [products, setProducts] = useState([]);
-  const data = [{ name: "Drug1" }, { name: "Drug2" }, { name: "Drug3" }, { name: "Drug4" }, { name: "Drug5" }, { name: "Drug6" }, { name: "Drug7" }, { name: "Drug8" }];
-  // // Function to add a new product
-  // const addProduct = () => {
-  //   // Implement logic to add a new product to the products list
-  //   // You can use setProducts to update the state with the new product
-  // };
-
-  // // Function to edit an existing product
-  // const editProduct = (index, updatedProduct) => {
-  //   // Implement logic to edit an existing product in the products list
-  //   // You can use setProducts to update the state with the modified product
-  // };
-
-  // // Function to delete a product
-  // const deleteProduct = (index) => {
-  //   // Implement logic to delete a product from the products list
-  //   // You can use setProducts to update the state by removing the specified product
-  // };
+  const productsList = useSelector((state) => state.products.productsList)
+  const productsList2 = useSelector((state) => state.products.productsList2)
+  const user = useSelector(state => state.user.user)
+  const [products, setProducts] = useState(productsList.concat(productsList2).filter(item =>
+    item.owned_id === user.user.id
+  ));
+  const [categories, setCatehories] = useState(
+    getCategoriesFromData(productsList, productsList2)
+  );
+  const ListRef = useRef();
+  const [categoryIndex, setCategoryIndex] = useState({
+    index: 0,
+    category: categories[0],
+  });
+  const [sortedProducts, setsortedProducts] = useState(
+    getProductList(categoryIndex.category, productsList, productsList2)
+  );
 
   return (
     <View horizontal={true} style={styles.viewContainer}>
-            {/* Search Input */}
-            <View style={styles.InputContainerComponent}>
-          <Ionicons
-            style={styles.InputIcon}
-            name="search"
-            size={18}
-            color={
-              searchText.length > 0
-                ? COLORS.primaryTextBlue
-                : COLORS.primaryWhiteHex
-            }
-          />
-          <TextInput
-            placeholder="Find Product..."
-            value={searchText}
-            onChangeText={(text) => {
-              setSearchText(text);
+      {/* Search Input */}
+      <View style={styles.InputContainerComponent}>
+        <Ionicons
+          style={styles.InputIcon}
+          name="search"
+          size={18}
+          color={
+            searchText.length > 0
+              ? COLORS.primaryTextBlue
+              : COLORS.primaryWhiteHex
+          }
+        />
+        <TextInput
+          placeholder="Find Product..."
+          value={searchText}
+          onChangeText={(text) => {
+            setSearchText(text);
 
+          }}
+          placeholderTextColor={COLORS.primaryWhiteHex}
+          style={styles.TextInputContainer}
+        />
+        {searchText?.length > 0 ? (
+          <TouchableOpacity
+            onPress={() => {
+              resetSearch();
             }}
-            placeholderTextColor={COLORS.primaryWhiteHex}
-            style={styles.TextInputContainer}
-          />
-          {searchText?.length > 0 ? (
+          >
+            <Ionicons
+              style={styles.InputIcon}
+              name="close"
+              size={16}
+              color={COLORS.primaryLightGreyHex}
+            />
+          </TouchableOpacity>
+        ) : null}
+      </View>
+
+      {/* Category Scroller */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.CategoryScrollViewStyle}
+      >
+        {categories?.map((data, index) => (
+          <View key={uuidv4()} style={styles.CategoryScrollViewContainer}>
             <TouchableOpacity
               onPress={() => {
-                resetSearch();
+                ListRef?.current?.scrollToOffset({
+                  animated: true,
+                  offset: 0,
+                });
+                setCategoryIndex({
+                  index: index,
+                  category: categories[index],
+                });
+                setsortedProducts([
+                  ...getProductList(categories[index], productsList, productsList2),
+                ]);
               }}
+              style={styles.CategoryScrollViewItem}
             >
-              <Ionicons
-                style={styles.InputIcon}
-                name="close"
-                size={16}
-                color={COLORS.primaryLightGreyHex}
-              />
+              <Text
+                style={[
+                  styles.CategoryText,
+                  categoryIndex?.index == index
+                    ? { color: COLORS.primaryTextBlue }
+                    : { color: COLORS.primaryTitle },
+                  // : { color: COLORS.secondaryLightGreyHex },
+                ]}
+              >
+                {data}
+              </Text>
+              {categoryIndex?.index == index ? (
+                <View style={styles.ActiveCategory} />
+              ) : null}
             </TouchableOpacity>
-          ) : null}
-        </View>
+          </View>
+        ))}
+      </ScrollView>
+
+
+
       <FlatList
-        data={data}
+        data={sortedProducts}
         numColumns={2}
         columnWrapperStyle={{ gap: 10, paddingHorizontal: 12 }}
         contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
@@ -75,15 +170,16 @@ function ManageProductScreen({ navigation }) {
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
-            <View style={styles.productItem}>
-              <CRUDmenu style={styles.CRUDmenu} />
-              <Center>
-                <Image source={{
-                  uri: "https://wallpaperaccess.com/full/317501.jpg"
-                }} alt="Alternate Text" size="xl" />
-              </Center>
-              <Text style={styles.productText}>{item.name}</Text>
-            </View>)
+            <TouchableOpacity
+              key={uuidv4()}
+              onPress={() => {
+                dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item))
+                navigation.push("Details");
+              }}
+            >
+              <ProductCard item={item} />
+            </TouchableOpacity>
+          )
         }}>
 
       </FlatList>
@@ -94,51 +190,6 @@ function ManageProductScreen({ navigation }) {
 export default ManageProductScreen;
 
 const styles = StyleSheet.create({
-  // screenContainer: {
-  //   flex: 1,
-  //   backgroundColor: COLORS.primaryBackground,
-  // },
-  // contentContainer: {
-  //   paddingVertical: 20,
-  //   paddingHorizontal: 10,
-  // },
-  // title: {
-  //   fontSize: 24,
-  //   fontWeight: 'bold',
-  //   marginBottom: 20,
-  //   textAlign: 'center',
-  // },
-  // button: {
-  //   backgroundColor: COLORS.primaryButton,
-  //   padding: 10,
-  //   borderRadius: 5,
-  //   marginBottom: 20,
-  //   alignItems: 'center',
-  // },
-  // buttonText: {
-  //   color: COLORS.white,
-  //   fontSize: 16,
-  // },
-  // productItem: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   justifyContent: 'space-between',
-  //   padding: 10,
-  //   marginBottom: 10,
-  //   backgroundColor: COLORS.primaryLight,
-  //   borderRadius: 5,
-  // },
-  // editButton: {
-  //   backgroundColor: COLORS.primaryButton,
-  //   padding: 5,
-  //   borderRadius: 5,
-  //   marginRight: 10,
-  // },
-  // deleteButton: {
-  //   backgroundColor: COLORS.red,
-  //   padding: 5,
-  //   borderRadius: 5,
-  // },
   viewContainer: {
     flex: 1,
     marginTop: 20,
@@ -171,12 +222,99 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
   CRUDmenu: {
-    zIndex:1,
+    zIndex: 1,
     position: 'absolute',
     top: 10,
     right: 5,
   },
   productText: {
     color: COLORS.primaryNovel
-  }
+  },
+
+  ScreenContainer: {
+    flex: 1,
+    // backgroundColor: COLORS.primaryBlackHex,
+    backgroundColor: COLORS.primaryBackground,
+  },
+  ScrollViewFlex: {
+    flexGrow: 1,
+  },
+  ScreenTitle: {
+    fontSize: 28,
+    // color: COLORS.primaryWhiteHex,
+    color: COLORS.primaryTitle,
+    fontWeight: "bold",
+    paddingLeft: 30,
+  },
+  InputContainerComponent: {
+    flexDirection: "row",
+    margin: 30,
+    borderRadius: 20,
+    backgroundColor: COLORS.primaryTitle,
+    alignItems: "center",
+  },
+  InputIcon: {
+    marginHorizontal: 20,
+  },
+  TextInputContainer: {
+    flex: 1,
+    height: 60,
+    fontWeight: "600",
+    fontSize: 14,
+    color: COLORS.primaryWhiteHex,
+  },
+  CategoryScrollViewStyle: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  CategoryScrollViewContainer: {
+    paddingHorizontal: 20,
+    // backgroundColor: "red",
+    borderRadius: 20,
+  },
+  CategoryScrollViewItem: {
+    alignItems: "center",
+    borderRadius: 20,
+  },
+  ActiveCategory: {
+    height: 10,
+    width: 10,
+    borderRadius: 10,
+    backgroundColor: COLORS.primaryTextBlue,
+  },
+  CategoryText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: COLORS.primaryLightGreyHex,
+    marginBottom: 4,
+  },
+  FlatListContainer: {
+    gap: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+  },
+  DrugTitle: {
+    fontSize: 18,
+    marginLeft: 30,
+    marginTop: 20,
+    fontWeight: "600",
+    color: COLORS.primaryTextBlue
+  },
+  InputIcon: {
+    marginHorizontal: 20,
+  },
+  EmptyListContainer: {
+    width: Dimensions.get("window").width - 60,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 36 * 3.6,
+  },
+  CoffeBeansTitle: {
+    fontSize: 18,
+    marginLeft: 30,
+    marginTop: 70,
+    fontWeight: "600",
+    color: COLORS.secondaryLightGreyHex,
+    color: "#230C02",
+  },
 });
