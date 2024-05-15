@@ -11,7 +11,7 @@ const HeaderBarProps = {
 const HeaderBar = ({ title }) => {
   return (
     <View style={styles.HeaderContainer}>
-      <GradientBGIcon name="menu" color="#230c02" size={FONTSIZE.size_16} />
+      {/* <GradientBGIcon name="menu" color="#230c02" size={FONTSIZE.size_16} /> */}
       <Text style={styles.HeaderText}>{title}</Text>
       <ProfilePic />
     </View>
@@ -31,5 +31,6 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_20,
     color: COLORS.primaryTextBlue,
     fontWeight: "bold",
+    textAlign: 'center',
   },
 });

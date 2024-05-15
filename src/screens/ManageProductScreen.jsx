@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import ProductCard from "../components/ProductCard";
 import { COLORS } from '../theme/theme';
+import ManageCard from "../components/ProductManageCard";
 
 function getCategoriesFromData(data1, data2) {
   const data = data1.concat(data2)
@@ -77,7 +78,7 @@ function ManageProductScreen({ navigation }) {
   );
 
   return (
-    <View horizontal={true} style={styles.viewContainer}>
+    <View style={styles.viewContainer}>
       {/* Search Input */}
       <View style={styles.InputContainerComponent}>
         <Ionicons
@@ -95,7 +96,6 @@ function ManageProductScreen({ navigation }) {
           value={searchText}
           onChangeText={(text) => {
             setSearchText(text);
-
           }}
           placeholderTextColor={COLORS.primaryWhiteHex}
           style={styles.TextInputContainer}
@@ -103,7 +103,7 @@ function ManageProductScreen({ navigation }) {
         {searchText?.length > 0 ? (
           <TouchableOpacity
             onPress={() => {
-              resetSearch();
+              setSearchText("");
             }}
           >
             <Ionicons
@@ -117,53 +117,54 @@ function ManageProductScreen({ navigation }) {
       </View>
 
       {/* Category Scroller */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.CategoryScrollViewStyle}
-      >
-        {categories?.map((data, index) => (
-          <View key={uuidv4()} style={styles.CategoryScrollViewContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                ListRef?.current?.scrollToOffset({
-                  animated: true,
-                  offset: 0,
-                });
-                setCategoryIndex({
-                  index: index,
-                  category: categories[index],
-                });
-                setsortedProducts([
-                  ...getProductList(categories[index], productsList, productsList2),
-                ]);
-              }}
-              style={styles.CategoryScrollViewItem}
-            >
-              <Text
-                style={[
-                  styles.CategoryText,
-                  categoryIndex?.index == index
-                    ? { color: COLORS.primaryTextBlue }
-                    : { color: COLORS.primaryTitle },
-                  // : { color: COLORS.secondaryLightGreyHex },
-                ]}
+      <View style={styles.categoryContainer}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.CategoryScrollViewStyle}
+        >
+          {categories?.map((data, index) => (
+            <View key={uuidv4()} style={styles.CategoryScrollViewContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  ListRef?.current?.scrollToOffset({
+                    animated: true,
+                    offset: 0,
+                  });
+                  setCategoryIndex({
+                    index: index,
+                    category: categories[index],
+                  });
+                  setsortedProducts([
+                    ...getProductList(categories[index], productsList, productsList2),
+                  ]);
+                }}
+                style={styles.CategoryScrollViewItem}
               >
-                {data}
-              </Text>
-              {categoryIndex?.index == index ? (
-                <View style={styles.ActiveCategory} />
-              ) : null}
-            </TouchableOpacity>
-          </View>
-        ))}
-      </ScrollView>
-
-
-
+                <Text
+                  style={[
+                    styles.CategoryText,
+                    categoryIndex?.index == index
+                      ? { color: COLORS.primaryTextBlue }
+                      : { color: COLORS.primaryTitle },
+                  ]}
+                >
+                  {data}
+                </Text>
+                {categoryIndex?.index == index ? (
+                  <View style={styles.ActiveCategory} />
+                ) : null}
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+      
+      {/* Display product */}
       <FlatList
-        data={sortedProducts}
+        ref={ListRef}
         numColumns={2}
+        data={sortedProducts}
         columnWrapperStyle={{ gap: 10, paddingHorizontal: 12 }}
         contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
         keyExtractor={(item, index) => item.name + index}
@@ -173,16 +174,14 @@ function ManageProductScreen({ navigation }) {
             <TouchableOpacity
               key={uuidv4()}
               onPress={() => {
-                dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item))
-                navigation.push("Details");
+                console.log("Product clicked!");
               }}
             >
-              <ProductCard item={item} />
+              <ManageCard item={item} />
             </TouchableOpacity>
-          )
-        }}>
-
-      </FlatList>
+          );
+        }}
+      />
     </View>
   );
 }
@@ -230,10 +229,8 @@ const styles = StyleSheet.create({
   productText: {
     color: COLORS.primaryNovel
   },
-
   ScreenContainer: {
     flex: 1,
-    // backgroundColor: COLORS.primaryBlackHex,
     backgroundColor: COLORS.primaryBackground,
   },
   ScrollViewFlex: {
@@ -241,27 +238,12 @@ const styles = StyleSheet.create({
   },
   ScreenTitle: {
     fontSize: 28,
-    // color: COLORS.primaryWhiteHex,
     color: COLORS.primaryTitle,
     fontWeight: "bold",
     paddingLeft: 30,
   },
-  InputContainerComponent: {
-    flexDirection: "row",
-    margin: 30,
-    borderRadius: 20,
-    backgroundColor: COLORS.primaryTitle,
-    alignItems: "center",
-  },
-  InputIcon: {
-    marginHorizontal: 20,
-  },
-  TextInputContainer: {
-    flex: 1,
-    height: 60,
-    fontWeight: "600",
-    fontSize: 14,
-    color: COLORS.primaryWhiteHex,
+  categoryContainer: {
+    height: 60, // Fixed height for the category container
   },
   CategoryScrollViewStyle: {
     paddingHorizontal: 20,
@@ -269,7 +251,6 @@ const styles = StyleSheet.create({
   },
   CategoryScrollViewContainer: {
     paddingHorizontal: 20,
-    // backgroundColor: "red",
     borderRadius: 20,
   },
   CategoryScrollViewItem: {
@@ -300,9 +281,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: COLORS.primaryTextBlue
   },
-  InputIcon: {
-    marginHorizontal: 20,
-  },
   EmptyListContainer: {
     width: Dimensions.get("window").width - 60,
     alignItems: "center",
@@ -314,7 +292,6 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginTop: 70,
     fontWeight: "600",
-    color: COLORS.secondaryLightGreyHex,
     color: "#230C02",
   },
 });
