@@ -62,28 +62,29 @@ function ManageCard({
         </View>
       </ImageBackground>
       <Text style={styles.CardTitle}>{item.name_pr}</Text>
+      <Text style={styles.CardCategory}>{item.type_pr}</Text>
       {/* <Text style={styles.CardSubtitle}>{item.special_ingredient}</Text> */}
       <View style={styles.CardFooterRow}>
         <BGIcon
           color={COLORS.primaryWhiteHex}
-          name="add"
+          name="eye"
           // BGColor={COLORS.primaryOrangeHex}
           BGColor={COLORS.primaryButtonGreen}
-          size={10}
+          size={15}
         />
         <BGIcon
           color={COLORS.primaryWhiteHex}
-          name="delete"
+          name="create"
           // BGColor={COLORS.primaryOrangeHex}
-          BGColor={COLORS.primaryButtonGreen}
-          size={10}
+          BGColor={COLORS.primaryButtonEdit}
+          size={20}
         />
         <BGIcon
           color={COLORS.primaryWhiteHex}
-          name="add"
+          name="trash"
           // BGColor={COLORS.primaryOrangeHex}
-          BGColor={COLORS.primaryButtonGreen}
-          size={10}
+          BGColor={COLORS.primaryButtonDelete}
+          size={15}
         />
       </View>
     </LinearGradient>
@@ -143,6 +144,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: COLORS.primaryTitle,
     fontSize: 16,
+    textAlign: 'center'
+  },
+  CardCategory: {
+    fontWeight: "500",
+    color: COLORS.primaryTextBlue,
+    fontSize: 10,
     textAlign: 'center'
   },
   CardSubtitle: {

@@ -38,6 +38,8 @@ export const COLORS = {
   primaryButtonBlue: "#2320D4",
   primaryButtonGreen: "#1DCBB6",
   primaryButtonBlueNavi: "#2320D4",
+  primaryButtonDelete: "#F63D52",
+  primaryButtonEdit: "#FDCC05",
   primaryNovel: "#4a4a4a",
 };
 
