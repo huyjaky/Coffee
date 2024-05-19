@@ -37,12 +37,12 @@ function ImageFavouriteBG({
     alterTable()
   }
 
-  useEffect(() => {}, [item])
+  useEffect(() => { }, [item])
 
 
   return (
     <View>
-      <ImageBackground 
+      <ImageBackground
         source={item.imagelink_portrait}
         style={styles.ItemBackgroundImage}
       >
@@ -60,6 +60,7 @@ function ImageFavouriteBG({
               />
             </TouchableOpacity>
             <TouchableOpacity
+              activeOpacity={1}
               onPress={() => {
                 toggleFavor()
               }}
@@ -75,7 +76,8 @@ function ImageFavouriteBG({
           </View>
         ) : (
           <View style={styles.ImageHeaderBarContainerWithoutBack}>
-            <TouchableHighlight
+            <TouchableOpacity
+              // activeOpacity={1}
               onPress={() => {
                 toggleFavor()
               }} >
@@ -86,7 +88,7 @@ function ImageFavouriteBG({
                   size={30}
                 />
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         )}
 
@@ -123,7 +125,7 @@ function ImageFavouriteBG({
                   <Entypo
                     name={item.type_pr === "Bean" ? "location-pin" : "drop"}
                     size={12}
-                    color= {COLORS.primaryBackground}
+                    color={COLORS.primaryBackground}
                   />
                   {/* <Text style={styles.PropertyTextLast}>{item.ingredients}</Text> */}
                 </View>

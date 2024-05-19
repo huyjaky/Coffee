@@ -29,7 +29,7 @@ import { supabase } from "../store/supabase";
 
 
 
-function SignupScreen2() {
+function SignupScreen() {
   const navigation = useNavigation();
   const authCtx = useContext(AuthContext);
   const [email, setEmail] = useState('')
@@ -67,21 +67,21 @@ function SignupScreen2() {
               navigation.push("GetStarted");
             }}
             style={{
-              backgroundColor: "#f8c0aa",
-              padding: 10,
-              borderTopRightRadius: 16,
+              backgroundColor: COLORS.primaryButtonBlueNavi,
+              paddingVertical: 10,
+              paddingHorizontal: 15,
+              borderRadius: 10,
               marginLeft: 16,
             }}
           >
             {/* <Ionicons name="arrow-back" size="20" color="black" />; */}
-            <ArrowLeftIcon size="20" color="#693a27" />
+            <ArrowLeftIcon size="20" color={COLORS.primaryBackground} />
           </TouchableOpacity>
         </View>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            // alignItems: "center",
             marginRight: 90,
           }}
         >
@@ -112,6 +112,7 @@ function SignupScreen2() {
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
+                fontWeight: 'bold'
               }}
             >
               Email Address
@@ -142,6 +143,7 @@ function SignupScreen2() {
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
+                fontWeight: 'bold'
               }}
             >
               Password
@@ -173,6 +175,7 @@ function SignupScreen2() {
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
+                fontWeight: 'bold'
               }}
             >
               Re-Enter Password
@@ -214,10 +217,10 @@ function SignupScreen2() {
             >
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: COLORS.primaryTextBlue,
+                  color: COLORS.primaryBackground,
                 }}
               >
                 Sign Up
@@ -240,7 +243,7 @@ function SignupScreen2() {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: COLORS.primaryBackground,
+                  color: COLORS.primaryTextBlue,
                 }}
               >
                 Already have an account?
@@ -253,4 +256,4 @@ function SignupScreen2() {
   );
 }
 
-export default SignupScreen2;
+export default SignupScreen;

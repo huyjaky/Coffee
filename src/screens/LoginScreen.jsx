@@ -32,7 +32,7 @@ import { useSelector } from "react-redux";
 
 
 
-function LoginScreen2() {
+function LoginScreen() {
   const navigation = useNavigation();
 
   const authCtx = useContext(AuthContext);
@@ -71,21 +71,20 @@ function LoginScreen2() {
               navigation.push("GetStarted");
             }}
             style={{
-              backgroundColor: "#f8c0aa",
-              padding: 10,
-              borderTopRightRadius: 16,
+              backgroundColor: COLORS.primaryButtonBlueNavi,
+              paddingVertical: 10,
+              paddingHorizontal: 15,
+              borderRadius: 10,
               marginLeft: 16,
             }}
           >
-            {/* <Ionicons name="arrow-back" size="20" color="black" />; */}
-            <ArrowLeftIcon size="20" color="#693a27" />
+            <ArrowLeftIcon size="20" color={COLORS.primaryBackground} />
           </TouchableOpacity>
         </View>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            // alignItems: "center",
             marginRight: 90,
           }}
         >
@@ -217,7 +216,7 @@ function LoginScreen2() {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: COLORS.primaryTextBlue,
+                  color: COLORS.primaryNovel,
                 }}
               >
                 Create an account
@@ -238,7 +237,7 @@ function LoginScreen2() {
                   fontSize: 16,
                   fontWeight: "bold",
                   textAlign: "center",
-                  color: COLORS.primaryBackground,
+                  color: COLORS.primaryTextBlue,
                 }}
               >
                 Forgot your password?
@@ -251,4 +250,4 @@ function LoginScreen2() {
   );
 }
 
-export default LoginScreen2;
+export default LoginScreen;

@@ -8,9 +8,9 @@ import TabNavigator from "./src/navigators/TabNavigator";
 import DetailsScreen from "./src/screens/DetailsScreen";
 import GetStartedScreen2 from "./src/screens/GetStartedScreen2";
 import HomeScreen from "./src/screens/HomeScreen";
-import LoginScreen2 from "./src/screens/LoginScreen2";
+import LoginScreen from "./src/screens/LoginScreen";
 import PaymentScreen from "./src/screens/PaymentScreen";
-import SignupScreen2 from "./src/screens/SignupScreen2";
+import SignupScreen from "./src/screens/SignupScreen";
 import AuthContextProvider, { AuthContext } from "./src/store/auth-context";
 import { store } from "./src/store/states/store";
 import CartScreen from "./src/screens/CartScreen";
@@ -20,6 +20,7 @@ import ManageUserScreen from "./src/screens/ManageUserScreen";
 import Account from "./src/screens/AccountScreen";
 import { NativeBaseProvider } from "native-base";
 import NativeBaseScreen from "./src/screens/NativeBaseScreen";
+import ForgotPassScreen from "./src/screens/ForgotPassScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -84,9 +85,10 @@ function AuthStack() {
       initialRouteName="GetStarted"
       screenOptions={{ headerShown: false }}
     >
+      <Stack.Screen name="ForgotPass" component={ForgotPassScreen} />
       <Stack.Screen name="GetStarted" component={GetStartedScreen2} />
-      <Stack.Screen name="Login" component={LoginScreen2} />
-      <Stack.Screen name="SignUp" component={SignupScreen2} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="SignUp" component={SignupScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
 
       {/* dev form */}

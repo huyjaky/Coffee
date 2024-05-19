@@ -51,41 +51,52 @@ function ManageCard({
       // colors={["#f5dab5", "#d1c0ad"]}
       colors={COLORS.primaryBackgroundCard}
     >
+    {/* Product Image */}
       <ImageBackground
         resizeMode="cover"
         style={styles.CardImageBG}
         source={require('../assets/coffee_assets/excelsa_coffee_beans/excelsa_coffee_beans_square.png')}
       >
+      {/* Rating */}
         <View style={styles.CardRatingContainer}>
           <AntDesign name="star" size={16} color={COLORS.primaryIconYellow} />
           <Text style={styles.CardRatingText}>{item.average_rating}</Text>
         </View>
+        {/* End rating */}
       </ImageBackground>
+      {/* End product image */}
+      {/* Product title */}
       <Text style={styles.CardTitle}>{item.name_pr}</Text>
       <Text style={styles.CardCategory}>{item.type_pr}</Text>
-      {/* <Text style={styles.CardSubtitle}>{item.special_ingredient}</Text> */}
+            {/* End product title */}
       <View style={styles.CardFooterRow}>
-        <BGIcon
-          color={COLORS.primaryWhiteHex}
-          name="eye"
-          // BGColor={COLORS.primaryOrangeHex}
-          BGColor={COLORS.primaryButtonGreen}
-          size={15}
-        />
-        <BGIcon
-          color={COLORS.primaryWhiteHex}
-          name="create"
-          // BGColor={COLORS.primaryOrangeHex}
-          BGColor={COLORS.primaryButtonEdit}
-          size={20}
-        />
-        <BGIcon
-          color={COLORS.primaryWhiteHex}
-          name="trash"
-          // BGColor={COLORS.primaryOrangeHex}
-          BGColor={COLORS.primaryButtonDelete}
-          size={15}
-        />
+        <TouchableOpacity>
+          <BGIcon
+            color={COLORS.primaryWhiteHex}
+            name="eye"
+
+            BGColor={COLORS.primaryButtonGreen}
+            size={15}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <BGIcon
+            color={COLORS.primaryWhiteHex}
+            name="create"
+
+            BGColor={COLORS.primaryButtonEdit}
+            size={20}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <BGIcon
+            color={COLORS.primaryWhiteHex}
+            name="trash"
+
+            BGColor={COLORS.primaryButtonDelete}
+            size={15}
+          />
+        </TouchableOpacity>
       </View>
     </LinearGradient>
   );

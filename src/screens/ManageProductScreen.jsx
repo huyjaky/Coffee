@@ -171,14 +171,7 @@ function ManageProductScreen({ navigation }) {
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity
-              key={uuidv4()}
-              onPress={() => {
-                console.log("Product clicked!");
-              }}
-            >
               <ManageCard item={item} />
-            </TouchableOpacity>
           );
         }}
       />
