@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import { Provider } from "react-redux";
 import TabNavigator from "./src/navigators/TabNavigator";
 import DetailsScreen from "./src/screens/DetailsScreen";
-import GetStartedScreen2 from "./src/screens/GetStartedScreen2";
+import GetStartedScreen from "./src/screens/GetStartedScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import PaymentScreen from "./src/screens/PaymentScreen";
@@ -21,6 +21,7 @@ import Account from "./src/screens/AccountScreen";
 import { NativeBaseProvider } from "native-base";
 import NativeBaseScreen from "./src/screens/NativeBaseScreen";
 import ForgotPassScreen from "./src/screens/ForgotPassScreen";
+import ProfileViewScreen from "./src/screens/ProfileViewScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -69,6 +70,11 @@ function AuthenticatedStack() {
         component={Account}
         options={{ animation: "slide_from_bottom" }}
       />
+      <Stack.Screen
+        name="Account2"
+        component={ProfileViewScreen}
+        options={{ animation: "slide_from_bottom" }}
+      />
       {/* Product manager stack */}
       <Stack.Screen
         name="EditProductForm"
@@ -86,7 +92,7 @@ function AuthStack() {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="ForgotPass" component={ForgotPassScreen} />
-      <Stack.Screen name="GetStarted" component={GetStartedScreen2} />
+      <Stack.Screen name="GetStarted" component={GetStartedScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SignUp" component={SignupScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />

@@ -43,6 +43,7 @@ function OrderHistoryScreen2({ navigation }) {
               <View style={styles.ListItemContainer}>
                 {OrderHistoryList.map((data, index) => (
                   <TouchableOpacity
+                    activeOpacity={1}
                     key={index.toString()}
                     onPress={() => openModal(data)}
                     style={styles.OrderItem}

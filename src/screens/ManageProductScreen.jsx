@@ -165,7 +165,7 @@ function ManageProductScreen({ navigation }) {
         ref={ListRef}
         numColumns={2}
         data={sortedProducts}
-        columnWrapperStyle={{ gap: 10, paddingHorizontal: 12 }}
+        columnWrapperStyle={{ gap: 20, paddingHorizontal: 15 }}
         contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
         keyExtractor={(item, index) => item.name + index}
         showsVerticalScrollIndicator={false}
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
   },
   categoryContainer: {
-    height: 60, // Fixed height for the category container
+    height: 80, // Fixed height for the category container
   },
   CategoryScrollViewStyle: {
     paddingHorizontal: 20,

@@ -25,7 +25,7 @@ function OrderHistoryCard({
           <Text style={styles.HeaderPrice}>${CartListPrice}</Text>
         </View>
         <View style={styles.ViewOrderButton}>
-          <TouchableOpacity onPress={() => openModal(order)}>
+          <TouchableOpacity activeOpacity={1} onPress={() => openModal(order)}>
             <Text
               style={styles.ViewOrderBtnText}>
               View Status
@@ -36,6 +36,7 @@ function OrderHistoryCard({
       <View style={styles.ListContainer}>
         {CartList.map((data, index) => (
           <TouchableOpacity
+            activeOpacity={1}
             key={index.toString() + data.id_pr}
             onPress={() => {
               dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(data))

@@ -231,7 +231,7 @@ function HomeScreen({ navigation }) {
         <HeaderBar title="Home Screens" />
 
         <Text style={styles.ScreenTitle}>
-          An easy way {"\n     "} to find your med!
+          An easy way{"\n"}To find your med!
         </Text>
 
         {/* Search Input */}

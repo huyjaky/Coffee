@@ -75,7 +75,7 @@ function CoffeeCard({
           }}
         >
           <BGIcon
-            color={COLORS.primaryWhiteHex}
+            color={COLORS.primaryNovel}
             name="add"
             // BGColor={COLORS.primaryOrangeHex}
             BGColor={COLORS.primaryButtonGreen}

@@ -7,6 +7,7 @@ import FavoritesScreen from "../screens/FavoritesScreen";
 import HomeScreen from "../screens/HomeScreen";
 import OrderHistoryScreen2 from "../screens/OrderHistoryScreen2";
 import { COLORS } from "../theme/theme";
+import ProfileViewScreen from "../screens/ProfileViewScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -86,7 +87,7 @@ function TabNavigator() {
 
       <Tab.Screen
         name="Admin"
-        component={AdminScreen}
+        component={ProfileViewScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Entypo

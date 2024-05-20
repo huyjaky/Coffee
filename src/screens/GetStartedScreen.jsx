@@ -9,7 +9,7 @@ import { COLORS } from "../theme/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingScreen from "./LoadingScreen";
 
-function GetStartedScreen2() {
+function GetStartedScreen() {
   const navigation = useNavigation();
   const productsList = useSelector((state) => state.products.productsList);
   const productsList2 = useSelector((state) => state.products.productsList2);
@@ -155,4 +155,4 @@ function GetStartedScreen2() {
   );
 }
 
-export default GetStartedScreen2;
+export default GetStartedScreen;
