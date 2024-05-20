@@ -29,6 +29,7 @@ import { COLORS } from "../theme/theme";
 import { Session } from '@supabase/supabase-js'
 import { supabase } from "../store/supabase";
 import { useSelector } from "react-redux";
+import { Row } from "native-base";
 
 
 
@@ -62,7 +63,7 @@ function LoginScreen() {
 
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
+    <View style={{ flex: 1, backgroundColor: '#a3c3f2' }}>
       <StatusBar hidden={true} />
       <View style={{ marginTop: 10, flex: 1 }}>
         <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
@@ -81,31 +82,41 @@ function LoginScreen() {
             <ArrowLeftIcon size="20" color={COLORS.primaryBackground} />
           </TouchableOpacity>
         </View>
+        <Text style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          textAlign: 'center',
+          fontSize: 36,
+          fontWeight: 'bold',
+          color: COLORS.primaryNovel,
+          marginTop: 20
+        }}>WELLCOME BACK!</Text>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            marginRight: 90,
           }}
         >
           <Animated.Image
             entering={FadeInUp.duration(1000).springify()}
-            source={require("../assets/get_started/c2.png")}
-            style={{ width: 275, height: 183 }}
+            source={require("../assets/get_started/login.jpg")}
+            style={{ width: '100%', height: 200, paddingVertical: 20, marginTop: 40, }}
           />
         </View>
+
       </View>
+      {/* Bottom card */}
       <View
         style={{
           flex: 1,
           backgroundColor: COLORS.primaryCardBackground,
           paddingHorizontal: 32,
-          paddingTop: 250,
+          paddingTop: 100,
           borderTopLeftRadius: 50,
           borderTopRightRadius: 50,
         }}
       >
-        <View style={{ marginTop: -220 }}>
+        <View style={{ marginTop: -70 }}>
           <Animated.View
             entering={FadeInUp.delay(200).duration(1000).springify()}
           >
@@ -115,6 +126,7 @@ function LoginScreen() {
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
+                fontWeight: 'bold'
               }}
             >
               Email Address
@@ -145,6 +157,7 @@ function LoginScreen() {
                 marginLeft: 16,
                 marginBottom: 8,
                 fontSize: 14,
+                fontWeight: 'bold'
               }}
             >
               Password
@@ -162,7 +175,7 @@ function LoginScreen() {
                 padding: 16,
                 backgroundColor: COLORS.primaryBackground,
                 borderRadius: 16,
-                marginBottom: 50,
+                marginBottom: 30,
                 fontSize: 12,
               }}
             />
@@ -171,7 +184,7 @@ function LoginScreen() {
           <Animated.View
             entering={FadeInDown.delay(600).duration(1000).springify()}
           >
-
+            {/* Sign in button */}
             <TouchableOpacity
               onPress={() => signInWithEmail()}
               disabled={loading}
@@ -179,7 +192,7 @@ function LoginScreen() {
                 paddingVertical: 12,
                 backgroundColor: COLORS.primaryButtonBlue,
                 borderRadius: 100,
-                marginBottom: 20,
+                marginBottom: 10,
               }}
             >
               <Text
@@ -193,49 +206,21 @@ function LoginScreen() {
                 Login
               </Text>
             </TouchableOpacity>
-
-
           </Animated.View>
-
+          {/* Forgot pass button */}
           <Animated.View
             entering={FadeInDown.delay(700).duration(1000).springify()}
           >
             <TouchableOpacity
-              onPress={() => {
-                navigation.push("SignUp");
-              }}
               style={{
-                paddingVertical: 12,
-                backgroundColor: COLORS.primaryButtonGreen,
-                borderRadius: 100,
-                marginBottom: 50,
+                paddingTop: 8,
+                paddingBottom: 12,
               }}
+              onPress={() => navigation.push('ForgotPass')}
             >
               <Text
                 style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: COLORS.primaryNovel,
-                }}
-              >
-                Create an account
-              </Text>
-            </TouchableOpacity>
-          </Animated.View>
-
-          <Animated.View
-            entering={FadeInDown.delay(800).duration(1000).springify()}
-          >
-            <TouchableOpacity
-              style={{
-                paddingVertical: 12,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
+                  fontSize: 14,
                   textAlign: "center",
                   color: COLORS.primaryTextBlue,
                 }}
@@ -243,6 +228,30 @@ function LoginScreen() {
                 Forgot your password?
               </Text>
             </TouchableOpacity>
+            {/* Signup link */}
+            <TouchableOpacity
+              onPress={() => {
+                navigation.push("SignUp");
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  paddingTop: 40,
+                  color: COLORS.primaryNovel,
+                }}
+              >
+                Don't have one? <Text style={{ color: COLORS.primaryButtonBlue }}> Create account!</Text>
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+
+          <Animated.View
+            entering={FadeInDown.delay(800).duration(1000).springify()}
+          >
+
           </Animated.View>
         </View>
       </View>

@@ -58,7 +58,7 @@ function SignupScreen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
+    <View style={{ flex: 1, backgroundColor: '#fff1ee' }}>
       <StatusBar hidden={true} />
       <View style={{ marginTop: 10, flex: 1 }}>
         <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
@@ -82,13 +82,13 @@ function SignupScreen() {
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            marginRight: 90,
+            marginTop: 20,
           }}
         >
           <Animated.Image
             entering={FadeInUp.duration(1000).springify()}
-            source={require("../assets/get_started/c2.png")}
-            style={{ width: 275, height: 183 }}
+            source={require("../assets/get_started/signup.jpg")}
+            style={{ width: '100%', height: 193 }}
           />
         </View>
       </View>
@@ -122,7 +122,7 @@ function SignupScreen() {
             entering={FadeInUp.delay(150).duration(1000).springify()}
           >
             <TextInput
-              onChangeText={(text)=> setEmail(text)}
+              onChangeText={(text) => setEmail(text)}
               aria-disabled={loading}
               placeholder="Enter Email"
               style={{
@@ -153,7 +153,7 @@ function SignupScreen() {
             entering={FadeInUp.delay(300).duration(1000).springify()}
           >
             <TextInput
-              onChangeText={(text)=> setCurrentPass(text)}
+              onChangeText={(text) => setCurrentPass(text)}
               disabled={loading}
               placeholder="Enter Password"
               secureTextEntry
@@ -185,8 +185,8 @@ function SignupScreen() {
             entering={FadeInUp.delay(500).duration(1000).springify()}
           >
             <TextInput
-              onChangeText={(text)=> {
-                if (currentPass === text){
+              onChangeText={(text) => {
+                if (currentPass === text) {
                   setPassword(text)
                 }
               }}
@@ -197,7 +197,7 @@ function SignupScreen() {
                 padding: 16,
                 backgroundColor: COLORS.primaryBackground,
                 borderRadius: 16,
-                marginBottom: 50,
+                marginBottom: 40,
                 fontSize: 12,
               }}
             />
@@ -207,7 +207,7 @@ function SignupScreen() {
             entering={FadeInDown.delay(600).duration(1000).springify()}
           >
             <TouchableOpacity
-              onPress={()=> signUpWithEmail()}
+              onPress={() => signUpWithEmail()}
               style={{
                 paddingVertical: 12,
                 backgroundColor: COLORS.primaryButtonGreen,
@@ -240,7 +240,7 @@ function SignupScreen() {
             >
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: "bold",
                   textAlign: "center",
                   color: COLORS.primaryTextBlue,

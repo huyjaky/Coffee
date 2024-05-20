@@ -42,7 +42,7 @@ const AdminScreen = () => {
             navigation.navigate('ManageUser');
             break;
           case 'Account':
-            navigation.navigate('Account')
+            navigation.navigate('Account');
             break;
           default:
             console.log("Undefined item.title");

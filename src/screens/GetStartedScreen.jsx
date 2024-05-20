@@ -110,10 +110,10 @@ function GetStartedScreen() {
             exiting={FadeOut.duration(1000)}
           >
             <TouchableOpacity
-              onPress={() => navigation.push("ForgotPass")}
+              onPress={() => navigation.push("SignUp")}
               style={{
                 paddingVertical: 12,
-                backgroundColor: COLORS.primaryButtonBlue,
+                backgroundColor: COLORS.primaryButtonGreen,
                 marginHorizontal: 28,
                 borderRadius: 12,
                 marginBottom: 12,
