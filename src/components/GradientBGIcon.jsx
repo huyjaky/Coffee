@@ -10,20 +10,12 @@ import { useEffect } from "react";
 //   }, []);
 // }
 
-function GradientBGIcon({ name, color, size }) {
+function GradientBGIcon({ name, color, size, style }) {
 
 
   return (
     <Pressable style={styles.Container}>
-      <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        // colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-        colors={COLORS.primaryBackgroundCard}
-        style={styles.LinearGradient}
-      >
-        <CustomIcon name={name} color={color} size={size} />
-      </LinearGradient>
+        <CustomIcon name={name} color={color} size={size} style={style} />
     </Pressable>
   );
 }
@@ -31,19 +23,11 @@ export default GradientBGIcon;
 
 const styles = StyleSheet.create({
   Container: {
-    borderWidth: 2,
-    // borderColor: COLORS.secondaryDarkGreyHex,
-    borderColor: "#afa08e",
-    borderRadius: SPACING.space_12,
+    borderRadius: 10,
+    width: 40,
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: COLORS.secondaryDarkGreyHex,
-    overflow: "hidden",
-  },
-  LinearGradient: {
-    height: SPACING.space_36,
-    width: SPACING.space_36,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: COLORS.primaryButtonBlue,
   },
 });
