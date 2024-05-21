@@ -23,22 +23,8 @@ function DetailsScreen({ navigation, route }) {
   useEffect(() => { }, [ItemofIndex])
 
   const Tab = createMaterialTopTabNavigator();
-  const [fullDesc, setFullDesc] = useState(false);
   const [price, setPrice] = useState(ItemofIndex.manage_prices[0]);
-  const DATA = [
-    {
-      id: '1',
-      title: 'Item 1',
-      image: 123,
-      description: 'Description of item 1',
-    },
-    {
-      id: '2',
-      title: 'Item 2',
-      image: 123,
-      description: 'Description of item 2',
-    },
-  ];
+
 
   function BackHandler() {
     navigation.pop();
@@ -71,72 +57,12 @@ function DetailsScreen({ navigation, route }) {
           item={ItemofIndex}
           BackHandler={BackHandler}
         />
-        {/* 
-        <View style={styles.FooterInfoArea}>
-          <Text style={styles.InfoTitle}>Description</Text>
-          {fullDesc ? (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                setFullDesc((prev) => !prev);
-              }}
-            >
-              <Text style={styles.DescriptionText}>
-                {ItemofIndex.des}
-              </Text>
-            </TouchableWithoutFeedback>
-          ) : (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                setFullDesc((prev) => !prev);
-              }}
-            >
-              <Text style={styles.DescriptionText} numberOfLines={3}>
-                {ItemofIndex.des}
-              </Text>
-            </TouchableWithoutFeedback>
-          )}
-          <Text style={styles.InfoTitle}>Size</Text>
-          <View style={styles.SizeOuterContainer}>
-            {ItemofIndex.manage_prices.map((data) => (
-              <TouchableOpacity
-                onPress={() => {
-                  setPrice(data);
-                }}
-                key={data.prices.size}
-                style={[
-                  styles.SizeBox,
-                  {
-                    borderColor:
-                      data.prices.size === price.prices.size
-                        ? COLORS.primaryButtonBlue
-                        : // : COLORS.primaryDarkGreyHex,
-                        "#fbd09c99",
-                  },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.SizeText,
-                    {
-                      fontSize: ItemofIndex.type_pr === "Bean" ? 14 : 16,
-                      color:
-                        data.size === price.size
-                          ? COLORS.primaryButtonBlue
-                          : COLORS.primaryLightGreyHex,
-                    },
-                  ]}
-                >
-                  {data.prices.size}{data.prices.unit}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View> */}
         <Tab.Navigator ta>
           <Tab.Screen name="Information" component={HomeScreen} />
           <Tab.Screen name="Ingredient" component={SettingsScreen} />
           <Tab.Screen name="Special Ingredient" component={SettingsScreen} />
         </Tab.Navigator>
+        
         <PaymentFooter
           price={price.prices.price}
           buttonTitle="Add to Cart"

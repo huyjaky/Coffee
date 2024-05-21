@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../theme/theme";
-import OrderItemCard from "./OrderItemCard";
 import { useDispatch } from "react-redux";
 import { productsSlice } from "../store/states/products";
+import { COLORS } from "../theme/theme";
+import OrderItemCard from "./OrderItemCard";
 
 function OrderHistoryCard({
   navigationHandler,
@@ -13,12 +13,13 @@ function OrderHistoryCard({
   order
 }) {
   const dispatch = useDispatch()
+  const CartDate = new Date(OrderDate).toLocaleDateString('en-US');
   return (
     <View style={styles.CardContainer}>
       <View style={styles.CardHeader}>
         <View>
           <Text style={styles.HeaderTitle}>Order Time</Text>
-          <Text style={styles.HeaderSubtitle}>{OrderDate}</Text>
+          <Text style={styles.HeaderSubtitle}>{CartDate}</Text>
         </View>
         <View style={styles.PriceContainer}>
           <Text style={styles.HeaderTitle}>Total Amount</Text>

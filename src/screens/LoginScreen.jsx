@@ -1,35 +1,22 @@
+import { useNavigation } from "@react-navigation/native";
+import { useContext, useState } from "react";
 import {
   Alert,
-  AppState,
-  Button,
-  Image,
   StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { ArrowLeftIcon } from "react-native-heroicons/solid";
-import { useNavigation } from "@react-navigation/native";
 import Animated, {
-  FadeIn,
   FadeInDown,
-  FadeInUp,
-  FadeOut,
-  FlipInEasyX,
-  FlipOutEasyX,
-  FlipInXUp,
-  BounceInDown,
-  BounceInUp,
+  FadeInUp
 } from "react-native-reanimated";
-import { AuthContext } from "../store/auth-context";
-import { useContext, useEffect, useState } from "react";
-import { COLORS } from "../theme/theme";
-import { Session } from '@supabase/supabase-js'
-import { supabase } from "../store/supabase";
 import { useSelector } from "react-redux";
-import { Row } from "native-base";
+import { AuthContext } from "../store/auth-context";
+import { supabase } from "../store/supabase";
+import { COLORS } from "../theme/theme";
 
 
 
@@ -53,12 +40,12 @@ function LoginScreen() {
       Alert.alert(error.message)
     } else {
       // Login success
-      authCtx.login()
+      // authCtx.login()
+      console.log('Test');
     }
     setLoading(false)
+    authCtx.login()
   }
-
-
 
 
 

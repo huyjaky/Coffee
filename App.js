@@ -88,7 +88,7 @@ function AuthenticatedStack() {
 function AuthStack() {
   return (
     <Stack.Navigator
-      initialRouteName="GetStarted"
+      initialRouteName="Dev"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="ForgotPass" component={ForgotPassScreen} />
@@ -98,7 +98,7 @@ function AuthStack() {
       <Stack.Screen name="Home" component={HomeScreen} />
 
       {/* dev form */}
-      <Stack.Screen name="Dev" component={NativeBaseScreen} />
+      <Stack.Screen name="Dev" component={ManageOrderScreen} />
 
     </Stack.Navigator>
   );
