@@ -20,53 +20,9 @@ import { COLORS } from '../theme/theme';
 import { Box, AspectRatio, Image, Center, Stack, Heading, HStack, FormControl, Input, TextArea, Divider, } from "native-base";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import * as ImagePicker from 'expo-image-picker';
 
 
-// @WARNING: modifier tab on form
-function imagelink_square() {
-  return (
-    <Box>
-      <AspectRatio w="100%" ratio={16 / 9}>
-        <Image source={{
-          uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
-        }} alt="image" />
-      </AspectRatio>
-      <Center bg="violet.500" _dark={{
-        bg: "violet.400"
-      }} _text={{
-        color: "warmGray.50",
-        fontWeight: "700",
-        fontSize: "xs"
-      }} position="absolute" bottom="0" px="3" py="1.5">
-        Image Link Square
-      </Center>
-    </Box>
-
-  )
-}
-
-
-function imagelink_portrait() {
-  return (
-    <Box>
-      <AspectRatio w="100%" ratio={16 / 9}>
-        <Image source={{
-          uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
-        }} alt="image" />
-      </AspectRatio>
-      <Center bg="violet.500" _dark={{
-        bg: "violet.400"
-      }} _text={{
-        color: "warmGray.50",
-        fontWeight: "700",
-        fontSize: "xs"
-      }} position="absolute" bottom="0" px="3" py="1.5">
-        Image Link Portrait
-      </Center>
-    </Box>
-
-  )
-}
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -121,7 +77,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     prices_id: uuidv4(), unit: 'gm', price: '123', size: '123'
   }]);
 
-  useEffect(() => { }, [pricesList]);
+
 
   function convertPricesWithProduct(data) {
     const temp = [];
@@ -132,8 +88,9 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   }
 
   async function removePrices(prices_id) {
-    const { error } = await supabase.from('prices').delete().eq('prices_id', prices_id);
-    console.log('remove prices', error);
+
+    // const { error } = await supabase.from('prices').delete().eq('prices_id', prices_id);
+    // console.log('remove prices', error);
   }
 
   async function insertPirces(data) {
@@ -173,7 +130,79 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     };
   };
 
+  const [image, setImage] = useState(null);
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  // @WARNING: modifier tab on form
+  function Imagelink_square() {
+    return (
+      <Box>
+        <TouchableOpacity onPress={pickImage}>
+          <AspectRatio w="100%" ratio={16 / 9}>
+            <Image source={{
+              uri: !image ? "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg" : image
+            }} alt="image" />
+          </AspectRatio>
+          <Center bg="violet.500" _dark={{
+            bg: "violet.400"
+          }} _text={{
+            color: "warmGray.50",
+            fontWeight: "700",
+            fontSize: "xs"
+          }} position="absolute" bottom="0" px="3" py="1.5">
+            Image Link Square
+          </Center>
+        </TouchableOpacity>
+      </Box>
+
+    )
+  }
+
+
+  function Imagelink_portrait() {
+    return (
+      <Box>
+        <AspectRatio w="100%" ratio={16 / 9}>
+          <Image source={{
+            uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
+          }} alt="image" />
+        </AspectRatio>
+        <Center bg="violet.500" _dark={{
+          bg: "violet.400"
+        }} _text={{
+          color: "warmGray.50",
+          fontWeight: "700",
+          fontSize: "xs"
+        }} position="absolute" bottom="0" px="3" py="1.5">
+          Image Link Portrait
+        </Center>
+      </Box>
+
+    )
+  }
+
+  // function removeTest(id_pr) {
+  //   console.log(id_pr);
+  //   const temp = [...pricesList.filter(item => item.prices_id !== id_pr)]
+  //   console.log(temp);
+  //   setPriceList(temp)
+  //   // console.log(id_pr);
+  // }
 
   return (
     <View style={styles.container}>
@@ -192,8 +221,8 @@ function ManageOrderScreen({ navigation, isUpdate }) {
             <Box>
               <View style={{ width: '100%', height: 250 }}>
                 <Tab.Navigator >
-                  <Tab.Screen name="ImageLinkSquare" component={imagelink_square} />
-                  <Tab.Screen name="ImageLinkPortrait" component={imagelink_portrait} />
+                  <Tab.Screen name="preview square card" component={Imagelink_square} />
+                  <Tab.Screen name="preview portrait card" component={Imagelink_portrait} />
                 </Tab.Navigator>
               </View>
             </Box>
@@ -249,13 +278,18 @@ function ManageOrderScreen({ navigation, isUpdate }) {
               })}
 
               {pricesList.map((item1, index1) => {
+                const keyItemPrice = uuidv4()
                 return (
-                  <View key={uuidv4()} style={styles.prices}>
+                  <View key={keyItemPrice} style={styles.prices}>
                     {formDataPrice.map((item2, index2) => {
                       return (
                         <View key={uuidv4()} style={styles.pricesItem}>
                           <View>
-                            <Text style={styles.label}>{item2.name}</Text>
+                            {index1 == 0 ?
+                              <Text style={styles.label}>{item2.name}</Text>
+                              :
+                              <Text></Text>
+                            }
                             <Controller
                               control={prices.control}
                               render={({ field: { onChange, onBlur, value } }) => (
@@ -274,11 +308,18 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                       );
                     })}
                     <View>
-                      <AntDesign
-                        name="close"
-                        color={COLORS.primaryNovel}
-                        size={33}
-                      />
+                      <TouchableOpacity onPress={() => {
+                        if (pricesList.length == 1 ) return
+
+                        const temp = [...pricesList.filter(item=>item.prices_id!==item1.prices_id)]
+                        setPriceList(temp)
+                      }}>
+                        <AntDesign
+                          name="close"
+                          color={COLORS.primaryNovel}
+                          size={33}
+                        />
+                      </TouchableOpacity>
                     </View>
                   </View>
                 );
@@ -288,7 +329,6 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
-                    console.log(typeof (pricesList));
                     setPriceList([...pricesList,
                     { prices_id: uuidv4(), unit: 'gm', price: '123', size: '123' }
                     ]);
