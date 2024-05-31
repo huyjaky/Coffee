@@ -34,6 +34,7 @@ function GetStartedScreen() {
         dispatch(productsSlice.actions.UPDATE_PRODUCTS(data.data));
         if (error) Alert.alert(error);
         setIsLoading({ ...isLoading, productsList: true });
+        console.log('data test', data.data[0].manage_prices);
       });
   }
 

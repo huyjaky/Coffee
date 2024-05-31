@@ -343,7 +343,7 @@ function HomeScreen({ navigation }) {
           }}
         />
 
-        <Text style={styles.DrugTitle}>Coffee </Text>
+        <Text style={styles.DrugTitle}>Medicine </Text>
         {/* Beans FlatList */}
         <FlatList
           ref={ListRef}

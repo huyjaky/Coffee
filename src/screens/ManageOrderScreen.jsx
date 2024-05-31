@@ -8,10 +8,12 @@ import {
   AspectRatio,
   Box,
   Center,
+  CheckIcon,
   Divider,
   FormControl,
   Image,
   Input,
+  Select,
   Stack,
   TextArea,
 } from "native-base";
@@ -27,13 +29,14 @@ import {
   View,
 } from "react-native";
 import "react-native-get-random-values";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { formData, formDataPrice } from "../data/form";
 import { supabase } from "../store/supabase";
 import { COLORS } from "../theme/theme";
 
 import { decode } from "base64-arraybuffer";
+import { productsSlice } from "../store/states/products";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -47,6 +50,8 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   );
   const [ImgPortrait, setImgPortrait] = useState();
   const [ImgSquare, setImgSquare] = useState();
+  const [service, setService] = useState("");
+  const dispatch = useDispatch();
 
   const products = useForm({
     defaultValues: isUpdate
@@ -66,7 +71,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
           index_pr: productsList.concat(productsList2).length,
           owned_id: "f337d26b-2961-4ff1-b114-3592d4c440bb",
           derived: "my house",
-          category_pr: "my dick too big",
+          category_pr: "medicine",
           status: "realease",
         },
   });
@@ -123,7 +128,6 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     const insertManagePrice = await supabase
       .from("manage_prices")
       .insert(convertPricesWithProduct(pricesList, id_pr));
-    console.log(insertManagePrice.error);
   }
 
   async function updatePrices(_data) {
@@ -148,13 +152,12 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     const imgUploadSq = await supabase.storage
       .from("Images")
       .upload(filePathSq, decode(base64Sq), { contentTypeSq });
-    console.log('upload square',imgUploadSq.error);
-    return imgUploadSq
+    console.log("upload square", imgUploadSq.error);
+    return imgUploadSq;
   }
 
   async function uploadPImg() {
-
-    console.log('user',user.user.id);
+    console.log("user", user.user.id);
     // upload image portrait to dtb
     const imgP = ImgPortrait.assets[0];
 
@@ -169,14 +172,36 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     const imgUploadP = await supabase.storage
       .from("Images")
       .upload(filePathP, decode(base64P), { contentTypeP });
-    console.log('upload portrait',imgUploadP.error);
-    return imgUploadP
+    console.log("upload portrait", imgUploadP.error);
+    return imgUploadP;
   }
 
   async function createProduct(data) {
-    const uploadP = await uploadPImg()
-    const uploadSq = await uploadSqImg()
-    console.log('uploadP',uploadP);
+    console.log(data);
+
+    const uploadP = await uploadPImg();
+    const uploadSq = await uploadSqImg();
+
+    const priceTemp = pricesList.map((item) => {
+      return { prices: { ...item } };
+    });
+    console.log(priceTemp);
+
+    if (data.category_pr === "medicine") {
+      dispatch(
+        productsSlice.actions.UPDATE_PRODUCTS2([
+          { ...data, manage_prices: [...priceTemp] },
+        ])
+      );
+      console.log("finish add");
+    } else if (data.category_pr === "medical equipment") {
+      dispatch(
+        productsSlice.actions.UPDATE_PRODUCTS([
+          { ...data, manage_prices: [...priceTemp] },
+        ])
+      );
+    }
+
     if (data) {
       const { error } = await supabase.from("products").insert({
         ...data,
@@ -209,7 +234,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log('img file', result);
+    console.log("img file", result);
 
     if (typeImg.Square) {
       setImgSquare(result);
@@ -339,6 +364,34 @@ function ManageOrderScreen({ navigation, isUpdate }) {
             </Box>
 
             <Stack p="4" space={3}>
+              <Controller
+                control={products.control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Box maxW="300">
+                    <Select
+                      selectedValue={products.getValues("category_pr")}
+                      minWidth="200"
+                      accessibilityLabel="Choose Service"
+                      placeholder="Choose Service"
+                      _selectedItem={{
+                        bg: "teal.600",
+                        endIcon: <CheckIcon size="5" />,
+                      }}
+                      mt={1}
+                      onValueChange={(itemValue) => onChange(itemValue)}
+                    >
+                      <Select.Item label="Medicine" value="medicine" />
+                      <Select.Item
+                        label="Medical Equipment"
+                        value="medical equipment"
+                      />
+                    </Select>
+                  </Box>
+                )}
+                name={"category_pr"}
+                rules={{ required: true }}
+              />
+
               {formData.map((item, index) => {
                 if (
                   item.id === "favourite" ||
