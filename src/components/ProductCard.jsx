@@ -1,7 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
   ImageBackground,
@@ -15,15 +15,30 @@ import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
 import BGIcon from "./BGIcon";
 import { supabase } from "../store/supabase";
+import { Image } from "native-base";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 
-function CoffeeCard({
-  item
-}) {
-  const CartList = useSelector(state => state.products.CartList)
-  const user = useSelector(state=> state.user.user)
+function ProductCard({ item }) {
+  const CartList = useSelector((state) => state.products.CartList);
+  const user = useSelector((state) => state.user.user);
+  const [img, setImg] = useState();
 
+  async function loadImg() {
+    const { error } = await supabase.storage
+      .from("Images")
+      .download(item.imagelink_square)
+      .then(({ data }) => {
+        const fr = new FileReader();
+        fr.readAsDataURL(data);
+        fr.onload = () => {
+          setImg(fr.result + "");
+        };
+      });
+    console.log(error);
+  }
+
+  useEffect(()=>{loadImg()},[])
 
   async function addToCartDB(id_pr, prices_id) {
     // console.log({
@@ -31,17 +46,16 @@ function CoffeeCard({
     //   id_pr_vr: id_pr,
     //   prices_id_vr: prices_id
     // });
-    const {data, error} = await supabase.rpc('add_product_to_cart', {
+    const { data, error } = await supabase.rpc("add_product_to_cart", {
       user_id_vr: user.user.id,
       id_pr_vr: id_pr,
       prices_id_vr: prices_id,
-      is_inscrease: true
-    })
-    console.log('addToCartDb product cart', error);
+      is_inscrease: true,
+    });
+    console.log("addToCartDb product cart", error);
   }
 
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
     <LinearGradient
       start={{ x: 0, y: 0 }}
@@ -54,7 +68,9 @@ function CoffeeCard({
       <ImageBackground
         resizeMode="cover"
         style={styles.CardImageBG}
-        source={require('../assets/coffee_assets/excelsa_coffee_beans/excelsa_coffee_beans_square.png')}
+        source={{
+          uri: img ? img : "",
+        }}
       >
         <View style={styles.CardRatingContainer}>
           <AntDesign name="star" size={16} color={COLORS.primaryIconYellow} />
@@ -65,13 +81,23 @@ function CoffeeCard({
       <Text style={styles.CardSubtitle}>{item.special_ingredient}</Text>
       <View style={styles.CardFooterRow}>
         <Text style={styles.CardPriceCurrency}>
-          $<Text style={styles.CartPrice}>{item.manage_prices[0].prices.price}</Text>
+          $
+          <Text style={styles.CartPrice}>
+            {item.manage_prices[0].prices.price}
+          </Text>
           {/* $<Text style={styles.CartPrice}>15</Text> */}
         </Text>
         <TouchableOpacity
           onPress={() => {
-            dispatch(productsSlice.actions.ADD_TO_CART({...item, manage_prices: [{prices: {...item.manage_prices[0].prices}, quantity: 1}]}))
-            addToCartDB(item.id_pr, item.manage_prices[0].prices.prices_id)
+            dispatch(
+              productsSlice.actions.ADD_TO_CART({
+                ...item,
+                manage_prices: [
+                  { prices: { ...item.manage_prices[0].prices }, quantity: 1 },
+                ],
+              })
+            );
+            addToCartDB(item.id_pr, item.manage_prices[0].prices.prices_id);
           }}
         >
           <BGIcon
@@ -87,7 +113,7 @@ function CoffeeCard({
   );
 }
 
-export default CoffeeCard;
+export default ProductCard;
 
 const styles = StyleSheet.create({
   CardLinearGradientContainer: {
@@ -102,7 +128,6 @@ const styles = StyleSheet.create({
     shadowRadius: 7.49,
 
     elevation: 12,
-
   },
   CardImageBG: {
     width: CARD_WIDTH,
@@ -152,6 +177,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   CartPrice: {
-    color: COLORS.primaryTitle
+    color: COLORS.primaryTitle,
   },
 });

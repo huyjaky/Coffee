@@ -52,6 +52,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   const [ImgSquare, setImgSquare] = useState();
   const [service, setService] = useState("");
   const dispatch = useDispatch();
+  const [isLoading, setIsLoadig] = useState(false)
 
   const products = useForm({
     defaultValues: isUpdate
@@ -178,7 +179,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
 
   async function createProduct(data) {
     console.log(data);
-
+    setIsLoadig(true)
     const uploadP = await uploadPImg();
     const uploadSq = await uploadSqImg();
 
@@ -205,13 +206,14 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     if (data) {
       const { error } = await supabase.from("products").insert({
         ...data,
-        imagelink_portrait: uploadP.data.fullPath,
-        imagelink_square: uploadSq.data.fullPath,
+        imagelink_portrait: uploadP.data.fullPath.replace('Images/', ''),
+        imagelink_square: uploadSq.data.fullPath.replace('Images/', ''),
       });
 
       console.log("create products", error);
       insertPirces(data);
     }
+    setIsLoadig(false)
     return;
   }
 
@@ -228,18 +230,22 @@ function ManageOrderScreen({ navigation, isUpdate }) {
 
   const pickImage = async (typeImg) => {
     // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    console.log("img file", result);
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      console.log("img file", result);
 
-    if (typeImg.Square) {
-      setImgSquare(result);
-    } else if (typeImg.Portrait) {
-      setImgPortrait(result);
+      if (typeImg.Square) {
+        setImgSquare(result);
+      } else if (typeImg.Portrait) {
+        setImgPortrait(result);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -534,6 +540,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.button}
+                  disabled={isLoading}
                   onPress={products.handleSubmit(
                     isUpdate ? updatedProduct : createProduct
                   )}
