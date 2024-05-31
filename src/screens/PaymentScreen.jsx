@@ -52,27 +52,27 @@ const PaymentList = [
 ];
 
 function PaymentScreen({ navigation, route }) {
-  const cartPrice = useSelector((state) => state.products.CartPrice)
-  const cartList= useSelector(state=>state.products.CartList)
+  const cartPrice = useSelector((state) => state.products.CartPrice);
+  const cartList = useSelector((state) => state.products.CartList);
   const [paymentMode, setPaymentMode] = useState("Credit Card");
   const [showAnimation, setShowAnimation] = useState(false);
-  const user = useSelector(state=>state.user.user)
-  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
   async function getPaid() {
-    const {data, error} = await supabase.rpc('get_paid', {
+    const { data, error } = await supabase.rpc("get_paid", {
       user_id_vr: user.user.id,
-      cart_price: cartPrice
-    })
-    console.log('getpaid', error);
+      cart_price: cartPrice,
+    });
+    console.log("getpaid", error);
   }
 
   function buttonPressHandler() {
     setShowAnimation(true);
-    dispatch(productsSlice.actions.ADD_TO_ORDER_HISTORY_LIST_FROM_CART())
-    dispatch(productsSlice.actions.UPDATE_CARTLIST([]))
-    dispatch(productsSlice.actions.CACULATE_CART_PRICE())
-    getPaid()
+    dispatch(productsSlice.actions.ADD_TO_ORDER_HISTORY_LIST_FROM_CART());
+    dispatch(productsSlice.actions.UPDATE_CARTLIST([]));
+    dispatch(productsSlice.actions.CACULATE_CART_PRICE());
+    getPaid();
     setTimeout(() => {
       setShowAnimation(false);
       navigation.navigate("History");
@@ -96,13 +96,13 @@ function PaymentScreen({ navigation, route }) {
         <View style={styles.HeaderContainer}>
           <TouchableOpacity
             onPress={() => {
-              navigation.pop();
+              navigation.goBack();
             }}
           >
             <GradientBGIcon
               name="arrow-back"
-              color={COLORS.primaryLightGreyHex}
-              size={16}
+              color={COLORS.primaryBackground}
+              size={20}
             />
           </TouchableOpacity>
           <Text style={styles.HeaderText}>Payments</Text>
@@ -121,7 +121,7 @@ function PaymentScreen({ navigation, route }) {
                 {
                   borderColor:
                     paymentMode === "Credit Card"
-                      ? COLORS.primaryOrangeHex
+                      ? COLORS.primaryTextBlue
                       : "#FFF5E9",
                 },
               ]}
@@ -132,14 +132,13 @@ function PaymentScreen({ navigation, route }) {
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.LinearGradientStyle}
-                  // colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-                  colors={["#89765b", "#cba06cfa"]}
+                  colors={[COLORS.primaryButtonGreen, COLORS.primaryBackground]}
                 >
                   <View style={styles.CreditCardRow}>
                     <MaterialCommunityIcons
                       name="integrated-circuit-chip"
-                      size={40}
-                      color={COLORS.primaryOrangeHex}
+                      size={45}
+                      color={COLORS.primaryButtonBlue}
                     />
                     <FontAwesome5
                       name="cc-visa"
@@ -148,10 +147,10 @@ function PaymentScreen({ navigation, route }) {
                     />
                   </View>
                   <View style={styles.CreditCardNumberContainer}>
+                    <Text style={styles.CreditCardNumber}>2203</Text>
+                    <Text style={styles.CreditCardNumber}>5112</Text>
                     <Text style={styles.CreditCardNumber}>1234</Text>
-                    <Text style={styles.CreditCardNumber}>5678</Text>
-                    <Text style={styles.CreditCardNumber}>9876</Text>
-                    <Text style={styles.CreditCardNumber}>5432</Text>
+                    <Text style={styles.CreditCardNumber}>9999</Text>
                   </View>
                   <View style={styles.CreditCardRow}>
                     <View style={styles.CreditCardNameContainer}>
@@ -201,7 +200,6 @@ export default PaymentScreen;
 const styles = StyleSheet.create({
   ScreentContainer: {
     flex: 1,
-    // backgroundColor: COLORS.primaryBlackHex,
     backgroundColor: COLORS.primaryBackground,
   },
   ScrollViewFlex: {
@@ -217,7 +215,6 @@ const styles = StyleSheet.create({
   HeaderText: {
     fontWeight: "bold",
     fontSize: 20,
-    // color: COLORS.primaryWhiteHex,
     color: "#230C02",
   },
   EmptyView: {
@@ -237,12 +234,11 @@ const styles = StyleSheet.create({
   CreditCartTitle: {
     fontWeight: "bold",
     fontSize: 14,
-    // color: COLORS.primaryWhiteHex,
     marginLeft: 10,
-    color: "#230C02",
+    color: COLORS.primaryNovel,
   },
   CreditCardBG: {
-    width: '100%',
+    width: "100%",
     backgroundColor: COLORS.primaryGreyHex,
     borderRadius: 25,
   },
@@ -256,32 +252,28 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-
   },
   CreditCardNumberContainer: {
-    width: '100%',
+    width: "100%",
     flexDirection: "row",
     gap: 10,
   },
   CreditCardNumber: {
-    width: '25%',
+    width: "25%",
     fontWeight: "bold",
     fontSize: 18,
-    // color: COLORS.primaryWhiteHex,
-    color: "#693a27",
-    justifyContent: 'center'
+    color: COLORS.primaryNovel,
+    justifyContent: "center",
   },
   CreditCardNameSubitle: {
     fontWeight: "800",
     fontSize: 12,
-    // color: COLORS.secondaryLightGreyHex,
-    color: "#230C02",
+    color: COLORS.primaryBlackHex,
   },
   CreditCardNameTitle: {
     fontWeight: "600",
     fontSize: 16,
-    // color: COLORS.primaryWhiteHex,
-    color: "#693a27",
+    color: COLORS.primaryNovel,
   },
   CreditCardNameContainer: {
     alignItems: "flex-start",

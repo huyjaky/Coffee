@@ -159,19 +159,19 @@ function ManageProductScreen({ navigation }) {
           ))}
         </ScrollView>
       </View>
-      
+
       {/* Display product */}
       <FlatList
         ref={ListRef}
         numColumns={2}
         data={sortedProducts}
         columnWrapperStyle={{ gap: 20, paddingHorizontal: 15 }}
-        contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
+        contentContainerStyle={{ gap: 10, paddingVertical: 20 }}
         keyExtractor={(item, index) => item.name + index}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
-              <ManageCard item={item} />
+            <ManageCard item={item} />
           );
         }}
       />

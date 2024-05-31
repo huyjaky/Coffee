@@ -1,7 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { COLORS } from "../theme/theme";
-
 import { FontAwesome6 } from "@expo/vector-icons";
 
 function PaymentMethod({ paymentMode, name, icon, isIcon }) {
@@ -10,8 +9,7 @@ function PaymentMethod({ paymentMode, name, icon, isIcon }) {
       style={[
         styles.PaymentCardContainer,
         {
-          borderColor:
-            paymentMode === name ? COLORS.primaryOrangeHex : "#FFF5E9",
+          borderColor: paymentMode === name ? COLORS.primaryButtonBlue : "#FFF5E9",
         },
       ]}
     >
@@ -19,14 +17,14 @@ function PaymentMethod({ paymentMode, name, icon, isIcon }) {
         <LinearGradient
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          colors={["#89765b", "#cba06cfa"]}
+          colors={[COLORS.primaryButtonGreen, COLORS.primaryNovel]}
           style={styles.LinearGradientWallet}
         >
           <View style={styles.WalletRow}>
             <FontAwesome6
               name="wallet"
               size={28}
-              color={COLORS.primaryOrangeHex}
+              color={COLORS.primaryButtonBlue}
             />
             <Text style={styles.PaymentTitle}>{name}</Text>
           </View>
@@ -36,8 +34,7 @@ function PaymentMethod({ paymentMode, name, icon, isIcon }) {
         <LinearGradient
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          // colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-          colors={["#89765b", "#cba06cfa"]}
+          colors={[COLORS.primaryButtonGreen, COLORS.primaryNovel]}
           style={styles.LinearGradientRegular}
         >
           <Image source={icon} style={styles.PaymentImage} />
@@ -68,14 +65,12 @@ const styles = StyleSheet.create({
   PaymentTitle: {
     fontWeight: "bold",
     fontSize: 16,
-    // color: COLORS.primaryWhiteHex,
-    color: "#230C02",
+    color: COLORS.primaryBlackHex,
   },
   PaymentPrice: {
     fontWeight: "800",
     fontSize: 16,
-    // color: COLORS.secondaryLightGreyHex,
-    color: "#693a27",
+    color: COLORS.primaryBackground,
   },
   LinearGradientRegular: {
     flexDirection: "row",
