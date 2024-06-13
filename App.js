@@ -23,6 +23,8 @@ import NativeBaseScreen from "./src/screens/NativeBaseScreen";
 import ForgotPassScreen from "./src/screens/ForgotPassScreen";
 import ProfileViewScreen from "./src/screens/ProfileViewScreen";
 
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 const Stack = createNativeStackNavigator();
 
 
@@ -98,7 +100,7 @@ function AuthStack() {
       <Stack.Screen name="Home" component={HomeScreen} />
 
       {/* dev form */}
-      <Stack.Screen name="Dev" component={ManageOrderScreen} />
+      <Stack.Screen name="Dev" component={HomeScreen} />
 
     </Stack.Navigator>
   );

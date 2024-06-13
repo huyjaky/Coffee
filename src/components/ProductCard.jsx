@@ -15,7 +15,6 @@ import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
 import BGIcon from "./BGIcon";
 import { supabase } from "../store/supabase";
-import { Image } from "native-base";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 
@@ -25,20 +24,18 @@ function ProductCard({ item }) {
   const [img, setImg] = useState();
 
   async function loadImg() {
-    const { error } = await supabase.storage
+    const { data, error } = await supabase.storage
       .from("Images")
-      .download(item.imagelink_square)
-      .then(({ data }) => {
-        const fr = new FileReader();
-        fr.readAsDataURL(data);
-        fr.onload = () => {
-          setImg(fr.result + "");
-        };
-      });
-    console.log(error);
+      .getPublicUrl(item.imagelink_square);
+    if (error) print(error);
+    if (data) {
+      setImg(data.publicUrl);
+    }
   }
 
-  useEffect(()=>{loadImg()},[])
+  useEffect(() => {
+    loadImg()
+  }, [user]);
 
   async function addToCartDB(id_pr, prices_id) {
     // console.log({
@@ -69,7 +66,9 @@ function ProductCard({ item }) {
         resizeMode="cover"
         style={styles.CardImageBG}
         source={{
-          uri: img ? img : "",
+          uri: img
+            ? img
+            : "https://aidmhlapqfrmwtpnmmbd.supabase.co/storage/v1/object/public/Images/b71105f8-6873-4aa2-afdf-0941c8f76418/1717065228272.png",
         }}
       >
         <View style={styles.CardRatingContainer}>
