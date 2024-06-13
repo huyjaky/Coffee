@@ -32,8 +32,8 @@ function ImageFavouriteBG({
 
   function toggleFavor() {
     // update in db
-    dispatch(productsSlice.actions.TOGGLE_FAVORITE(item))
     alterTable()
+    dispatch(productsSlice.actions.TOGGLE_FAVORITE(item))
   }
 
   useEffect(() => { }, [item])

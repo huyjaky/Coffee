@@ -28,6 +28,19 @@ export const productsSlice = createSlice({
       state.productsList2 = state.productsList2.concat(action.payload)
       return state
     },
+
+    REMOVE_PRODUCTS: (state, action) => {
+      state.productsList = state.productsList.filter(i => i.id_pr !== action.payload)
+      console.log(action.payload);
+      return state
+    },
+    REMOVE_PRODUCTS2: (state, action) => {
+      console.log('before', state.productsList2.length);
+      state.productsList2 = state.productsList2.filter(i => i.id_pr !== action.payload)
+      console.log(state.productsList2.length);
+      return state
+    },
+
     UPDATE_CURRENT_DETAIL_CART: (state, action) => {
       state.currentDetailCart = action.payload
       return state

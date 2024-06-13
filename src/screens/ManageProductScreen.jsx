@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
@@ -61,6 +61,7 @@ function ManageProductScreen({ navigation }) {
   const [searchText, setSearchText] = useState("");
   const productsList = useSelector((state) => state.products.productsList)
   const productsList2 = useSelector((state) => state.products.productsList2)
+  const [productAll, setProductAll] = useState(productsList.concat(productsList2));
   const user = useSelector(state => state.user.user)
   const [products, setProducts] = useState(productsList.concat(productsList2).filter(item =>
     item.owned_id === user.user.id
@@ -76,6 +77,49 @@ function ManageProductScreen({ navigation }) {
   const [sortedProducts, setsortedProducts] = useState(
     getProductList(categoryIndex.category, productsList, productsList2)
   );
+
+  function searchCoffee() {
+    if (searchText === '') {
+      setsortedProducts(
+        getProductList(categoryIndex.category, productsList, productsList2)
+      )
+      return
+    }
+
+    if (searchText !== "") {
+      ListRef?.current?.scrollToOffset({
+        animated: true,
+        offset: 0,
+      });
+      setCategoryIndex({ index: 0, category: categories[0] });
+      setsortedProducts([
+        ...productAll?.filter((item) =>
+          item?.name_pr?.toLowerCase()?.includes(searchText?.toLowerCase())
+        ),
+      ]);
+    }
+  }
+  function resetSearch() {
+    ListRef?.current?.scrollToOffset({
+      animated: true,
+      offset: 0,
+    });
+    setCategoryIndex({ index: 0, category: categories[0] });
+    setsortedProducts([...productAll]);
+    setSearchText("");
+  }
+
+  useEffect(() => {
+    searchCoffee()
+  }, [productAll, searchText])
+
+  useEffect(() => {
+    console.log('catch phep');
+    console.log(productsList2.length);
+    setsortedProducts(productsList.concat(productsList2))
+  }, [productsList, productsList2])
+
+  useEffect(()=>{}, [sortedProducts])
 
   return (
     <View style={styles.viewContainer}>
@@ -103,7 +147,7 @@ function ManageProductScreen({ navigation }) {
         {searchText?.length > 0 ? (
           <TouchableOpacity
             onPress={() => {
-              setSearchText("");
+              resetSearch();
             }}
           >
             <Ionicons

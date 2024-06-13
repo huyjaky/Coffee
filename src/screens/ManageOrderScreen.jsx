@@ -52,7 +52,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   const [ImgSquare, setImgSquare] = useState();
   const [service, setService] = useState("");
   const dispatch = useDispatch();
-  const [isLoading, setIsLoadig] = useState(false)
+  const [isLoading, setIsLoadig] = useState(false);
 
   const products = useForm({
     defaultValues: isUpdate
@@ -131,14 +131,6 @@ function ManageOrderScreen({ navigation, isUpdate }) {
       .insert(convertPricesWithProduct(pricesList, id_pr));
   }
 
-  async function updatePrices(_data) {
-    const { data, error } = await supabase.from("prices").upsert(pricesList);
-    if (error) {
-      console.log(error);
-      return;
-    }
-  }
-
   async function uploadSqImg() {
     // upload image square to dtb
     const imgSq = ImgSquare.assets[0];
@@ -179,7 +171,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
 
   async function createProduct(data) {
     console.log(data);
-    setIsLoadig(true)
+    setIsLoadig(true);
     const uploadP = await uploadPImg();
     const uploadSq = await uploadSqImg();
 
@@ -188,32 +180,42 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     });
     console.log(priceTemp);
 
-    if (data.category_pr === "medicine") {
-      dispatch(
-        productsSlice.actions.UPDATE_PRODUCTS2([
-          { ...data, manage_prices: [...priceTemp] },
-        ])
-      );
-      console.log("finish add");
-    } else if (data.category_pr === "medical equipment") {
-      dispatch(
-        productsSlice.actions.UPDATE_PRODUCTS([
-          { ...data, manage_prices: [...priceTemp] },
-        ])
-      );
-    }
-
     if (data) {
       const { error } = await supabase.from("products").insert({
         ...data,
-        imagelink_portrait: uploadP.data.fullPath.replace('Images/', ''),
-        imagelink_square: uploadSq.data.fullPath.replace('Images/', ''),
+        imagelink_portrait: uploadP.data.fullPath.replace("Images/", ""),
+        imagelink_square: uploadSq.data.fullPath.replace("Images/", ""),
       });
 
       console.log("create products", error);
       insertPirces(data);
     }
-    setIsLoadig(false)
+
+    if (data.category_pr === "medicine") {
+      dispatch(
+        productsSlice.actions.UPDATE_PRODUCTS2([
+          {
+            ...data,
+            manage_prices: [...priceTemp],
+            imagelink_square: uploadSq.data.fullPath.replace("Images/", ""),
+            imagelink_portrait: uploadP.data.fullPath.replace("Images/", ""),
+          },
+        ])
+      );
+    } else if (data.category_pr === "medical equipment") {
+      dispatch(
+        productsSlice.actions.UPDATE_PRODUCTS([
+          {
+            ...data,
+            manage_prices: [...priceTemp],
+            imagelink_square: uploadSq.data.fullPath.replace("Images/", ""),
+            imagelink_portrait: uploadP.data.fullPath.replace("Images/", ""),
+          },
+        ])
+      );
+    }
+
+    setIsLoadig(false);
     return;
   }
 
