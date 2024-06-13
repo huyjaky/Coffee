@@ -24,7 +24,7 @@ function DetailsScreen({ navigation, route }) {
 
   const Tab = createMaterialTopTabNavigator();
   const [price, setPrice] = useState(ItemofIndex.manage_prices[0]);
-
+  console.log(ItemofIndex);
 
   function BackHandler() {
     navigation.pop();
@@ -32,15 +32,16 @@ function DetailsScreen({ navigation, route }) {
   function HomeScreen() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home</Text>
+        <Text>{ItemofIndex.des}</Text>
       </View>
     );
   }
 
-  function SettingsScreen() {
+  function IngredientScreen() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Settings!</Text>
+        <Text>{ItemofIndex.ingredients}</Text>
+        <Text>{ItemofIndex.special_ingredient}</Text>
       </View>
     );
   }
@@ -59,8 +60,8 @@ function DetailsScreen({ navigation, route }) {
         />
         <Tab.Navigator ta>
           <Tab.Screen name="Information" component={HomeScreen} />
-          <Tab.Screen name="Ingredient" component={SettingsScreen} />
-          <Tab.Screen name="Special Ingredient" component={SettingsScreen} />
+          <Tab.Screen name="Ingredient" component={IngredientScreen} />
+          {/* <Tab.Screen name="Special Ingredient" component={SettingsScreen} /> */}
         </Tab.Navigator>
         
         <PaymentFooter

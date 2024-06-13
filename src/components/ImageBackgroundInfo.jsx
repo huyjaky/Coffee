@@ -12,7 +12,6 @@ import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
 import { useEffect, useState } from "react";
 import { supabase } from "../store/supabase";
-import { err } from "react-native-svg";
 
 function ImageBackgroundInfo({
   item,
@@ -24,6 +23,8 @@ function ImageBackgroundInfo({
   const item2 = useSelector((state) => state.products.currentDetailCart)
   const [isFavor, setIsFavor] = useState(item.favourite)
   const dispatch = useDispatch()
+
+  const [img, setImg] = useState();
 
   async function alterTable() {
     const { error } = await supabase.from('products').update({ favourite: !isFavor }).eq('id_pr', item.id_pr)
@@ -37,13 +38,27 @@ function ImageBackgroundInfo({
     alterTable()
   }
 
-  useEffect(() => {}, [item])
+
+  async function loadImg() {
+    const { data, error } = await supabase.storage
+      .from("Images")
+      .getPublicUrl(item.imagelink_square);
+    if (error) print(error);
+    if (data) {
+      setImg(data.publicUrl);
+      
+    }
+  }
+
+  useEffect(() => {
+    loadImg()
+  }, [])
 
 
   return (
     <View>
       <ImageBackground 
-        source={item.imagelink_portrait}
+        source={{uri: img ? img : ''}}
         style={styles.ItemBackgroundImage}
       >
         {EnableBackHandler ? (

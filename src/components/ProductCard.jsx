@@ -30,6 +30,7 @@ function ProductCard({ item }) {
     if (error) print(error);
     if (data) {
       setImg(data.publicUrl);
+      item.imagelink_square = data.publicUrl
     }
   }
 
@@ -49,7 +50,7 @@ function ProductCard({ item }) {
       prices_id_vr: prices_id,
       is_inscrease: true,
     });
-    console.log("addToCartDb product cart", error);
+    
   }
 
   const dispatch = useDispatch();
