@@ -102,7 +102,7 @@ function GetStartedScreen() {
               textAlign: "center",
             }}
           >
-            dell biet ghi gi
+            Medical App
           </Text>
         </Animated.View>
         <View style={{ marginTop: 16 }}>

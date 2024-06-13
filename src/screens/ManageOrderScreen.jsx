@@ -324,7 +324,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
             px="3"
             py="1.5"
           >
-            Image Link Square
+            Image Link Portrait
           </Center>
         </TouchableOpacity>
       </Box>
