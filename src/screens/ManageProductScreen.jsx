@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { Actionsheet, useDisclose } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
@@ -15,8 +16,6 @@ import { v4 as uuidv4 } from "uuid";
 import ProductCard from "../components/ProductCard";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
-import { Actionsheet, Box, useDisclose } from "native-base";
-import ManageCard from "../components/ProductManageCard";
 import { supabase } from "../store/supabase";
 
 function getCategoriesFromData(data1, data2) {
@@ -141,9 +140,11 @@ function ManageProductScreen({ navigation, isUpdate }) {
   async function deleteProduct() {
     const { data, error } = await supabase
       .from("products")
-      .delete()
+      .update({status: 'unrealease'})
       .eq("id_pr", item.id_pr);
-    if (error) print(error);
+    if (error) {
+      print(error);
+    }
   }
 
   async function deletePr() {
@@ -261,7 +262,7 @@ function ManageProductScreen({ navigation, isUpdate }) {
                   dispatch(
                     productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item)
                   );
-                  navigation.push("Details");
+                  navigation.navigate("Details");
                 }}
                 onLongPress={() => {
                   onOpen();
@@ -281,7 +282,11 @@ function ManageProductScreen({ navigation, isUpdate }) {
           <Actionsheet.Item
             onPress={() => {
               dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item));
+              dispatch(productsSlice.actions.SET_IS_UPDATE(true))
+              navigation.navigate('ManageOrder')
+
             }}
+            
           >
             Edit
           </Actionsheet.Item>

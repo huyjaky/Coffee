@@ -1,5 +1,4 @@
 import { AntDesign } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import {
@@ -12,9 +11,9 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { productsSlice } from "../store/states/products";
+import { supabase } from "../store/supabase";
 import { COLORS } from "../theme/theme";
 import BGIcon from "./BGIcon";
-import { supabase } from "../store/supabase";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.36;
 
@@ -39,10 +38,7 @@ function ManageCard({ item }) {
   }
 
   async function deleteProduct() {
-    const { data, error } = await supabase
-      .from("products")
-      .delete()
-      .eq("id_pr", item.id_pr);
+    const {data, error} = await supabase.from("products").update({status: 'unrealease'}).eq("id_pr", item.id_pr)
     if (error) print(error);
   }
 

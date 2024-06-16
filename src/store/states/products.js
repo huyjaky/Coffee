@@ -12,7 +12,8 @@ const initialState = {
   CartList: [],
   CartPrice: 0,
   FavoritesList: [],
-  OrderHistoryList: []
+  OrderHistoryList: [],
+  isUpdate: false
 }
 
 
@@ -20,6 +21,9 @@ export const productsSlice = createSlice({
   name: UPDATE_PRODUCTS,
   initialState,
   reducers: {
+    SET_IS_UPDATE: (state, action) =>{
+      state.isUpdate = action.payload
+    },
     UPDATE_PRODUCTS: (state, action) => {
       state.productsList = state.productsList.concat(action.payload)
       return state
@@ -35,9 +39,7 @@ export const productsSlice = createSlice({
       return state
     },
     REMOVE_PRODUCTS2: (state, action) => {
-      console.log('before', state.productsList2.length);
       state.productsList2 = state.productsList2.filter(i => i.id_pr !== action.payload)
-      console.log(state.productsList2.length);
       return state
     },
 

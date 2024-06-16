@@ -40,10 +40,12 @@ import { productsSlice } from "../store/states/products";
 
 const Tab = createMaterialTopTabNavigator();
 
-function ManageOrderScreen({ navigation, isUpdate }) {
+function ManageOrderScreen({ navigation }) {
   const [orders, setOrders] = useState([]);
   const productsList = useSelector((state) => state.products.productsList);
   const productsList2 = useSelector((state) => state.products.productsList2);
+  const isUpdate = useSelector((state) => state.products.isUpdate);
+
   const user = useSelector((state) => state.user.user);
   const currentDetailCart = useSelector(
     (state) => state.products.currentDetailCart
@@ -78,26 +80,24 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   });
 
   const prices = useForm({
-    defaultValues: {
-      prices_id: uuidv4(),
-      unit: "gm",
-      price: "123",
-      size: "123",
-    },
+    defaultValues: isUpdate
+      ? { ...currentDetailCart.manage_prices[0].prices }
+      : {
+          prices_id: uuidv4(),
+          unit: "gm",
+          price: "123",
+          size: "123",
+        },
   });
 
   function convertPriceList(data) {
-    const temp = [];
-    data.manage_prices.map((item) => {
-      temp.push({ ...item.prices });
-      return item;
-    });
-    return temp;
+    console.log(data);
+    return data.manage_prices[0].prices;
   }
 
   const [pricesList, setPriceList] = useState(
     isUpdate
-      ? convertPriceList
+      ? convertPriceList(currentDetailCart)
       : {
           prices_id: uuidv4(),
           unit: "gm",
@@ -106,35 +106,16 @@ function ManageOrderScreen({ navigation, isUpdate }) {
         }
   );
 
-  function convertPricesWithProduct(data, id_pr) {
-    const temp = [];
-    pricesList.map((item) => {
-      temp.push({ prices_id: item.prices_id, id_pr: id_pr });
-      return item;
-    });
-    console.log("manages price list", temp);
-    return temp;
-  }
-
-  async function removePrices(prices_id) {
-    // const { error } = await supabase.from('prices').delete().eq('prices_id', prices_id);
-    // console.log('remove prices', error);
-  }
-
   async function insertPirces(data) {
     const insertPrice = await supabase.from("prices").insert(pricesList);
+    console.log("finish add price");
     const id_pr = data.id_pr;
+    console.log("id_pr", id_pr);
     const insertManagePrice = await supabase
       .from("manage_prices")
-      .insert(convertPricesWithProduct(pricesList, id_pr));
-  }
-
-  async function updatePrices(_data) {
-    const { data, error } = await supabase.from("prices").upsert(pricesList);
-    if (error) {
-      console.log(error);
-      return;
-    }
+      .insert({ prices_id: pricesList.prices_id, id_pr: id_pr });
+    console.log(insertManagePrice.error);
+    console.log("finish add manage price");
   }
 
   async function uploadSqImg() {
@@ -179,27 +160,40 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     console.log(data);
     setIsLoadig(true);
     const uploadP = await uploadPImg();
+    console.log("finish upload img");
     const uploadSq = await uploadSqImg();
+    console.log("finish upload sqimg");
 
-    const priceTemp = pricesList.map((item) => {
-      return { prices: { ...item } };
-    });
-    console.log(priceTemp);
+    // const priceimgSq = pricesList.map((item) => {
+    //   return { prices: { ...item } };
+    // });
+    // console.log(priceimgSq);
 
     if (data.category_pr === "medicine") {
       dispatch(
         productsSlice.actions.UPDATE_PRODUCTS2([
-          { ...data, manage_prices: [...priceTemp] },
+          {
+            ...data,
+            manage_prices: [{ prices: pricesList }],
+            imagelink_portrait: uploadP.data.fullPath.replace("Images/", ""),
+            imagelink_square: uploadSq.data.fullPath.replace("Images/", ""),
+          },
         ])
       );
       console.log("finish add");
     } else if (data.category_pr === "medical equipment") {
       dispatch(
         productsSlice.actions.UPDATE_PRODUCTS([
-          { ...data, manage_prices: [...priceTemp] },
+          {
+            ...data,
+            manage_prices: [{ prices: pricesList }],
+            imagelink_portrait: uploadP.data.fullPath.replace("Images/", ""),
+            imagelink_square: uploadSq.data.fullPath.replace("Images/", ""),
+          },
         ])
       );
     }
+    console.log("finish update local pr");
 
     if (data) {
       const { error } = await supabase.from("products").insert({
@@ -207,6 +201,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
         imagelink_portrait: uploadP.data.fullPath.replace("Images/", ""),
         imagelink_square: uploadSq.data.fullPath.replace("Images/", ""),
       });
+      console.log("finish upload pr");
 
       console.log("create products", error);
       insertPirces(data);
@@ -215,16 +210,34 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     return;
   }
 
+  async function updatedPrice(data) {
+    const temp_id = data.prices_id;
+    delete data.prices_id;
+    console.log('price data', data);
+    const { error } = await supabase
+      .from("prices")
+      .update({ ...data })
+      .eq("prices_id", temp_id);
+    console.log(error);
+    console.log('finish update prices');
+    return;
+  }
+
   async function updatedProduct(data) {
-    const { error } = await supabase.from("products").upsert({ ...data });
-    // updatePrices(data);
+    const temp_id = data.id_pr;
+    updatedPrice(prices.getValues());
+    delete data.manage_prices;
+    delete data.id_pr;
+    const { error } = await supabase
+      .from("products")
+      .update({ ...data })
+      .eq("id_pr", temp_id);
+    console.log('finish update product');
     console.log(error);
     return;
   }
 
   console.log("errors", products.formState.errors);
-
-  const [image, setImage] = useState(null);
 
   const pickImage = async (typeImg) => {
     // No permissions request is necessary for launching the image library
@@ -253,6 +266,28 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     }
   };
 
+  async function loadImg(item, isSquare) {
+    const { data, error } = await supabase.storage
+      .from("Images")
+      .getPublicUrl(item);
+    if (error) print(error);
+    if (data) {
+      console.log(data);
+      // if (data) console.log(currentDetailCart.manage_prices[0].prices);
+      if (isSquare) {
+        setImgSquare(data.publicUrl);
+      } else {
+        setImgPortrait(data.publicUrl);
+      }
+    }
+  }
+  React.useEffect(() => {
+    if (currentDetailCart) {
+      loadImg(currentDetailCart.imagelink_square, true);
+      loadImg(currentDetailCart.imagelink_portrait, false);
+    }
+  }, [currentDetailCart]);
+
   // @WARNING: modifier tab on form
   function Imagelink_square() {
     return (
@@ -263,14 +298,31 @@ function ManageOrderScreen({ navigation, isUpdate }) {
           }}
         >
           <AspectRatio w="100%" ratio={16 / 9}>
-            <Image
+            {isUpdate ? (
+              <Image
+                source={{
+                  uri: ImgSquare ? ImgSquare : "",
+                }}
+                alt="image"
+              />
+            ) : (
+              <Image
+                source={{
+                  uri: !ImgSquare
+                    ? "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
+                    : ImgSquare.assets[0].uri,
+                }}
+                alt="image"
+              />
+            )}
+            {/* <Image
               source={{
                 uri: !ImgSquare
                   ? "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
                   : ImgSquare.assets[0].uri,
               }}
               alt="image"
-            />
+            /> */}
           </AspectRatio>
           <Center
             bg="violet.500"
@@ -304,14 +356,31 @@ function ManageOrderScreen({ navigation, isUpdate }) {
           }}
         >
           <AspectRatio w="100%" ratio={16 / 9}>
-            <Image
+            {isUpdate ? (
+              <Image
+                source={{
+                  uri: ImgPortrait ? ImgPortrait : "",
+                }}
+                alt="image"
+              />
+            ) : (
+              <Image
+                source={{
+                  uri: !ImgSquare
+                    ? "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
+                    : ImgSquare.assets[0].uri,
+                }}
+                alt="image"
+              />
+            )}
+            {/* <Image
               source={{
                 uri: !ImgPortrait
                   ? "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
                   : ImgPortrait.assets[0].uri,
               }}
               alt="image"
-            />
+            /> */}
           </AspectRatio>
           <Center
             bg="violet.500"
@@ -334,6 +403,8 @@ function ManageOrderScreen({ navigation, isUpdate }) {
       </Box>
     );
   }
+
+  React.useEffect(() => {}, [isUpdate]);
 
   return (
     <View style={styles.container}>
@@ -427,7 +498,9 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                                 mb={8}
                                 onBlur={onBlur}
                                 onChangeText={(value) => onChange(value)}
-                                placeholder={`${value}`}
+                                // placeholder={`${value}`}
+                                placeholder={isUpdate ? "" : `${value}`}
+                                value={isUpdate ? `${value}` : ""}
                               />
                               <Divider />
                             </>
@@ -438,7 +511,8 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                             // style={styles.input}
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
-                            placeholder={`${value}`}
+                            placeholder={isUpdate ? "" : `${value}`}
+                            value={isUpdate ? `${value}` : ""}
                           />
                         );
                       }}
@@ -465,7 +539,8 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                               style={styles.input}
                               onBlur={onBlur}
                               onChangeText={(value) => onChange(value)}
-                              placeholder={`${value}`}
+                              placeholder={isUpdate ? "" : `${value}`}
+                              value={isUpdate ? `${value}` : ""}
                             />
                           )}
                           name={item2.id}
@@ -483,7 +558,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                     reset({});
                   }}
                 >
-                  <Text style={styles.buttonText}>Edit</Text>
+                  <Text style={styles.buttonText}>Reset</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.buttonContainer}>
@@ -495,9 +570,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                   )}
                 >
                   {isLoading ? (
-                    <Text style={styles.buttonText}>
-                      Loading ...
-                    </Text>
+                    <Text style={styles.buttonText}>Loading ...</Text>
                   ) : (
                     <Text style={styles.buttonText}>
                       {isUpdate ? "Edit" : "Create"}

@@ -218,7 +218,7 @@ function HomeScreen({ navigation }) {
     setSearchText("");
   }
 
-  useEffect(() => { }, [productsList, productsList2])
+  useEffect(() => {}, [productsList, productsList2])
 
   return (
     <View style={styles.ScreenContainer}>
@@ -327,7 +327,7 @@ function HomeScreen({ navigation }) {
           showsHorizontalScrollIndicator={false}
           data={sortedProducts}
           contentContainerStyle={styles.FlatListContainer}
-          keyExtractor={item => item?.id_pr}
+          keyExtractor={item => uuidv4()}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
@@ -356,7 +356,7 @@ function HomeScreen({ navigation }) {
           showsHorizontalScrollIndicator={false}
           data={productsList2}
           contentContainerStyle={styles.FlatListContainer}
-          keyExtractor={item => item?.id_pr}
+          keyExtractor={item => uuidv4()}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity

@@ -22,7 +22,8 @@ function ProductCard({ item, isManage = false }) {
   const CartList = useSelector((state) => state.products.CartList);
   const user = useSelector((state) => state.user.user);
   const [img, setImg] = useState();
-
+  const productsList2 = useSelector((state) => state.products.productsList2);
+  const productsList = useSelector((state) => state.products.productsList);
   async function loadImg() {
     const { data, error } = await supabase.storage
       .from("Images")
