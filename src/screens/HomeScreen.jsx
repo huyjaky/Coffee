@@ -130,6 +130,7 @@ function HomeScreen({ navigation }) {
     if (session?.access_token) {
       // console.log(session.user.id); dot user is must step to call id inside session
       const { data, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).then((data) => {
+        console.log('user',session.user.id);
 
         if (!error && data.data) dispatch(userSlice.actions.UPDATE_CURRENT_USER({
           ...session,

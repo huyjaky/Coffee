@@ -31,20 +31,20 @@ function LoginScreen() {
 
 
   async function signInWithEmail() {
-    // setLoading(true)
-    // const { error } = await supabase.auth.signInWithPassword({
-    //   email: email,
-    //   password: password,
-    // })
-    // if (error) {
-    //   Alert.alert(error.message)
-    // } else {
-    //   // Login success
-    //   // authCtx.login()
-    //   console.log('Test');
-    // }
-    // setLoading(false)
-    authCtx.login()
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+    if (error) {
+      Alert.alert(error.message)
+    } else {
+      // Login success
+      authCtx.login()
+      console.log('Test');
+    }
+    setLoading(false)
+    // authCtx.login()
   }
 
 

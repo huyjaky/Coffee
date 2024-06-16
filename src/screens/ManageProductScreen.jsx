@@ -17,6 +17,7 @@ import ProductCard from "../components/ProductCard";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
 import { supabase } from "../store/supabase";
+import EmptyListAnimation from "../components/EmptyListAnimation";
 
 function getCategoriesFromData(data1, data2) {
   const data = data1.concat(data2);
@@ -79,11 +80,21 @@ function ManageProductScreen({ navigation, isUpdate }) {
   );
   const user = useSelector((state) => state.user.user);
   const [item, setItem] = useState();
+
+
   const [products, setProducts] = useState(
     productsList
       .concat(productsList2)
       .filter((item) => item.owned_id === user.user.id)
   );
+
+  if (products.length === 0) {
+    console.log("check out");
+    return <EmptyListAnimation title="Cart is Empty" />;
+  }
+
+
+
   const [categories, setCatehories] = useState(
     getCategoriesFromData(productsList, productsList2)
   );
@@ -140,7 +151,7 @@ function ManageProductScreen({ navigation, isUpdate }) {
   async function deleteProduct() {
     const { data, error } = await supabase
       .from("products")
-      .update({status: 'unrealease'})
+      .update({ status: "unrealease" })
       .eq("id_pr", item.id_pr);
     if (error) {
       print(error);
@@ -282,18 +293,16 @@ function ManageProductScreen({ navigation, isUpdate }) {
           <Actionsheet.Item
             onPress={() => {
               dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item));
-              dispatch(productsSlice.actions.SET_IS_UPDATE(true))
-              navigation.navigate('ManageOrder')
-
+              dispatch(productsSlice.actions.SET_IS_UPDATE(true));
+              navigation.navigate("ManageOrder");
             }}
-            
           >
             Edit
           </Actionsheet.Item>
           <Actionsheet.Item
             onPress={() => {
               deletePr();
-              onClose()
+              onClose();
             }}
           >
             Delete
