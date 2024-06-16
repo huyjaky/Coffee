@@ -80,9 +80,9 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   const prices = useForm({
     defaultValues: {
       prices_id: uuidv4(),
-      unit: "",
-      price: "",
-      size: "",
+      unit: "gm",
+      price: "123",
+      size: "123",
     },
   });
 
@@ -98,14 +98,12 @@ function ManageOrderScreen({ navigation, isUpdate }) {
   const [pricesList, setPriceList] = useState(
     isUpdate
       ? convertPriceList
-      : [
-          {
-            prices_id: uuidv4(),
-            unit: "gm",
-            price: "123",
-            size: "123",
-          },
-        ]
+      : {
+          prices_id: uuidv4(),
+          unit: "gm",
+          price: "123",
+          size: "123",
+        }
   );
 
   function convertPricesWithProduct(data, id_pr) {
@@ -129,6 +127,14 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     const insertManagePrice = await supabase
       .from("manage_prices")
       .insert(convertPricesWithProduct(pricesList, id_pr));
+  }
+
+  async function updatePrices(_data) {
+    const { data, error } = await supabase.from("prices").upsert(pricesList);
+    if (error) {
+      console.log(error);
+      return;
+    }
   }
 
   async function uploadSqImg() {
@@ -180,6 +186,21 @@ function ManageOrderScreen({ navigation, isUpdate }) {
     });
     console.log(priceTemp);
 
+    if (data.category_pr === "medicine") {
+      dispatch(
+        productsSlice.actions.UPDATE_PRODUCTS2([
+          { ...data, manage_prices: [...priceTemp] },
+        ])
+      );
+      console.log("finish add");
+    } else if (data.category_pr === "medical equipment") {
+      dispatch(
+        productsSlice.actions.UPDATE_PRODUCTS([
+          { ...data, manage_prices: [...priceTemp] },
+        ])
+      );
+    }
+
     if (data) {
       const { error } = await supabase.from("products").insert({
         ...data,
@@ -190,31 +211,6 @@ function ManageOrderScreen({ navigation, isUpdate }) {
       console.log("create products", error);
       insertPirces(data);
     }
-
-    if (data.category_pr === "medicine") {
-      dispatch(
-        productsSlice.actions.UPDATE_PRODUCTS2([
-          {
-            ...data,
-            manage_prices: [...priceTemp],
-            imagelink_square: uploadSq.data.fullPath.replace("Images/", ""),
-            imagelink_portrait: uploadP.data.fullPath.replace("Images/", ""),
-          },
-        ])
-      );
-    } else if (data.category_pr === "medical equipment") {
-      dispatch(
-        productsSlice.actions.UPDATE_PRODUCTS([
-          {
-            ...data,
-            manage_prices: [...priceTemp],
-            imagelink_square: uploadSq.data.fullPath.replace("Images/", ""),
-            imagelink_portrait: uploadP.data.fullPath.replace("Images/", ""),
-          },
-        ])
-      );
-    }
-
     setIsLoadig(false);
     return;
   }
@@ -239,15 +235,21 @@ function ManageOrderScreen({ navigation, isUpdate }) {
         aspect: [4, 3],
         quality: 1,
       });
-      console.log("img file", result);
 
-      if (typeImg.Square) {
-        setImgSquare(result);
-      } else if (typeImg.Portrait) {
-        setImgPortrait(result);
+      // console.log("img file", result);
+
+      if (!result.canceled) {
+        if (typeImg.Square) {
+          setImgSquare(result);
+        } else if (typeImg.Portrait) {
+          setImgPortrait(result);
+        }
+      } else {
+        console.log("User cancelled the image picker");
       }
     } catch (error) {
       console.log(error);
+      return;
     }
   };
 
@@ -326,7 +328,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
             px="3"
             py="1.5"
           >
-            Image Link Square
+            Image Link Portrait
           </Center>
         </TouchableOpacity>
       </Box>
@@ -399,7 +401,6 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                 name={"category_pr"}
                 rules={{ required: true }}
               />
-
               {formData.map((item, index) => {
                 if (
                   item.id === "favourite" ||
@@ -426,7 +427,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                                 mb={8}
                                 onBlur={onBlur}
                                 onChangeText={(value) => onChange(value)}
-                                value={`${value}`}
+                                placeholder={`${value}`}
                               />
                               <Divider />
                             </>
@@ -437,7 +438,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                             // style={styles.input}
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
-                            value={`${value}`}
+                            placeholder={`${value}`}
                           />
                         );
                       }}
@@ -451,83 +452,30 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                 );
               })}
 
-              {pricesList.map((item1, index1) => {
-                const keyItemPrice = uuidv4();
-                return (
-                  <View key={keyItemPrice} style={styles.prices}>
-                    {formDataPrice.map((item2, index2) => {
-                      return (
-                        <View key={uuidv4()} style={styles.pricesItem}>
-                          <View>
-                            {index1 == 0 ? (
-                              <Text style={styles.label}>{item2.name}</Text>
-                            ) : (
-                              <Text></Text>
-                            )}
-                            <Controller
-                              control={prices.control}
-                              render={({
-                                field: { onChange, onBlur, value },
-                              }) => (
-                                <TextInput
-                                  style={styles.input}
-                                  onBlur={onBlur}
-                                  onChangeText={(value) => onChange(value)}
-                                  value={`${value}`}
-                                />
-                              )}
-                              name={item2.id}
-                              rules={{ required: true }}
+              <View style={styles.prices}>
+                {formDataPrice.map((item2, index2) => {
+                  return (
+                    <View key={uuidv4()} style={styles.pricesItem}>
+                      <View>
+                        <Text style={styles.label}>{item2.name}</Text>
+                        <Controller
+                          control={prices.control}
+                          render={({ field: { onChange, onBlur, value } }) => (
+                            <Input
+                              style={styles.input}
+                              onBlur={onBlur}
+                              onChangeText={(value) => onChange(value)}
+                              placeholder={`${value}`}
                             />
-                          </View>
-                        </View>
-                      );
-                    })}
-                    <View>
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (pricesList.length == 1) return;
-
-                          const temp = [
-                            ...pricesList.filter(
-                              (item) => item.prices_id !== item1.prices_id
-                            ),
-                          ];
-                          setPriceList(temp);
-                        }}
-                      >
-                        <AntDesign
-                          name="close"
-                          color={COLORS.primaryNovel}
-                          size={33}
+                          )}
+                          name={item2.id}
+                          rules={{ required: true }}
                         />
-                      </TouchableOpacity>
+                      </View>
                     </View>
-                  </View>
-                );
-              })}
-
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={{ ...styles.button, backgroundColor: "#FFFFFF" }}
-                  onPress={() => {
-                    setPriceList([
-                      ...pricesList,
-                      {
-                        prices_id: uuidv4(),
-                        unit: "gm",
-                        price: "123",
-                        size: "123",
-                      },
-                    ]);
-                  }}
-                >
-                  <Text style={{ ...styles.buttonText, color: "#1DCBB6" }}>
-                    Add
-                  </Text>
-                </TouchableOpacity>
+                  );
+                })}
               </View>
-
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.button}
@@ -535,10 +483,9 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                     reset({});
                   }}
                 >
-                  <Text style={styles.buttonText}>Reset</Text>
+                  <Text style={styles.buttonText}>Edit</Text>
                 </TouchableOpacity>
               </View>
-
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.button}
@@ -548,7 +495,7 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                   )}
                 >
                   <Text style={styles.buttonText}>
-                    {isUpdate ? "Update" : "Create"}
+                    {isUpdate ? "Edit" : "Create"}
                   </Text>
                 </TouchableOpacity>
               </View>

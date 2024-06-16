@@ -4,10 +4,8 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
-  FlatList
+  FlatList,
 } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
@@ -16,11 +14,11 @@ import PaymentFooter from "../components/PaymentFooter";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-function DetailsScreen({ navigation, route }) {
-  // console.log("route = ", route.params);
+
+function DetailsScreen({ navigation }) {
   const ItemofIndex = useSelector((state) => state.products.currentDetailCart);
-  const dispatch = useDispatch()
-  useEffect(() => { }, [ItemofIndex])
+  const dispatch = useDispatch();
+  useEffect(() => {}, [ItemofIndex]);
 
   const Tab = createMaterialTopTabNavigator();
   const [price, setPrice] = useState(ItemofIndex.manage_prices[0]);
@@ -29,49 +27,60 @@ function DetailsScreen({ navigation, route }) {
   function BackHandler() {
     navigation.pop();
   }
+  
   function HomeScreen() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>{ItemofIndex.des}</Text>
+      <View style={styles.tabContainer}>
+        <Text style={styles.infoTitle}>Description</Text>
+        <Text style={styles.infoText}>{ItemofIndex.des}</Text>
       </View>
     );
   }
 
   function IngredientScreen() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>{ItemofIndex.ingredients}</Text>
-        <Text>{ItemofIndex.special_ingredient}</Text>
-      </View>
+      <FlatList
+        data={[
+          { key: 'Ingredients', value: ItemofIndex.ingredients },
+          { key: 'Special Ingredients', value: ItemofIndex.special_ingredient },
+        ]}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>{item.key}</Text>
+            <Text style={styles.cardText}>{item.value}</Text>
+          </View>
+        )}
+        keyExtractor={(item) => item.key}
+        contentContainerStyle={styles.listContainer}
+      />
     );
   }
 
   return (
-    <View style={styles.ScreenContainer}>
+    <View style={styles.screenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} hidden={true} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.ScrollViewFlex}
+        contentContainerStyle={styles.scrollViewFlex}
       >
         <ImageBackgroundInfo
           EnableBackHandler={true}
           item={ItemofIndex}
           BackHandler={BackHandler}
         />
-        <Tab.Navigator ta>
+        <Tab.Navigator>
           <Tab.Screen name="Information" component={HomeScreen} />
           <Tab.Screen name="Ingredient" component={IngredientScreen} />
-          {/* <Tab.Screen name="Special Ingredient" component={SettingsScreen} /> */}
         </Tab.Navigator>
         
         <PaymentFooter
           price={price.prices.price}
           buttonTitle="Add to Cart"
           buttonPressHandler={() => {
-            const temp = { ...ItemofIndex, manage_prices: [{ prices: { ...price.prices }, quantity: 1 }] }
-            dispatch(productsSlice.actions.ADD_TO_CART(temp))
-            dispatch(productsSlice.actions.CACULATE_CART_PRICE())
-            BackHandler()
+            const temp = { ...ItemofIndex, manage_prices: [{ prices: { ...price.prices }, quantity: 1 }] };
+            dispatch(productsSlice.actions.ADD_TO_CART(temp));
+            dispatch(productsSlice.actions.CACULATE_CART_PRICE());
+            BackHandler();
           }}
         />
       </ScrollView>
@@ -82,51 +91,55 @@ function DetailsScreen({ navigation, route }) {
 export default DetailsScreen;
 
 const styles = StyleSheet.create({
-  ScreenContainer: {
+  screenContainer: {
     flex: 1,
     backgroundColor: COLORS.primaryBackground,
   },
-  ScrollViewFlex: {
+  scrollViewFlex: {
     flexGrow: 1,
     justifyContent: 'space-between',
   },
-  FooterInfoArea: {
+  tabContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: COLORS.primaryBackground,
+  },
+  listContainer: {
     padding: 20,
   },
-  InfoTitle: {
+  infoTitle: {
     fontWeight: 'bold',
     letterSpacing: 1,
     fontSize: 18,
     color: COLORS.primaryButtonBlueNavi,
     marginBottom: 10,
   },
-  InfoTitleSize: {
-    fontSize: 20,
-    color: COLORS.primaryTitle
-  },
-  DescriptionText: {
+  infoText: {
     letterSpacing: 0.5,
-    fontWeight: '800',
+    fontWeight: '600',
     fontSize: 14,
     color: '#230C02',
-    marginBottom: 30,
+    marginBottom: 15,
   },
-  SizeOuterContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 20,
-  },
-  SizeBox: {
-    flex: 1,
+  card: {
     backgroundColor: COLORS.primaryBackgroundCard,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 48,
     borderRadius: 10,
-    borderWidth: 2,
+    padding: 15,
+    marginBottom: 10,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
-  SizeText: {
-    fontWeight: '600',
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: COLORS.primaryTitle,
+  },
+  cardText: {
+    fontSize: 14,
+    color: '#230C02',
   },
 });

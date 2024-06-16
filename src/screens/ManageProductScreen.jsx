@@ -114,8 +114,6 @@ function ManageProductScreen({ navigation }) {
   }, [productAll, searchText])
 
   useEffect(() => {
-    console.log('catch phep');
-    console.log(productsList2.length);
     setsortedProducts(productsList.concat(productsList2))
   }, [productsList, productsList2])
 
