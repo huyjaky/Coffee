@@ -59,11 +59,11 @@ function getProductList(category, data1, data2) {
     return data;
   } else {
     if (category === 'medical equipment' || category === 'medicine') {
-      let productsList = data.filter((item) => item.category_pr == category);
+      let productsList = data.filter((item) => item.category_pr === category);
       return productsList;
     } else {
       let productsList = data.filter((item) => item.derived == category)
-      if (productsList.length == 0) productsList = data.filter((item) => item.type_pr == category)
+      if (productsList.length == 0) productsList = data.filter((item) => item.type_pr === category)
       return productsList
     }
   }

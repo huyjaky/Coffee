@@ -37,6 +37,7 @@ import { COLORS } from "../theme/theme";
 
 import { decode } from "base64-arraybuffer";
 import { productsSlice } from "../store/states/products";
+import PopUpAnimation from "../components/PopUpAnimation";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -45,7 +46,7 @@ function ManageOrderScreen({ navigation }) {
   const productsList = useSelector((state) => state.products.productsList);
   const productsList2 = useSelector((state) => state.products.productsList2);
   const isUpdate = useSelector((state) => state.products.isUpdate);
-
+  const [showAnimation, setShowAnimation] = useState(false);
   const user = useSelector((state) => state.user.user);
   const currentDetailCart = useSelector(
     (state) => state.products.currentDetailCart
@@ -153,6 +154,10 @@ function ManageOrderScreen({ navigation }) {
       .from("Images")
       .upload(filePathP, decode(base64P), { contentTypeP });
     console.log("upload portrait", imgUploadP.error);
+    setTimeout(() => {
+      setShowAnimation(false);
+      navigation.navigate("History");
+    }, 2000);
     return imgUploadP;
   }
 
@@ -213,13 +218,13 @@ function ManageOrderScreen({ navigation }) {
   async function updatedPrice(data) {
     const temp_id = data.prices_id;
     delete data.prices_id;
-    console.log('price data', data);
+    console.log("price data", data);
     const { error } = await supabase
       .from("prices")
       .update({ ...data })
       .eq("prices_id", temp_id);
     console.log(error);
-    console.log('finish update prices');
+    console.log("finish update prices");
     return;
   }
 
@@ -232,8 +237,12 @@ function ManageOrderScreen({ navigation }) {
       .from("products")
       .update({ ...data })
       .eq("id_pr", temp_id);
-    console.log('finish update product');
+    console.log("finish update product");
     console.log(error);
+    setTimeout(() => {
+      setShowAnimation(false);
+      navigation.navigate("History");
+    }, 2000);
     return;
   }
 
@@ -405,14 +414,21 @@ function ManageOrderScreen({ navigation }) {
   }
 
   React.useEffect(() => {}, [isUpdate]);
-  React.useEffect(()=>{
+  React.useEffect(() => {
     return () => {
-      dispatch(productsSlice.actions.SET_IS_UPDATE(false))
-    }
-  },[])
+      dispatch(productsSlice.actions.SET_IS_UPDATE(false));
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
+      {showAnimation ? (
+        <PopUpAnimation
+          style={styles.LottieAnimation}
+          source={require("../lottie/successful.json")}
+        />
+      ) : null}
+
       <ScrollView>
         <Box alignItems="center">
           <Box

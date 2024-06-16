@@ -122,31 +122,6 @@ function ImageFavouriteBG({ item, EnableBackHandler, BackHandler }) {
               <View>
                 <Text style={[styles.ItemTitleText]}>{item.name_pr}</Text>
               </View>
-              <View style={styles.ItemPropertiesContainer}>
-                <View style={styles.ProperFirst}>
-                  <MaterialCommunityIcons
-                    name={item.type_pr === "Bean" ? "seed" : "coffee"}
-                    size={14}
-                    color={COLORS.primaryBackground}
-                  />
-                  <Text
-                    style={[
-                      styles.PropertyTextFirst,
-                      { marginTop: item.type_pr === "Bean" ? 6 : 0 },
-                    ]}
-                  >
-                    {item.type_pr}
-                  </Text>
-                </View>
-                <View style={styles.ProperFirst}>
-                  <Entypo
-                    name={item.type_pr === "Bean" ? "location-pin" : "drop"}
-                    size={12}
-                    color={COLORS.primaryBackground}
-                  />
-                  {/* <Text style={styles.PropertyTextLast}>{item.ingredients}</Text> */}
-                </View>
-              </View>
             </View>
           </View>
         </View>

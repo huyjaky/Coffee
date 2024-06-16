@@ -117,32 +117,7 @@ function ImageBackgroundInfo({
                   {item.derived}
                 </Text>
               </View>
-              <View style={styles.ItemPropertiesContainer}>
-                <View style={styles.ProperFirst}>
-                  <MaterialCommunityIcons
-                    name={item.type_pr === "Bean" ? "seed" : "coffee"}
-                    size={item.type_pr === "Bean" ? 18 : 24}
-                    // color={COLORS.primaryOrangeHex}
-                    color="#230C02"
-                  />
-                  <Text
-                    style={[
-                      styles.PropertyTextFirst,
-                      { marginTop: item.type_pr === "Bean" ? 6 : 0 },
-                    ]}
-                  >
-                    {item.type_pr}
-                  </Text>
-                </View>
-                <View style={styles.ProperFirst}>
-                  <Entypo
-                    name={item.type_pr === "Bean" ? "location-pin" : "drop"}
-                    size={16}
-                    color= {COLORS.primaryBackground}
-                  />
-                  <Text style={styles.PropertyTextLast}>{item.ingredients}</Text>
-                </View>
-              </View>
+              
             </View>
             <View style={styles.InfoContainerRow}>
               <View style={styles.RatingContainer}>
@@ -168,9 +143,6 @@ function ImageBackgroundInfo({
                 >
                   ({item.ratings_count})
                 </Text>
-              </View>
-              <View style={styles.RoastedContainer}>
-                <Text style={styles.RoastedText}>roasted</Text>
               </View>
             </View>
           </View>
