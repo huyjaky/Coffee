@@ -218,8 +218,6 @@ function HomeScreen({ navigation }) {
     setSearchText("");
   }
 
-  useEffect(() => {}, [productsList, productsList2])
-
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} hidden={true} />

@@ -325,9 +325,9 @@ function ManageOrderScreen({ navigation }) {
             /> */}
           </AspectRatio>
           <Center
-            bg="violet.500"
+            bg={COLORS.primaryButtonGreen}
             _dark={{
-              bg: "violet.400",
+              bg: COLORS.primaryButtonGreen,
             }}
             _text={{
               color: "warmGray.50",
@@ -383,7 +383,7 @@ function ManageOrderScreen({ navigation }) {
             /> */}
           </AspectRatio>
           <Center
-            bg="violet.500"
+            bg={COLORS.primaryButtonGreen}
             _dark={{
               bg: "violet.400",
             }}

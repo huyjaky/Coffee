@@ -81,13 +81,10 @@ export default ProfileViewScreen = () => {
             <Text style={styles.buttonText}>Account Settings</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonContainer} onPress={()=> navigation.navigate('ManageOrder')}>
-            <Text style={styles.buttonText}>Orders Detail</Text>
+            <Text style={styles.buttonText}>Add Product</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonContainer} onPress={()=> navigation.navigate('ManageProduct')}>
             <Text style={styles.buttonText}>Product Management</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonContainer} onPress={()=> navigation.navigate('ManageUser')}>
-            <Text style={styles.buttonText}>User Management </Text>
           </TouchableOpacity>
         </View>
       </View>
