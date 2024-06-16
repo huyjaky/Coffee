@@ -508,9 +508,7 @@ function ManageOrderScreen({ navigation }) {
                                 mb={8}
                                 onBlur={onBlur}
                                 onChangeText={(value) => onChange(value)}
-                                // placeholder={`${value}`}
-                                placeholder={isUpdate ? "" : `${value}`}
-                                value={isUpdate ? `${value}` : ""}
+                                placeholder={`${value}`}
                               />
                               <Divider />
                             </>
@@ -521,8 +519,7 @@ function ManageOrderScreen({ navigation }) {
                             // style={styles.input}
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
-                            placeholder={isUpdate ? "" : `${value}`}
-                            value={isUpdate ? `${value}` : ""}
+                            placeholder={`${value}`}
                           />
                         );
                       }}
@@ -549,8 +546,7 @@ function ManageOrderScreen({ navigation }) {
                               style={styles.input}
                               onBlur={onBlur}
                               onChangeText={(value) => onChange(value)}
-                              placeholder={isUpdate ? "" : `${value}`}
-                              value={isUpdate ? `${value}` : ""}
+                              placeholder={`${value}`}
                             />
                           )}
                           name={item2.id}

@@ -3,23 +3,45 @@ import { StyleSheet, Text, View } from "react-native";
 import ImageBackgroundInfo from "./ImageBackgroundInfo";
 import ImageFavouriteBG from "./ImageFavouriteBG";
 import { COLORS } from "../theme/theme";
+import { useEffect, useState } from "react";
 
-function FavoritesItemCard({
-  item,
-}) {
+function FavoritesItemCard({ item }) {
+
+  const [img, setImg] = useState();
+  async function loadImg() {
+    const { data, error } = await supabase.storage
+      .from("Images")
+      .getPublicUrl(item.imagelink_square);
+    if (error) print(error);
+    if (data) {
+      setImg(data.publicUrl);
+      item.imagelink_square = data.publicUrl;
+    }
+  }
+
+  useEffect(()=>{
+    if (item) {
+      loadImg()
+    }
+  },[item])
+
   return (
     <View style={styles.CardContainer}>
       <ImageFavouriteBG
         item={item}
         EnableBackHandler={false}
+        source={{
+          uri: img
+            ? img
+            : "https://aidmhlapqfrmwtpnmmbd.supabase.co/storage/v1/object/public/Images/b71105f8-6873-4aa2-afdf-0941c8f76418/1717065228272.png",
+        }}
       />
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         colors={["#b8d8e0", COLORS.primaryBackground]}
         style={styles.ContainerLinearGradient}
-      >
-      </LinearGradient>
+      ></LinearGradient>
     </View>
   );
 }
