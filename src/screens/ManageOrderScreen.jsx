@@ -276,6 +276,7 @@ function ManageOrderScreen({ navigation }) {
   };
 
   async function loadImg(item, isSquare) {
+    if (!isUpdate) return
     const { data, error } = await supabase.storage
       .from("Images")
       .getPublicUrl(item);
@@ -291,7 +292,7 @@ function ManageOrderScreen({ navigation }) {
     }
   }
   React.useEffect(() => {
-    if (currentDetailCart & isUpdate) {
+    if (currentDetailCart) {
       loadImg(currentDetailCart.imagelink_square, true);
       loadImg(currentDetailCart.imagelink_portrait, false);
     }
