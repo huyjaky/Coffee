@@ -14,9 +14,11 @@ import PaymentFooter from "../components/PaymentFooter";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { supabase } from "../store/supabase";
 
 function DetailsScreen({ navigation, isManage = false }) {
   const ItemofIndex = useSelector((state) => state.products.currentDetailCart);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   useEffect(() => {}, [ItemofIndex]);
@@ -27,6 +29,16 @@ function DetailsScreen({ navigation, isManage = false }) {
 
   function BackHandler() {
     navigation.pop();
+  }
+
+  async function addToCartDB(id_pr, prices_id) {
+    const { data, error } = await supabase.rpc("add_product_to_cart", {
+      user_id_vr: user.user.id,
+      id_pr_vr: id_pr,
+      prices_id_vr: prices_id,
+      is_inscrease: true,
+    });
+    if (error) console.log("add to card by pay", error);
   }
 
   function HomeScreen() {
@@ -84,6 +96,10 @@ function DetailsScreen({ navigation, isManage = false }) {
               };
               dispatch(productsSlice.actions.ADD_TO_CART(temp));
               dispatch(productsSlice.actions.CACULATE_CART_PRICE());
+              addToCartDB(
+                ItemofIndex.id_pr,
+                ItemofIndex.manage_prices[0].prices.prices_id
+              );
               BackHandler();
             }}
           />
