@@ -29,7 +29,7 @@ function GetStartedScreen() {
     const { data, error } = await supabase
       .from("products")
       .select("*,manage_prices(prices(*))")
-      .eq("category_pr", "medical equipment")
+      .eq("category_pr", "medical equipment").neq("status", "unrealease")
       .then((data) => {
         dispatch(productsSlice.actions.UPDATE_PRODUCTS(data.data));
         if (error) Alert.alert(error);
@@ -42,7 +42,7 @@ function GetStartedScreen() {
     const { data, error } = await supabase
       .from("products")
       .select("*,manage_prices(prices(*))")
-      .eq("category_pr", "medicine")
+      .eq("category_pr", "medicine").neq("status", "unrealease")
       .then((data) => {
         dispatch(productsSlice.actions.UPDATE_PRODUCTS2(data.data));
         if (error) Alert.alert(error);

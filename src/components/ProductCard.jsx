@@ -37,7 +37,7 @@ function ProductCard({ item, isManage = false }) {
 
   useEffect(() => {
     loadImg();
-  }, [user]);
+  }, []);
 
   async function addToCartDB(id_pr, prices_id) {
     // console.log({

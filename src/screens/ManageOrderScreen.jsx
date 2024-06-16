@@ -265,8 +265,11 @@ function ManageOrderScreen({ navigation }) {
       return;
     }
   };
+  const [ImgUpSq, setImgUpSq] = useState()
+  const [ImgUpP, setImgUpP] = useState()
 
   async function loadImg(item, isSquare) {
+    if (!isUpdate) return
     const { data, error } = await supabase.storage
       .from("Images")
       .getPublicUrl(item);
@@ -275,18 +278,20 @@ function ManageOrderScreen({ navigation }) {
       console.log(data);
       // if (data) console.log(currentDetailCart.manage_prices[0].prices);
       if (isSquare) {
-        setImgSquare(data.publicUrl);
+        setImgUpSq(data.publicUrl);
       } else {
-        setImgPortrait(data.publicUrl);
+        setImgUpP(data.publicUrl);
       }
     }
   }
+
   React.useEffect(() => {
     if (currentDetailCart) {
+      console.log('catch event');
       loadImg(currentDetailCart.imagelink_square, true);
       loadImg(currentDetailCart.imagelink_portrait, false);
     }
-  }, [currentDetailCart]);
+  }, [currentDetailCart, isUpdate]);
 
   // @WARNING: modifier tab on form
   function Imagelink_square() {
@@ -301,7 +306,7 @@ function ManageOrderScreen({ navigation }) {
             {isUpdate ? (
               <Image
                 source={{
-                  uri: ImgSquare ? ImgSquare : "",
+                  uri: ImgUpSq ? ImgUpSq : "",
                 }}
                 alt="image"
               />
@@ -359,7 +364,7 @@ function ManageOrderScreen({ navigation }) {
             {isUpdate ? (
               <Image
                 source={{
-                  uri: ImgPortrait ? ImgPortrait : "",
+                  uri: ImgUpP ? ImgUpP : "",
                 }}
                 alt="image"
               />
@@ -405,6 +410,11 @@ function ManageOrderScreen({ navigation }) {
   }
 
   React.useEffect(() => {}, [isUpdate]);
+  React.useEffect(()=>{
+    return () => {
+      dispatch(productsSlice.actions.SET_IS_UPDATE(false))
+    }
+  },[])
 
   return (
     <View style={styles.container}>
