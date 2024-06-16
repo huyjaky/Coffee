@@ -11,7 +11,7 @@ function OrderItemCard({ item }) {
   async function loadImg() {
     const { data, error } = await supabase.storage
       .from("Images")
-      .getPublicUrl(item.imagelink_square);
+      .getPublicUrl(item.imagelink_portrait);
     if (error) print(error);
     if (data) {
       setImg(data.publicUrl);

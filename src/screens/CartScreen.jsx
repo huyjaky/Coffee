@@ -63,7 +63,7 @@ function CartScreen({ navigation, route }) {
                     <CartIt
                       id={data.id_pr}
                       name={data.name_pr}
-                      imagelink_square={data.imagelink_square}
+                      imagelink_square={data.imagelink_portrait}
                       special_ingredient={data.special_ingredient}
                       prices={data.manage_prices}
                     />
