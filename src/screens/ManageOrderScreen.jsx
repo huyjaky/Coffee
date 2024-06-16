@@ -366,9 +366,9 @@ function ManageOrderScreen({ navigation }) {
             ) : (
               <Image
                 source={{
-                  uri: !ImgSquare
+                  uri: !ImgPortrait
                     ? "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
-                    : ImgSquare.assets[0].uri,
+                    : ImgPortrait.assets[0].uri,
                 }}
                 alt="image"
               />

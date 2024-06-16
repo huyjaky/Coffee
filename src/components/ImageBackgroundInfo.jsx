@@ -46,7 +46,6 @@ function ImageBackgroundInfo({
     if (error) print(error);
     if (data) {
       setImg(data.publicUrl);
-      
     }
   }
 

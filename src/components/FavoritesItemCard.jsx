@@ -4,6 +4,7 @@ import ImageBackgroundInfo from "./ImageBackgroundInfo";
 import ImageFavouriteBG from "./ImageFavouriteBG";
 import { COLORS } from "../theme/theme";
 import { useEffect, useState } from "react";
+import { supabase } from "../store/supabase";
 
 function FavoritesItemCard({ item }) {
 
@@ -17,7 +18,6 @@ function FavoritesItemCard({ item }) {
     if (data) {
       setImg(data.publicUrl);
       item.imagelink_square = data.publicUrl;
-      console.log(data.publicUrl);
     }
   }
 
@@ -26,7 +26,7 @@ function FavoritesItemCard({ item }) {
   },[item])
 
   useEffect(()=>{
-    console.log(img);
+    console.log('img',img);
   },[img])
 
   return (
