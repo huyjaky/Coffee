@@ -9,6 +9,7 @@ function FavoritesItemCard({ item }) {
 
   const [img, setImg] = useState();
   async function loadImg() {
+    if (!item) return
     const { data, error } = await supabase.storage
       .from("Images")
       .getPublicUrl(item.imagelink_square);
@@ -16,14 +17,17 @@ function FavoritesItemCard({ item }) {
     if (data) {
       setImg(data.publicUrl);
       item.imagelink_square = data.publicUrl;
+      console.log(data.publicUrl);
     }
   }
 
   useEffect(()=>{
-    if (item) {
       loadImg()
-    }
   },[item])
+
+  useEffect(()=>{
+    console.log(img);
+  },[img])
 
   return (
     <View style={styles.CardContainer}>

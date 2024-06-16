@@ -265,11 +265,8 @@ function ManageOrderScreen({ navigation }) {
       return;
     }
   };
-  const [ImgUpSq, setImgUpSq] = useState()
-  const [ImgUpP, setImgUpP] = useState()
 
   async function loadImg(item, isSquare) {
-    if (!isUpdate) return
     const { data, error } = await supabase.storage
       .from("Images")
       .getPublicUrl(item);
@@ -278,16 +275,14 @@ function ManageOrderScreen({ navigation }) {
       console.log(data);
       // if (data) console.log(currentDetailCart.manage_prices[0].prices);
       if (isSquare) {
-        setImgUpSq(data.publicUrl);
+        setImgSquare(data.publicUrl);
       } else {
-        setImgUpP(data.publicUrl);
+        setImgPortrait(data.publicUrl);
       }
     }
   }
-
   React.useEffect(() => {
-    if (currentDetailCart) {
-      console.log('catch event');
+    if (currentDetailCart & isUpdate) {
       loadImg(currentDetailCart.imagelink_square, true);
       loadImg(currentDetailCart.imagelink_portrait, false);
     }
@@ -306,7 +301,7 @@ function ManageOrderScreen({ navigation }) {
             {isUpdate ? (
               <Image
                 source={{
-                  uri: ImgUpSq ? ImgUpSq : "",
+                  uri: ImgSquare ? ImgSquare : "",
                 }}
                 alt="image"
               />
@@ -364,7 +359,7 @@ function ManageOrderScreen({ navigation }) {
             {isUpdate ? (
               <Image
                 source={{
-                  uri: ImgUpP ? ImgUpP : "",
+                  uri: ImgPortrait ? ImgPortrait : "",
                 }}
                 alt="image"
               />
@@ -508,7 +503,9 @@ function ManageOrderScreen({ navigation }) {
                                 mb={8}
                                 onBlur={onBlur}
                                 onChangeText={(value) => onChange(value)}
-                                placeholder={`${value}`}
+                                // placeholder={`${value}`}
+                                placeholder={isUpdate ? "" : `${value}`}
+                                value={isUpdate ? `${value}` : value}
                               />
                               <Divider />
                             </>
@@ -519,7 +516,8 @@ function ManageOrderScreen({ navigation }) {
                             // style={styles.input}
                             onBlur={onBlur}
                             onChangeText={(value) => onChange(value)}
-                            placeholder={`${value}`}
+                            placeholder={isUpdate ? "" : `${value}`}
+                            value={isUpdate ? `${value}` : value}
                           />
                         );
                       }}
@@ -546,7 +544,8 @@ function ManageOrderScreen({ navigation }) {
                               style={styles.input}
                               onBlur={onBlur}
                               onChangeText={(value) => onChange(value)}
-                              placeholder={`${value}`}
+                              placeholder={isUpdate ? "" : `${value}`}
+                              value={isUpdate ? `${value}` : value}
                             />
                           )}
                           name={item2.id}
