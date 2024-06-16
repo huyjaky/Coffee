@@ -58,11 +58,6 @@ function AuthenticatedStack() {
       >
       </Stack.Screen>
       <Stack.Screen
-        name="ManageProduct"
-        component={ManageProductScreen}
-        options={{ animation: "slide_from_bottom" }}
-      />
-      <Stack.Screen
         name="ManageUser"
         component={ManageUserScreen}
         options={{ animation: "slide_from_bottom" }}
@@ -83,6 +78,11 @@ function AuthenticatedStack() {
         component={ManageOrderScreen}
         options={{ animation: "slide_from_right" }}
       />
+      <Stack.Screen
+        name="ManageProduct"
+        component={ManageProductScreen}
+        options={{ animation: "slide_from_bottom" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -90,7 +90,7 @@ function AuthenticatedStack() {
 function AuthStack() {
   return (
     <Stack.Navigator
-      initialRouteName="Dev"
+      initialRouteName="GetStarted"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="ForgotPass" component={ForgotPassScreen} />
@@ -100,7 +100,7 @@ function AuthStack() {
       <Stack.Screen name="Home" component={HomeScreen} />
 
       {/* dev form */}
-      <Stack.Screen name="Dev" component={ManageOrderScreen} />
+      <Stack.Screen name="Dev" component={ProfileViewScreen} />
 
     </Stack.Navigator>
   );

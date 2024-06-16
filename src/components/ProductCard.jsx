@@ -18,7 +18,7 @@ import { supabase } from "../store/supabase";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 
-function ProductCard({ item }) {
+function ProductCard({ item, isManage = false }) {
   const CartList = useSelector((state) => state.products.CartList);
   const user = useSelector((state) => state.user.user);
   const [img, setImg] = useState();
@@ -30,12 +30,12 @@ function ProductCard({ item }) {
     if (error) print(error);
     if (data) {
       setImg(data.publicUrl);
-      item.imagelink_square = data.publicUrl
+      item.imagelink_square = data.publicUrl;
     }
   }
 
   useEffect(() => {
-    loadImg()
+    loadImg();
   }, [user]);
 
   async function addToCartDB(id_pr, prices_id) {
@@ -50,7 +50,6 @@ function ProductCard({ item }) {
       prices_id_vr: prices_id,
       is_inscrease: true,
     });
-    
   }
 
   const dispatch = useDispatch();
@@ -87,27 +86,34 @@ function ProductCard({ item }) {
           </Text>
           {/* $<Text style={styles.CartPrice}>15</Text> */}
         </Text>
-        <TouchableOpacity
-          onPress={() => {
-            dispatch(
-              productsSlice.actions.ADD_TO_CART({
-                ...item,
-                manage_prices: [
-                  { prices: { ...item.manage_prices[0].prices }, quantity: 1 },
-                ],
-              })
-            );
-            addToCartDB(item.id_pr, item.manage_prices[0].prices.prices_id);
-          }}
-        >
-          <BGIcon
-            color={COLORS.primaryNovel}
-            name="add"
-            // BGColor={COLORS.primaryOrangeHex}
-            BGColor={COLORS.primaryButtonGreen}
-            size={10}
-          />
-        </TouchableOpacity>
+        {isManage == false ? (
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(
+                productsSlice.actions.ADD_TO_CART({
+                  ...item,
+                  manage_prices: [
+                    {
+                      prices: { ...item.manage_prices[0].prices },
+                      quantity: 1,
+                    },
+                  ],
+                })
+              );
+              addToCartDB(item.id_pr, item.manage_prices[0].prices.prices_id);
+            }}
+          >
+            <BGIcon
+              color={COLORS.primaryNovel}
+              name="add"
+              // BGColor={COLORS.primaryOrangeHex}
+              BGColor={COLORS.primaryButtonGreen}
+              size={10}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View></View>
+        )}
       </View>
     </LinearGradient>
   );

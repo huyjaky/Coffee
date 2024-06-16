@@ -1,14 +1,26 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState, useRef, useEffect } from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
-import { useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Dimensions,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 import ProductCard from "../components/ProductCard";
-import { COLORS } from '../theme/theme';
+import { productsSlice } from "../store/states/products";
+import { COLORS } from "../theme/theme";
+import { Actionsheet, Box, useDisclose } from "native-base";
 import ManageCard from "../components/ProductManageCard";
+import { supabase } from "../store/supabase";
 
 function getCategoriesFromData(data1, data2) {
-  const data = data1.concat(data2)
+  const data = data1.concat(data2);
   let temp = {};
   for (let i = 0; i < data.length; i++) {
     if (temp[data[i].type_pr] == undefined) {
@@ -40,32 +52,39 @@ function getCategoriesFromData(data1, data2) {
 }
 
 function getProductList(category, data1, data2) {
-  const data = data1.concat(data2)
+  const data = data1.concat(data2);
   if (category == "All") {
     return data;
   } else {
-    if (category === 'medical equipment' || category === 'medicine') {
+    if (category === "medical equipment" || category === "medicine") {
       let productsList = data.filter((item) => item.category_pr == category);
       return productsList;
     } else {
-      let productsList = data.filter((item) => item.derived == category)
-      if (productsList.length == 0) productsList = data.filter((item) => item.type_pr == category)
-      return productsList
+      let productsList = data.filter((item) => item.derived == category);
+      if (productsList.length == 0)
+        productsList = data.filter((item) => item.type_pr == category);
+      return productsList;
     }
   }
 }
 
-function ManageProductScreen({ navigation }) {
+function ManageProductScreen({ navigation, isUpdate }) {
   // Define state for managing products
-
+  const { isOpen, onOpen, onClose } = useDisclose();
   const [searchText, setSearchText] = useState("");
-  const productsList = useSelector((state) => state.products.productsList)
-  const productsList2 = useSelector((state) => state.products.productsList2)
-  const [productAll, setProductAll] = useState(productsList.concat(productsList2));
-  const user = useSelector(state => state.user.user)
-  const [products, setProducts] = useState(productsList.concat(productsList2).filter(item =>
-    item.owned_id === user.user.id
-  ));
+  const productsList = useSelector((state) => state.products.productsList);
+  const productsList2 = useSelector((state) => state.products.productsList2);
+  const dispatch = useDispatch();
+  const [productAll, setProductAll] = useState(
+    productsList.concat(productsList2)
+  );
+  const user = useSelector((state) => state.user.user);
+  const [item, setItem] = useState();
+  const [products, setProducts] = useState(
+    productsList
+      .concat(productsList2)
+      .filter((item) => item.owned_id === user.user.id)
+  );
   const [categories, setCatehories] = useState(
     getCategoriesFromData(productsList, productsList2)
   );
@@ -79,11 +98,11 @@ function ManageProductScreen({ navigation }) {
   );
 
   function searchCoffee() {
-    if (searchText === '') {
+    if (searchText === "") {
       setsortedProducts(
         getProductList(categoryIndex.category, productsList, productsList2)
-      )
-      return
+      );
+      return;
     }
 
     if (searchText !== "") {
@@ -110,14 +129,32 @@ function ManageProductScreen({ navigation }) {
   }
 
   useEffect(() => {
-    searchCoffee()
-  }, [productAll, searchText])
+    searchCoffee();
+  }, [productAll, searchText]);
 
   useEffect(() => {
-    setsortedProducts(productsList.concat(productsList2))
-  }, [productsList, productsList2])
+    setsortedProducts(productsList.concat(productsList2));
+  }, [productsList, productsList2]);
 
-  useEffect(()=>{}, [sortedProducts])
+  useEffect(() => {}, [sortedProducts]);
+
+  async function deleteProduct() {
+    const { data, error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id_pr", item.id_pr);
+    if (error) print(error);
+  }
+
+  async function deletePr() {
+    deleteProduct();
+    console.log(item);
+    if (item.category_pr === "medicine") {
+      dispatch(productsSlice.actions.REMOVE_PRODUCTS2(item?.id_pr));
+    } else if (item.category_pr === "medical equipment") {
+      dispatch(productsSlice.actions.REMOVE_PRODUCTS(item?.id_pr));
+    }
+  }
 
   return (
     <View style={styles.viewContainer}>
@@ -178,7 +215,11 @@ function ManageProductScreen({ navigation }) {
                     category: categories[index],
                   });
                   setsortedProducts([
-                    ...getProductList(categories[index], productsList, productsList2),
+                    ...getProductList(
+                      categories[index],
+                      productsList,
+                      productsList2
+                    ),
                   ]);
                 }}
                 style={styles.CategoryScrollViewItem}
@@ -212,11 +253,48 @@ function ManageProductScreen({ navigation }) {
         keyExtractor={(item, index) => item.name + index}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
+          // return <ManageCard item={item} />;
           return (
-            <ManageCard item={item} />
+            <>
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(
+                    productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item)
+                  );
+                  navigation.push("Details");
+                }}
+                onLongPress={() => {
+                  onOpen();
+                  setItem(item);
+                }}
+                delayLongPress={500}
+              >
+                <ProductCard item={item} isManage={true} />
+              </TouchableOpacity>
+            </>
           );
         }}
       />
+      {/* form */}
+      <Actionsheet isOpen={isOpen} onClose={onClose}>
+        <Actionsheet.Content>
+          <Actionsheet.Item
+            onPress={() => {
+              dispatch(productsSlice.actions.UPDATE_CURRENT_DETAIL_CART(item));
+            }}
+          >
+            Edit
+          </Actionsheet.Item>
+          <Actionsheet.Item
+            onPress={() => {
+              deletePr();
+              onClose()
+            }}
+          >
+            Delete
+          </Actionsheet.Item>
+        </Actionsheet.Content>
+      </Actionsheet>
     </View>
   );
 }
@@ -230,13 +308,13 @@ const styles = StyleSheet.create({
   },
   productItem: {
     display: "flex",
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
     backgroundColor: COLORS.primaryButtonGreen,
     flex: 1,
     height: 200,
-    borderRadius: 10
+    borderRadius: 10,
   },
   InputContainerComponent: {
     flexDirection: "row",
@@ -257,12 +335,12 @@ const styles = StyleSheet.create({
   },
   CRUDmenu: {
     zIndex: 1,
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 5,
   },
   productText: {
-    color: COLORS.primaryNovel
+    color: COLORS.primaryNovel,
   },
   ScreenContainer: {
     flex: 1,
@@ -314,7 +392,7 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginTop: 20,
     fontWeight: "600",
-    color: COLORS.primaryTextBlue
+    color: COLORS.primaryTextBlue,
   },
   EmptyListContainer: {
     width: Dimensions.get("window").width - 60,

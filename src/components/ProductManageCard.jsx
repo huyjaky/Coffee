@@ -96,7 +96,8 @@ function ManageCard({ item }) {
             size={15}
           />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{
+        }}>
           <BGIcon
             color={COLORS.primaryWhiteHex}
             name="create"

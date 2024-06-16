@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -7,17 +7,18 @@ import {
   View,
   FlatList,
 } from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
 import PaymentFooter from "../components/PaymentFooter";
 import { productsSlice } from "../store/states/products";
 import { COLORS } from "../theme/theme";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-function DetailsScreen({ navigation }) {
+function DetailsScreen({ navigation, isManage = false }) {
   const ItemofIndex = useSelector((state) => state.products.currentDetailCart);
   const dispatch = useDispatch();
+
   useEffect(() => {}, [ItemofIndex]);
 
   const Tab = createMaterialTopTabNavigator();
@@ -27,7 +28,7 @@ function DetailsScreen({ navigation }) {
   function BackHandler() {
     navigation.pop();
   }
-  
+
   function HomeScreen() {
     return (
       <View style={styles.tabContainer}>
@@ -41,8 +42,8 @@ function DetailsScreen({ navigation }) {
     return (
       <FlatList
         data={[
-          { key: 'Ingredients', value: ItemofIndex.ingredients },
-          { key: 'Special Ingredients', value: ItemofIndex.special_ingredient },
+          { key: "Ingredients", value: ItemofIndex.ingredients },
+          { key: "Special Ingredients", value: ItemofIndex.special_ingredient },
         ]}
         renderItem={({ item }) => (
           <View style={styles.card}>
@@ -72,17 +73,23 @@ function DetailsScreen({ navigation }) {
           <Tab.Screen name="Information" component={HomeScreen} />
           <Tab.Screen name="Ingredient" component={IngredientScreen} />
         </Tab.Navigator>
-        
-        <PaymentFooter
-          price={price.prices.price}
-          buttonTitle="Add to Cart"
-          buttonPressHandler={() => {
-            const temp = { ...ItemofIndex, manage_prices: [{ prices: { ...price.prices }, quantity: 1 }] };
-            dispatch(productsSlice.actions.ADD_TO_CART(temp));
-            dispatch(productsSlice.actions.CACULATE_CART_PRICE());
-            BackHandler();
-          }}
-        />
+        {isManage == false ? (
+          <PaymentFooter
+            price={price.prices.price}
+            buttonTitle="Add to Cart"
+            buttonPressHandler={() => {
+              const temp = {
+                ...ItemofIndex,
+                manage_prices: [{ prices: { ...price.prices }, quantity: 1 }],
+              };
+              dispatch(productsSlice.actions.ADD_TO_CART(temp));
+              dispatch(productsSlice.actions.CACULATE_CART_PRICE());
+              BackHandler();
+            }}
+          />
+        ) : (
+          <View></View>
+        )}
       </ScrollView>
     </View>
   );
@@ -97,7 +104,7 @@ const styles = StyleSheet.create({
   },
   scrollViewFlex: {
     flexGrow: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   tabContainer: {
     flex: 1,
@@ -108,7 +115,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   infoTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 1,
     fontSize: 18,
     color: COLORS.primaryButtonBlueNavi,
@@ -116,9 +123,9 @@ const styles = StyleSheet.create({
   },
   infoText: {
     letterSpacing: 0.5,
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 14,
-    color: '#230C02',
+    color: "#230C02",
     marginBottom: 15,
   },
   card: {
@@ -127,19 +134,19 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 10,
     elevation: 3,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
     color: COLORS.primaryTitle,
   },
   cardText: {
     fontSize: 14,
-    color: '#230C02',
+    color: "#230C02",
   },
 });

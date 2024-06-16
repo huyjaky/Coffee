@@ -494,9 +494,15 @@ function ManageOrderScreen({ navigation, isUpdate }) {
                     isUpdate ? updatedProduct : createProduct
                   )}
                 >
-                  <Text style={styles.buttonText}>
-                    {isUpdate ? "Edit" : "Create"}
-                  </Text>
+                  {isLoading ? (
+                    <Text style={styles.buttonText}>
+                      Loading ...
+                    </Text>
+                  ) : (
+                    <Text style={styles.buttonText}>
+                      {isUpdate ? "Edit" : "Create"}
+                    </Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </Stack>
@@ -527,7 +533,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttonContainer: {
-    marginTop: 40,
+    marginTop: 20,
   },
   button: {
     backgroundColor: COLORS.primaryButtonGreen,

@@ -2,7 +2,7 @@
 
 # dependencies
 node_modules/
-.gradle/
+.android/gradle/
 
 # Expo
 .expo/
