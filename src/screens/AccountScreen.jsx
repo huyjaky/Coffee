@@ -75,6 +75,7 @@ export default function Account() {
     });
     setTimeout(() => {
       setShowAnimation(false);
+      navigation.navigate('HomeScreen')
     }, 4000);
     return { data, error };
   };
