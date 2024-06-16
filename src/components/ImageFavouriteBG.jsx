@@ -14,36 +14,58 @@ import { useEffect, useState } from "react";
 import { supabase } from "../store/supabase";
 import { err } from "react-native-svg";
 
-function ImageFavouriteBG({
-  item,
-  EnableBackHandler,
-  BackHandler,
-}) {
-
+function ImageFavouriteBG({ item, EnableBackHandler, BackHandler }) {
   const FavoritesList = useSelector((state) => state.products.FavoritesList);
-  const item2 = useSelector((state) => state.products.currentDetailCart)
-  const [isFavor, setIsFavor] = useState(item.favourite)
-  const dispatch = useDispatch()
+  const item2 = useSelector((state) => state.products.currentDetailCart);
+  const [isFavor, setIsFavor] = useState(item.favourite);
+  const dispatch = useDispatch();
 
   async function alterTable() {
-    const { error } = await supabase.from('products').update({ favourite: !isFavor }).eq('id_pr', item.id_pr)
+    const { error } = await supabase
+      .from("products")
+      .update({ favourite: !isFavor })
+      .eq("id_pr", item.id_pr);
     console.log(error);
   }
 
   function toggleFavor() {
     // update in db
-    alterTable()
-    dispatch(productsSlice.actions.TOGGLE_FAVORITE(item))
+    alterTable();
+    dispatch(productsSlice.actions.TOGGLE_FAVORITE(item));
   }
 
-  useEffect(() => { }, [item])
+  useEffect(() => {}, [item]);
 
+  const [img, setImg] = useState();
+  async function loadImg() {
+    if (!item) return;
+    const { data, error } = await supabase.storage
+      .from("Images")
+      .getPublicUrl(item.imagelink_square);
+    if (error) print(error);
+    if (data) {
+      setImg(data.publicUrl);
+      item.imagelink_square = data.publicUrl;
+    }
+  }
+
+  useEffect(() => {
+    loadImg();
+  }, [item]);
+
+  useEffect(() => {
+    console.log("img", img);
+  }, [img]);
 
   return (
     <View>
       <ImageBackground
-        source={item.imagelink_portrait}
         style={styles.ItemBackgroundImage}
+        source={{
+          uri: img
+            ? img
+            : "https://aidmhlapqfrmwtpnmmbd.supabase.co/storage/v1/object/public/Images/b71105f8-6873-4aa2-afdf-0941c8f76418/1717065228272.png",
+        }}
       >
         {EnableBackHandler ? (
           <View style={styles.ImageHeaderBarContainerWithBack}>
@@ -61,7 +83,7 @@ function ImageFavouriteBG({
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
-                toggleFavor()
+                toggleFavor();
               }}
             >
               <AntDesign
@@ -78,12 +100,15 @@ function ImageFavouriteBG({
             <TouchableOpacity
               // activeOpacity={1}
               onPress={() => {
-                toggleFavor()
-              }} >
+                toggleFavor();
+              }}
+            >
               <View>
                 <AntDesign
                   name="heart"
-                  color={isFavor ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex}
+                  color={
+                    isFavor ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex
+                  }
                   size={30}
                 />
               </View>
@@ -95,14 +120,7 @@ function ImageFavouriteBG({
           <View style={styles.ImageInfoInnerContainer}>
             <View style={styles.InfoContainerRow}>
               <View>
-                <Text style={[styles.ItemTitleText,]} >
-                  {item.name_pr}
-                </Text>
-                <Text
-                  style={[styles.ItemSubtitleText,]}
-                >
-                  {item.derived}
-                </Text>
+                <Text style={[styles.ItemTitleText]}>{item.name_pr}</Text>
               </View>
               <View style={styles.ItemPropertiesContainer}>
                 <View style={styles.ProperFirst}>
@@ -166,7 +184,7 @@ const styles = StyleSheet.create({
   },
   ImageInfoInnerContainer: {
     justifyContent: "space-between",
-    gap: 15,
+    gap: 20,
   },
   InfoContainerRow: {
     flexDirection: "row",

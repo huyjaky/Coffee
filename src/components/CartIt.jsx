@@ -1,5 +1,6 @@
 import { Entypo } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -35,6 +36,25 @@ function CartIt({
     console.log('addToCartDb', error);
   }
 
+  const [img, setImg] = useState();
+  async function loadImg() {
+    const { data, error } = await supabase.storage
+      .from("Images")
+      .getPublicUrl(imagelink_square);
+    if (error) print(error);
+    if (data) {
+      setImg(data.publicUrl);
+    }
+  }
+
+  useEffect(() => {
+    loadImg();
+  }, [imagelink_square]);
+
+  useEffect(() => {
+    console.log("img", img);
+  }, [img]);
+
   return (
     <View>
       <LinearGradient
@@ -45,7 +65,9 @@ function CartIt({
         colors={COLORS.primaryBackgroundCard}
       >
         <View style={styles.CartItemRow}>
-          <Image source={imagelink_square} style={styles.CartItemImage} />
+
+          <Image source={{uri: img ? img : ''}} style={styles.CartItemImage} />
+
           <View style={styles.CartItemInfo}>
             <View>
               <Text style={styles.CartItemTitle}>{name}</Text>

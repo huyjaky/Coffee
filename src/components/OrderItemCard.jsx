@@ -3,10 +3,31 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../theme/theme";
 
 import { AntDesign } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import { supabase } from "../store/supabase";
 
-function OrderItemCard({
-  item
-}) {
+function OrderItemCard({ item }) {
+  const [img, setImg] = useState();
+  async function loadImg() {
+    const { data, error } = await supabase.storage
+      .from("Images")
+      .getPublicUrl(item.imagelink_square);
+    if (error) print(error);
+    if (data) {
+      setImg(data.publicUrl);
+      item.imagelink_square = data.publicUrl;
+    }
+  }
+
+  useEffect(() => {
+    loadImg();
+    console.log(item);
+  }, [item]);
+
+  useEffect(() => {
+    console.log("img", img);
+  }, [img]);
+
   return (
     <LinearGradient
       start={{ x: 0, y: 0 }}
@@ -17,7 +38,7 @@ function OrderItemCard({
     >
       <View style={styles.CardInfoContainer}>
         <View style={styles.CardImageInfoContainer}>
-          <Image source={item.imagelink_square} style={styles.Image} />
+          <Image source={{uri: img ? img : ''}} style={styles.Image} />
           <View>
             <Text style={styles.CardTitle}>{item.name_pr}</Text>
             <Text style={styles.CardSubtitle}>{item.special_ingredient}</Text>
@@ -28,7 +49,7 @@ function OrderItemCard({
         <View
           key={index.toString()}
           style={styles.CardTableRow}
-          onPress={() => { }}
+          onPress={() => {}}
         >
           <View style={styles.CardTableRow}>
             {/* <View style={styles.SizeBoxLeft}>
@@ -86,7 +107,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.37,
     shadowRadius: 7.49,
     elevation: 12,
-
   },
   CardInfoContainer: {
     flexDirection: "row",
@@ -111,7 +131,7 @@ const styles = StyleSheet.create({
   CardSubtitle: {
     fontWeight: "800",
     fontSize: 12,
-    color:  COLORS.primaryTextBlue,
+    color: COLORS.primaryTextBlue,
   },
   CardCurrency: {
     fontWeight: "bold",
@@ -170,5 +190,5 @@ const styles = StyleSheet.create({
     color: COLORS.primaryNovel,
   },
 
-  CardIconMultiple: {}
+  CardIconMultiple: {},
 });
