@@ -24,6 +24,13 @@ export const productsSlice = createSlice({
     SET_IS_UPDATE: (state, action) =>{
       state.isUpdate = action.payload
     },
+    EDIT_PRODUCTS: (state, action) => {
+      state.productsList = state.productsList.map(item => item.id_pr === action.payload.id_pr ? action.payload : item)
+    },
+
+    EDIT_PRODUCTS2: (state, action) => {
+      state.productsList2 = state.productsList2.map(item => item.id_pr === action.payload.id_pr ? action.payload : item)
+    },
     UPDATE_PRODUCTS: (state, action) => {
       state.productsList = state.productsList.concat(action.payload)
       return state

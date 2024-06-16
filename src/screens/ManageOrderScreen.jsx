@@ -229,6 +229,12 @@ function ManageOrderScreen({ navigation }) {
   }
 
   async function updatedProduct(data) {
+    if (data.category_pr === "medicine") {
+      dispatch(productsSlice.actions.EDIT_PRODUCTS2(data));
+    } else {
+      dispatch(productsSlice.actions.REMOVE_PRODUCTS(data));
+    }
+
     const temp_id = data.id_pr;
     updatedPrice(prices.getValues());
     delete data.manage_prices;
@@ -276,7 +282,7 @@ function ManageOrderScreen({ navigation }) {
   };
 
   async function loadImg(item, isSquare) {
-    if (!isUpdate) return
+    if (!isUpdate) return;
     const { data, error } = await supabase.storage
       .from("Images")
       .getPublicUrl(item);
