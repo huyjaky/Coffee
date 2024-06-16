@@ -83,6 +83,12 @@ function AuthenticatedStack() {
         component={ManageProductScreen}
         options={{ animation: "slide_from_bottom" }}
       />
+
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{ animation: "slide_from_bottom" }}
+      />
     </Stack.Navigator>
   );
 }

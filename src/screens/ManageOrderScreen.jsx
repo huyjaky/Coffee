@@ -156,7 +156,7 @@ function ManageOrderScreen({ navigation }) {
     console.log("upload portrait", imgUploadP.error);
     setTimeout(() => {
       setShowAnimation(false);
-      navigation.navigate("History");
+      navigation.navigate("HomeScreen");
     }, 2000);
     return imgUploadP;
   }
@@ -241,7 +241,7 @@ function ManageOrderScreen({ navigation }) {
     console.log(error);
     setTimeout(() => {
       setShowAnimation(false);
-      navigation.navigate("History");
+      navigation.navigate("HomeScreen");
     }, 2000);
     return;
   }
