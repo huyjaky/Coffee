@@ -68,6 +68,7 @@ function GetStartedScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.primaryBackground }}>
       <StatusBar hidden={true} />
+
       <View
         style={{
           flex: 1,

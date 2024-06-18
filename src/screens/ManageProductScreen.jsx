@@ -107,7 +107,7 @@ function ManageProductScreen({ navigation, isUpdate }) {
     getProductList(categoryIndex.category, productsList, productsList2)
   );
 
-  function searchCoffee() {
+  function searchProducts() {
     if (searchText === "") {
       setsortedProducts(
         getProductList(categoryIndex.category, productsList, productsList2)
@@ -139,7 +139,7 @@ function ManageProductScreen({ navigation, isUpdate }) {
   }
 
   useEffect(() => {
-    searchCoffee();
+    searchProducts();
   }, [productAll, searchText]);
 
   useEffect(() => {

@@ -78,17 +78,18 @@ export default ProfileViewScreen = () => {
 
       <View style={styles.profileDetail}>
         <View style={styles.detailContent}>
-          <Text style={styles.title}>Photos</Text>
-          <Text style={styles.count}>200</Text>
+          <Text style={styles.title}>Role</Text>
+          <Text style={styles.count}>{user.role}</Text>
         </View>
-        <View style={styles.detailContent}>
+
+        {/* <View style={styles.detailContent}>
           <Text style={styles.title}>Followers</Text>
           <Text style={styles.count}>200</Text>
         </View>
         <View style={styles.detailContent}>
           <Text style={styles.title}>Following</Text>
           <Text style={styles.count}>200</Text>
-        </View>
+        </View> */}
       </View>
 
       <View style={styles.body}>

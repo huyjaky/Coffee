@@ -100,7 +100,7 @@ function HomeScreen({ navigation }) {
     getProductList(categoryIndex.category, productsList, productsList2)
   );
 
-  function searchCoffee() {
+  function searchProducts () {
     if (searchText === '') {
       setsortedProducts(
         getProductList(categoryIndex.category, productsList, productsList2)
@@ -196,7 +196,8 @@ function HomeScreen({ navigation }) {
 
   useEffect(() => { }, [sortedProducts])
   useEffect(() => {
-    searchCoffee()
+    searchProducts
+    ()
   }, [productAll, searchText])
 
   useEffect(()=>{}, [isLoading])

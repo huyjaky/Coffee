@@ -1,5 +1,5 @@
 {
-  "name": "coffe_shop",
+  "name": "Med_center",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "proxy": "http://localhost:19006",

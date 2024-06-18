@@ -41,10 +41,8 @@ function LoginScreen() {
     } else {
       // Login success
       authCtx.login()
-      console.log('Test');
     }
     setLoading(false)
-    // authCtx.login()
   }
 
 
